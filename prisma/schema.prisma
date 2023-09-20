@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Professional {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @map("id")
+  name       String
+  profession String?
+  patients   Patient[]
+  programs   Program[]
+}
+
+model Patient {
+  id            String @id @default(dbgenerated("gen_random_uuid()")) @map("id")
+  name          String
+  whatsapp      String? @unique
+  professional  Professional @relation(fields: [professionalId], references: [id])
+  professionalId String
+  programs      Program[]
+}
+
+model Program {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @map("id")
+  name         String
+  patient      Patient @relation(fields: [patientId], references: [id])
+  patientId    String
+  professional Professional @relation(fields: [professionalId], references: [id])
+  professionalId String
+  start_date   DateTime
+  duration     Int
+  end_date     DateTime
+  enabled_metrics  Json
+  daysActive   Int
+  daysPaid     Int
+  status       String
+  daily_data   DailyData[]
+}
+
+model DailyData {
+  program Program @relation(fields: [programId], references: [id])
+  programId String
+  date      DateTime
+  diet      Boolean
+  exercise  Boolean
+  weight    Decimal
+  notes     String
+  @@id([programId, date])
+}
