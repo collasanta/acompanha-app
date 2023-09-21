@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs";
 import MobileSidebar from "./mobile-sidebar";
-import { checkSubscription } from "@/lib/subscription";
+import { checkSubscription } from "@/lib/client";
 
 const Navbar = async () => {
     return (

@@ -1,11 +1,15 @@
 import Navbar from "@/components/navbar";
+import { NewUserModal } from "@/components/newUserModal";
 import Sidebar from "@/components/sidebar";
+import { isNewUser } from "@/lib/professional";
 
 const DashboardLayout = async ({
     children
 }: {
     children: React.ReactNode;
 }) => {
+
+ const newUser = await isNewUser();
 
     return (
         <div className="h-full relative">
@@ -16,7 +20,9 @@ const DashboardLayout = async ({
                 <Navbar />
                 {children}
             </main>
-
+        {newUser && (
+            <NewUserModal />
+        )}
         </div>
     );
 }

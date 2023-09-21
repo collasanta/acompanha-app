@@ -9,8 +9,11 @@ datasource db {
 
 model Professional {
   id         String @id @map("id")
-  name       String
+  name       String?
   profession String?
+  avgClientsSurvey Int?
+  email      String? @unique
+  whatsapp   String? @unique
   clients    Client[] // Alterado de "patients" para "clients"
   programs   Program[]
 }

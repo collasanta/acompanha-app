@@ -30,10 +30,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useState } from "react"
-import { checkClientByWhatsapp, createNewClient } from "@/lib/client"
+import { checkClientByWhatsapp, createNewClient, registerNewProgram } from "@/lib/client"
 import { programsFormSchema, programsFormSchemaType } from "@/types/programs"
 import { Checkbox } from "@/components/ui/checkbox"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, InfoIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
@@ -42,11 +42,21 @@ import { ptBR } from "date-fns/locale"
 
 export default function Home() {
   const [finalForm, setFinalForm] = useState<programsFormSchemaType>()
+  const [validForm, setValidForm] = useState(false)
   // const professionalId = cler
 
-  async function cadastraPrograma() {
-    console.log(finalForm)
+  async function registerProgram() {
     console.log("oi")
+
+    const result = await registerNewProgram(finalForm!)
+    if (typeof result === 'object' && result.erro) {
+      const errorMessage = result.erro;
+      console.log("Server Error Validation:", errorMessage)
+    } 
+
+    
+
+
   }
 
   function onSubmit(values: programsFormSchemaType) {
@@ -54,6 +64,8 @@ export default function Home() {
     const endDate = new Date(startDate.getTime() + values.duration * 24 * 60 * 60 * 1000); // Add days in milliseconds
     const finalForm = { ...values, endDate: endDate };
     setFinalForm(finalForm)
+    setValidForm(true)
+    console.log("finalForm", finalForm)
   }
 
   const form = useForm<programsFormSchemaType>({
@@ -105,13 +117,21 @@ export default function Home() {
               name="clientWhatsapp"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Whatsapp do Cliente</FormLabel>
+                  <div className="flex flex-row space-x-4">
+                    <FormLabel>Whatsapp do Cliente</FormLabel>
+                    <Popover>
+                      <PopoverTrigger type="button">
+                        <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <p className="text-[12px] pl-1">Whatsapp onde o cliente receberá as mensagens</p>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                   <FormControl>
                     <Input placeholder="+551199123456" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Whatsapp onde o cliente receberá as mensagens
-                  </FormDescription>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -121,13 +141,20 @@ export default function Home() {
               name="programName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome do Programa</FormLabel>
+                  <div className="flex flex-row space-x-4">
+                    <FormLabel>Nome do Programa</FormLabel>
+                    <Popover>
+                      <PopoverTrigger type="button">
+                        <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <p className="text-[12px] pl-1">Descrição breve sobre a finalidade do programa</p>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                   <FormControl>
                     <Input placeholder="Projeto de Emagrecimento 21 dias" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Descrição breve sobre a finalidade do programa
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -137,16 +164,18 @@ export default function Home() {
               name="startDate"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Data de início do Programa</FormLabel>
+                  <div className="flex flex-row space-x-4">
+                    <FormLabel>Data de início do Programa</FormLabel>
+                    <Popover>
+                      <PopoverTrigger type="button">
+                        <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <p className="text-[12px] pl-1">Dia em que a 1º mensagem de acompanhamento será enviada pelo robô no whatsapp</p>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                   <FormControl>
-                    {/* <Input
-                      type="date"
-                      {...field}
-                    // value={new Date(field.value).toISOString().slice(0, -1)}
-                    // onChange={(event) =>
-                    // field.onChange(event.target.value)
-                    // }
-                    /> */}
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -158,9 +187,9 @@ export default function Home() {
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "PPP")
+                              format(field.value, "PPP", { locale: ptBR })
                             ) : (
-                              <span>👆 Escolher Data</span>
+                              <span>👉 Escolher Data</span>
                             )}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
@@ -176,14 +205,11 @@ export default function Home() {
                           }
                           initialFocus
                           locale={ptBR}
+
                         />
                       </PopoverContent>
                     </Popover>
                   </FormControl>
-                  <FormDescription>
-                    Dia em que a 1º mensagem será enviada
-                  </FormDescription>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -192,13 +218,20 @@ export default function Home() {
               name="duration"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Duração do Programa</FormLabel>
+                  <div className="flex flex-row space-x-4">
+                    <FormLabel>Duração do Programa</FormLabel>
+                    <Popover>
+                      <PopoverTrigger type="button">
+                        <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <p className="text-[12px] pl-1">Dias que o programa irá durar após a data início</p>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                   <FormControl>
-                    <Input placeholder="21" {...field} />
+                    <Input placeholder="21 dias" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Dias que o programa irá durar após a data início
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -217,7 +250,7 @@ export default function Home() {
                     render={({ field }) => (
                       <div className="flex flex-row space-x-8 justify-center pt-[10px]">
                         <FormItem className="flex flex-col">
-                          <FormLabel className=" text-sm  text-muted-foreground">Peso</FormLabel>
+                          <FormLabel className=" text-sm  text-muted-foreground">Peso 🧍</FormLabel>
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -234,7 +267,7 @@ export default function Home() {
                     render={({ field }) => (
                       <div className="flex flex-row space-x-8 justify-center pt-[10px]">
                         <FormItem className="flex flex-col">
-                          <FormLabel className="text-sm text-muted-foreground">Dieta</FormLabel>
+                          <FormLabel className="text-sm text-muted-foreground">Dieta 🥦</FormLabel>
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -252,7 +285,7 @@ export default function Home() {
                     render={({ field }) => (
                       <div className="flex flex-row space-x-8 justify-center pt-[10px]">
                         <FormItem className="flex flex-col">
-                          <FormLabel className=" text-sm  text-muted-foreground">Treino</FormLabel>
+                          <FormLabel className=" text-sm  text-muted-foreground">Treino 💪</FormLabel>
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -272,57 +305,61 @@ export default function Home() {
             </div>
 
             <div className="flex justify-center pt-4 pb-[120px]">
-              <AlertDialog>
-                <AlertDialogTrigger>
-                  <Button type="submit">Cadastrar Programa</Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Confirme os dados antes de prosseguir</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      <div className="flex flex-col space-y-2">
-                        <div className="flex flex-row space-x-2">
-                          <div className="font-semibold">Nome do Cliente:</div>
-                          <div>{finalForm?.clientName}</div>
-                        </div>
-                        <div className="flex flex-row space-x-2">
-                          <div className="font-semibold">Whatsapp do Cliente:</div>
-                          <div>{finalForm?.clientWhatsapp}</div>
-                        </div>
-                        <div className="flex flex-row space-x-2">
-                          <div className="font-semibold">Nome do Programa:</div>
-                          <div>{finalForm?.programName}</div>
-                        </div>
-                        <div className="flex flex-row space-x-2">
-                          <div className="font-semibold">Data de Início:</div>
-                          <div>{finalForm?.startDate?.toLocaleDateString()}</div>
-                        </div>
-                        <div className="flex flex-row space-x-2">
-                          <div className="font-semibold">Data de Término:</div>
-                          <div>{finalForm?.endDate?.toLocaleDateString()}</div>
-                        </div>
-                        <div className="flex flex-row space-x-2">
-                          <div className="font-semibold">Duração:</div>
-                          <div>{finalForm?.duration} dias</div>
-                        </div>
-                        <div className="flex flex-row space-x-2">
-                          <div className="font-semibold">Métricas Acompanhadas:</div>
-                          <div>
-                            {finalForm?.metricspeso ? "Peso " : ""}
-                            {finalForm?.metricsdieta ? "Dieta " : ""}
-                            {finalForm?.metricstreino ? "Treino " : ""}
+              <Button type="submit">Cadastrar Programa</Button>
+              {finalForm && validForm &&
+                <>
+                  <AlertDialog open={!!finalForm}>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Confirme os dados antes de prosseguir</AlertDialogTitle>
+                        <AlertDialogDescription  className="py-6">
+                          <div className="flex flex-col space-y-2">
+                            <div className="flex flex-row space-x-2">
+                              <div className="font-semibold">Nome do Cliente:</div>
+                              <div>{finalForm?.clientName}</div>
+                            </div>
+                            <div className="flex flex-row space-x-2">
+                              <div className="font-semibold">Whatsapp do Cliente:</div>
+                              <div>{finalForm?.clientWhatsapp}</div>
+                            </div>
+                            <div className="flex flex-row space-x-2">
+                              <div className="font-semibold">Nome do Programa:</div>
+                              <div>{finalForm?.programName}</div>
+                            </div>
+                            <div className="flex flex-row space-x-2">
+                              <div className="font-semibold">Data de Início:</div>
+                              <div>{finalForm?.startDate?.toLocaleDateString()}</div>
+                            </div>
+                            <div className="flex flex-row space-x-2">
+                              <div className="font-semibold">Data de Término:</div>
+                              <div>{finalForm?.endDate?.toLocaleDateString()}</div>
+                            </div>
+                            <div className="flex flex-row space-x-2">
+                              <div className="font-semibold">Duração:</div>
+                              <div>{finalForm?.duration} dias</div>
+                            </div>
+                            <div className="flex flex-row space-x-2">
+                              <div className="font-semibold">Métricas Acompanhadas:</div>
+                              <div>
+                                {finalForm?.metricspeso ? "Peso " : ""}
+                                {finalForm?.metricsdieta ? "Dieta " : ""}
+                                {finalForm?.metricstreino ? "Treino " : ""}
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
 
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Voltar</AlertDialogCancel>
-                    <AlertDialogAction onClick={cadastraPrograma}>Confirmar</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel onClick={() => setValidForm(false)}>
+                          Voltar
+                        </AlertDialogCancel>
+                        <AlertDialogAction onClick={registerProgram}>Confirmar</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </>
+              }
             </div>
 
 
