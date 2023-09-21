@@ -1,3 +1,30 @@
 {
-  "extends": "next/core-web-vitals"
+  "root": true,
+  "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": ["./tsconfig.json"] },
+  "plugins": [
+    "import-newlines"
+  ],
+  "rules": {
+    "max-len": [
+      "error",
+      100
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "import-newlines/enforce": [
+      "error",
+      {
+        "items": 2,
+        "max-len": 100,
+        "semi": false
+      }
+    ]
+  }
 }

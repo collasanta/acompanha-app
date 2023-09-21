@@ -1,7 +1,5 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -25,53 +23,41 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { useState } from "react"
+import { checkClientByWhatsapp, createNewClient } from "@/lib/client"
+import { programsFormSchema, programsFormSchemaType } from "@/types/programs"
+import { Checkbox } from "@/components/ui/checkbox"
+import { CalendarIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
-const formSchema = z.object({
-  clientName: z.string().min(6, {
-    message: "Favor inserir Nome e Sobrenome",
-  }),
-  clientWhatsapp: z.string().refine((value) => {
-    const whatsappRegex = /^\+\d{1,3}\d{6,}$/;
-    return whatsappRegex.test(value);
-  }, {
-    message: "Número de WhatsApp incorreto. Deve estar no formato internacional +5511991234567",
-  }),
-  programName: z.string().min(10, {
-    message: "Nome deve ter no mínimo 10 caracteres",
-  }),
-  duration: z.coerce.number().min(10, {
-    message: "Duração do programa deve ser de pelo menos 10 dias",
-  }),
-  startDate: z.coerce.date().refine((value) => {
-    const currentDate = new Date();
-    return value > currentDate;
-  }, {
-    message: "A data de início deve ser no futuro",
-  }),
-  metricspeso: z.boolean(),
-  metricsdieta: z.boolean(),
-  metricstreino: z.boolean(),
-});
 
 
 export default function Home() {
-  const [finalForm, setFinalForm] = useState<object>()
+  const [finalForm, setFinalForm] = useState<programsFormSchemaType>()
+  // const professionalId = cler
 
   async function cadastraPrograma() {
-      console.log("cadastraPrograma")
-      console.log(finalForm)
+    console.log(finalForm)
+    console.log("oi")
   }
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: programsFormSchemaType) {
     const startDate = new Date(values.startDate);
     const endDate = new Date(startDate.getTime() + values.duration * 24 * 60 * 60 * 1000); // Add days in milliseconds
     const finalForm = { ...values, endDate: endDate };
     setFinalForm(finalForm)
   }
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<programsFormSchemaType>({
+    resolver: zodResolver(programsFormSchema),
     defaultValues: {
       clientName: "",
       clientWhatsapp: "",
@@ -150,17 +136,49 @@ export default function Home() {
               control={form.control}
               name="startDate"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex flex-col">
                   <FormLabel>Data de início do Programa</FormLabel>
                   <FormControl>
-                    <Input
+                    {/* <Input
                       type="date"
                       {...field}
                     // value={new Date(field.value).toISOString().slice(0, -1)}
                     // onChange={(event) =>
                     // field.onChange(event.target.value)
                     // }
-                    />
+                    /> */}
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>👆 Escolher Data</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date < new Date() || date < new Date("1900-01-01")
+                          }
+                          initialFocus
+                          locale={ptBR}
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </FormControl>
                   <FormDescription>
                     Dia em que a 1º mensagem será enviada
@@ -201,7 +219,10 @@ export default function Home() {
                         <FormItem className="flex flex-col">
                           <FormLabel className=" text-sm  text-muted-foreground">Peso</FormLabel>
                           <FormControl>
-                            <Input type="checkbox" className="w-[30px] mx-auto" {...field} name="metrics" />
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="w-[30px] h-[30px] mx-auto" />
                           </FormControl>
                         </FormItem>
                       </div>
@@ -215,7 +236,11 @@ export default function Home() {
                         <FormItem className="flex flex-col">
                           <FormLabel className="text-sm text-muted-foreground">Dieta</FormLabel>
                           <FormControl>
-                            <Input type="checkbox" className="w-[30px] mx-auto" {...field} name="metrics" />
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="w-[30px] h-[30px] mx-auto" />
+                            {/* <Input type="checkbox" defaultValue={"true"} className="w-[30px] mx-auto" {...field} /> */}
                           </FormControl>
                         </FormItem>
                       </div>
@@ -229,7 +254,10 @@ export default function Home() {
                         <FormItem className="flex flex-col">
                           <FormLabel className=" text-sm  text-muted-foreground">Treino</FormLabel>
                           <FormControl>
-                            <Input type="checkbox" className=" w-[30px] mx-auto" {...field} name="metrics" />
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="w-[30px] h-[30px] mx-auto" />
                           </FormControl>
                         </FormItem>
                       </div>
@@ -246,7 +274,7 @@ export default function Home() {
             <div className="flex justify-center pt-4 pb-[120px]">
               <AlertDialog>
                 <AlertDialogTrigger>
-            <Button type="submit">Cadastrar Programa</Button>
+                  <Button type="submit">Cadastrar Programa</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
