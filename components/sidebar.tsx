@@ -16,9 +16,9 @@ const routes = [
         color: "text-sky-500"
     },
     {
-        label:"Archive",
+        label:"Cadastro",
         icon: FolderSearch,
-        href: "/archive",
+        href: "/cadastro",
         color: "text-emerald-500"
     },
     {
@@ -41,7 +41,7 @@ const Sidebar = ({
                         <Image src="/logo.png" fill alt="logo" />
                     </div>
                     <h1 className={cn("text-2xl font-bold", montserrat.className)}>
-                        ChadChapters
+                        Acompanha.app
                     </h1>
                 </Link>
                 <div className="space-y-1">

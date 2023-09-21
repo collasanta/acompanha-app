@@ -8,14 +8,14 @@ datasource db {
 }
 
 model Professional {
-  id         String @id @default(dbgenerated("gen_random_uuid()")) @map("id")
+  id         String @id @map("id")
   name       String
   profession String?
-  patients   Patient[]
+  clients    Client[] // Alterado de "patients" para "clients"
   programs   Program[]
 }
 
-model Patient {
+model Client { // Alterado de "Patient" para "Client"
   id            String @id @default(dbgenerated("gen_random_uuid()")) @map("id")
   name          String
   whatsapp      String? @unique
@@ -27,8 +27,8 @@ model Patient {
 model Program {
   id           String @id @default(dbgenerated("gen_random_uuid()")) @map("id")
   name         String
-  patient      Patient @relation(fields: [patientId], references: [id])
-  patientId    String
+  client       Client @relation(fields: [clientId], references: [id]) // Alterado de "patient" para "client"
+  clientId     String // Alterado de "patientId" para "clientId"
   professional Professional @relation(fields: [professionalId], references: [id])
   professionalId String
   start_date   DateTime

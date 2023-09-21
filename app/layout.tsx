@@ -12,8 +12,8 @@ import {ptBR} from '@clerk/localizations'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'ChadChapters',
-  description: 'Quick and easy AI chaptering for your videos',
+  title: 'Acompanha.app',
+  description: 'Ajudando você a acompanhar seus pacientes',
 }
 
 export default function RootLayout({
