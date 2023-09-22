@@ -26,37 +26,37 @@ import {
 import { Calendar } from "@/components/ui/calendar"
 import {
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useState } from "react"
-import { checkClientByWhatsapp, createNewClient, registerNewProgram } from "@/lib/client"
+import { registerNewProgram } from "@/lib/client"
 import { programsFormSchema, programsFormSchemaType } from "@/types/programs"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CalendarIcon, InfoIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
-
+import { useRouter } from "next/navigation"
 
 
 export default function Home() {
   const [finalForm, setFinalForm] = useState<programsFormSchemaType>()
   const [validForm, setValidForm] = useState(false)
-  // const professionalId = cler
+  const router = useRouter()
 
   async function registerProgram() {
     console.log("oi")
 
     const result = await registerNewProgram(finalForm!)
-    if (typeof result === 'object' && result.erro) {
+    if (result.erro) {
       const errorMessage = result.erro;
       console.log("Server Error Validation:", errorMessage)
-    } 
-
-    
-
-
+    } else if (result.programId) {
+      console.log("Programa Cadastrado com Sucesso!", result.programId)
+      router.push(`/p/${result.programId}`)
+    }
   }
 
   function onSubmit(values: programsFormSchemaType) {
@@ -196,6 +196,7 @@ export default function Home() {
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
+                        <PopoverClose>
                         <Calendar
                           mode="single"
                           selected={field.value}
@@ -205,8 +206,8 @@ export default function Home() {
                           }
                           initialFocus
                           locale={ptBR}
-
                         />
+                        </PopoverClose>
                       </PopoverContent>
                     </Popover>
                   </FormControl>
@@ -236,7 +237,7 @@ export default function Home() {
                 </FormItem>
               )}
             />
-            <div className="mx-auto pt-4">
+            <div className="mx-auto pt-1">
               <div className="flex flex-col">
                 <a className="text-md pb-4 mx-auto font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Métricas para Acompanhar
@@ -304,7 +305,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex justify-center pt-4 pb-[120px]">
+            <div className="flex justify-center pb-[120px]">
               <Button type="submit">Cadastrar Programa</Button>
               {finalForm && validForm &&
                 <>

@@ -30,3 +30,21 @@ export const programsFormSchema = z.object({
 
   export type programsFormSchemaType =  z.infer<typeof programsFormSchema>
 
+  export interface programsFrontEndListType {
+    id: string,
+    name: string,
+    start_date: Date,
+    duration: number,
+    end_date: Date,
+    enabled_metrics: {
+        metricspeso: boolean,
+        metricsdieta: boolean,
+        metricstreino: boolean
+    },
+    status: string
+    client: {
+        name: string,
+        whatsapp: string
+    }
+}
+

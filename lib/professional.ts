@@ -19,7 +19,7 @@ export const isNewUser = async () => {
     }
 }
 
-export const createNewProfessional = async (formData:professionalFormType) => {
+export const createNewProfessional = async (formData: professionalFormType) => {
     const { userId } = auth()
     if (!userId) {
         return false
@@ -45,3 +45,6 @@ export const createNewProfessional = async (formData:professionalFormType) => {
         }
     }
 }
+
+
+

@@ -63,7 +63,7 @@ export const NewUserModal = () => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="flex flex-row space-x-4">
-                                            <FormLabel>Qual seu nome Completo?</FormLabel>
+                                            <FormLabel>Nome Completo</FormLabel>
                                         </div>
                                         <FormControl>
                                             <Input placeholder="Giovanni Correa" {...field} />
@@ -79,7 +79,7 @@ export const NewUserModal = () => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="flex flex-row space-x-4">
-                                            <FormLabel>Qual sua Profissão?</FormLabel>
+                                            <FormLabel>Profissão</FormLabel>
                                         </div>
                                         <FormControl>
                                             <Input placeholder="Nutricionista" {...field} />
@@ -111,7 +111,7 @@ export const NewUserModal = () => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="flex flex-row space-x-4">
-                                            <FormLabel>Qual seu email?</FormLabel>
+                                            <FormLabel>Qual seu melhor e-mail?</FormLabel>
                                         </div>
                                         <FormControl>
                                             <Input placeholder="joao@gmail.com" {...field} />
@@ -127,7 +127,7 @@ export const NewUserModal = () => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="flex flex-row space-x-4">
-                                            <FormLabel>Qual seu Whatsapp?</FormLabel>
+                                            <FormLabel>Qual é o seu Whatsapp?</FormLabel>
                                         </div>
                                         <FormControl>
                                             <Input placeholder="+5511991234567" {...field} />
