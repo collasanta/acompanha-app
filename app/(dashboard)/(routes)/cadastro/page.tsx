@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,7 +20,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -31,7 +29,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useState } from "react"
-import { registerNewProgram } from "@/lib/client"
 import { programsFormSchema, programsFormSchemaType } from "@/types/programs"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CalendarIcon, InfoIcon } from "lucide-react"
@@ -39,6 +36,7 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { useRouter } from "next/navigation"
+import { registerNewProgram } from "@/lib/programs"
 
 
 export default function Home() {

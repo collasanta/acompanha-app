@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { professionalFormSchema, professionalFormType } from "@/types/professionals";
 import { Button } from "@/components/ui/button"
+import toast from "react-hot-toast";
 
 export const NewUserModal = () => {
 
@@ -26,17 +27,19 @@ export const NewUserModal = () => {
             professionalJob: "",
             professionalAvgClientsSurvey: undefined,
             whatsapp: "",
-            email: ""
+            // email: ""
         },
     })
 
     async function onSubmit(values: professionalFormType) {
         const registerResult = await createNewProfessional(values)
         console.log("registerResult", registerResult)
-        if (registerResult) {
+        if (registerResult === true) {
             setOpen(false)
-        } else {
-            console.log("Erro ao criar usuário")
+        } else if (typeof registerResult === "object" && registerResult.erro) {
+            if (registerResult.erro.includes("whatsapp")) {
+            toast.error("whatsapp já cadastrado em outra contra, use outro número")
+            }
         }
     }
 
@@ -105,7 +108,7 @@ export const NewUserModal = () => {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
+                            {/* <FormField
                                 control={form.control}
                                 name="email"
                                 render={({ field }) => (
@@ -120,7 +123,7 @@ export const NewUserModal = () => {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
+                            /> */}
                             <FormField
                                 control={form.control}
                                 name="whatsapp"

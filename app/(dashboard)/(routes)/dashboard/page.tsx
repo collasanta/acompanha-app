@@ -1,30 +1,21 @@
-/* eslint-disable @next/next/no-img-element */
-"use client"
 import { Button } from "@/components/ui/button";
 import { programsFrontEndListType } from "@/types/programs";
 import { PlusIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { ProgramCard } from "@/components/programCard";
 import { getUserPrograms } from "@/lib/programs";
+import toast from "react-hot-toast";
 
-const DashboardPage = () => {
-  const router = useRouter();
+const DashboardPage = async () => {
 
-  const [programs, setPrograms] = useState<[programsFrontEndListType]>();
-
-  useEffect(() => {
-    (async function () {
-      const programsData: any = await getUserPrograms();
-      if (typeof programsData === 'object' && programsData.userPrograms) {
-        console.log("programsData", programsData);
-        setPrograms(programsData.userPrograms)
-      }
-      else if (typeof programsData === 'object' && programsData.error) {
-        console.log("programsData fetching error", programsData.error)
-      }
-    })();
-  }, []);
+  const userPrograms: any = await getUserPrograms();
+  let programs
+  if (typeof userPrograms === 'object' && userPrograms.userPrograms) {
+    programs = userPrograms.userPrograms;
+    console.log("rend")
+  }
+  else if (typeof userPrograms === 'object' && userPrograms.error) {
+    toast.error("Erro ao carregar programas: ", userPrograms.error)
+  }
 
   return (
     <div>
@@ -37,16 +28,17 @@ const DashboardPage = () => {
         </p>
       </div>
       <div className="px-4 flex justify-center md:px-20 lg:px-32 space-y-4 items-center">
-        <Button
-          className="p-4 flex rounded-full shadow-md"
-          onClick={() => { router.push('/cadastro') }}
-        >
-          <PlusIcon className="w-6 h-6 pr-2" />
-          <a> Adicionar Novo Programa </a>
-        </Button>
+        <a href="/cadastro">
+          <Button
+            className="p-4 flex rounded-full shadow-md"
+          >
+            <PlusIcon className="w-6 h-6 pr-2" />
+            Adicionar Novo Programa
+          </Button>
+        </a>
       </div>
-      <div className="px-4 md:px-20 lg:px-32 space-y-4 pt-8">
-        {programs?.map((program: programsFrontEndListType) => (
+      <div className="px-4 md:px-20 lg:px-32 space-y-4 pt-8 mx-auto flex justify-center md:min-w-[400px]">
+        {programs && programs?.map((program: programsFrontEndListType) => (
           <ProgramCard
             key={program.id}
             program={program}

@@ -1,14 +1,13 @@
 'use server'
 
-import { auth } from "@clerk/nextjs"
+import { auth, clerkClient } from "@clerk/nextjs"
 import prismadb from "./prismadb"
 import { professionalFormType } from "@/types/professionals"
 
 export const isNewUser = async () => {
     const { userId } = auth()
-    if (!userId) {
-        return false
-    }
+    if (!userId) {return { erro: "user not logged in" }}
+
     const professional = await prismadb.professional.findUnique({
         where: { id: userId },
     })
@@ -21,18 +20,18 @@ export const isNewUser = async () => {
 
 export const createNewProfessional = async (formData: professionalFormType) => {
     const { userId } = auth()
-    if (!userId) {
-        return false
-    }
+    if (!userId) {return { erro: "user not logged in" }}
 
     try {
+        const user = await clerkClient.users.getUser(userId!)
+        const email = user.emailAddresses[0].emailAddress
         const newProfessional = await prismadb.professional.create({
             data: {
                 name: formData.professionalName,
                 profession: formData.professionalJob,
                 id: userId,
                 avgClientsSurvey: formData.professionalAvgClientsSurvey,
-                email: formData.email,
+                email: email,
                 whatsapp: formData.whatsapp,
             },
         });

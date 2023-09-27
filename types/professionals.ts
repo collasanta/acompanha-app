@@ -10,9 +10,9 @@ export const professionalFormSchema = z.object({
     professionalAvgClientsSurvey:  z.coerce.number().min(0, {
       message: "Favor inserir quantos pacientes atende por mês",
     }),
-    email: z.string().email({
-      message: "Favor inserir um email válido",
-    }),
+    // email: z.string().email({
+    //   message: "Favor inserir um email válido",
+    // }),
     whatsapp: z.string().refine((value) => {
       const whatsappRegex = /^\+\d{1,3}\d{6,}$/;
       return whatsappRegex.test(value);

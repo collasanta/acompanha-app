@@ -8,49 +8,60 @@ datasource db {
 }
 
 model Professional {
-  id         String @id @map("id")
-  name       String?
-  profession String?
+  id               String    @id @map("id")
+  name             String?
+  profession       String?
   avgClientsSurvey Int?
-  email      String? @unique
-  whatsapp   String? @unique
-  clients    Client[] // Alterado de "patients" para "clients"
-  programs   Program[]
+  email            String?   @unique
+  whatsapp         String?   @unique
+  clients          Client[] // Alterado de "patients" para "clients"
+  programs         Program[]
 }
 
-model Client { // Alterado de "Patient" para "Client"
-  id            String @id @map("id")
-  name          String
-  whatsapp      String? @unique
-  professional  Professional @relation(fields: [professionalId], references: [id])
+model Client {
+  id             String       @id @map("id")
+  name           String
+  whatsapp       String?      @unique
+  professional   Professional @relation(fields: [professionalId], references: [id])
   professionalId String
-  programs      Program[]
+  programs       Program[]
 }
 
 model Program {
-  id           String @id @map("id")
-  name         String
-  client       Client @relation(fields: [clientId], references: [id]) // Alterado de "patient" para "client"
-  clientId     String // Alterado de "patientId" para "clientId"
-  professional Professional @relation(fields: [professionalId], references: [id])
-  professionalId String
-  start_date   DateTime
-  duration     Int
-  end_date     DateTime
-  enabled_metrics  Json
-  daysActive   Int
-  daysPaid     Int
-  status       String
-  daily_data   DailyData[]
+  id              String       @id @map("id")
+  name            String
+  client          Client       @relation(fields: [clientId], references: [id]) // Alterado de "patient" para "client"
+  clientId        String // Alterado de "patientId" para "clientId"
+  professional    Professional @relation(fields: [professionalId], references: [id])
+  professionalId  String
+  start_date      DateTime
+  duration        Int
+  end_date        DateTime
+  enabled_metrics Json
+  daysActive      Int
+  daysPaid        Int
+  status          String
+  daily_data      DailyData[]
 }
 
 model DailyData {
-  program Program @relation(fields: [programId], references: [id])
-  programId String
-  date      DateTime
-  diet      Boolean
-  exercise  Boolean
-  weight    Decimal
-  notes     String
+  program      Program     @relation(fields: [programId], references: [id])
+  programId    String
+  date         DateTime
+  diet         Boolean?
+  exercise     Boolean?
+  weight       Decimal?
+  notes        String?
+  checkpointId String?
+  Checkpoint   Checkpoint? @relation(fields: [checkpointId], references: [id])
+
   @@id([programId, date])
+}
+
+model Checkpoint {
+  id             String      @id @default(uuid())
+  formUrl        String?
+  programId      String
+  date DateTime
+  daily_data     DailyData[]
 }
