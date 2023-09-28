@@ -68,7 +68,7 @@ export interface ProgramType {
   start_date: Date;
   duration: number;
   end_date: Date;
-  enabled_metrics: Prisma.JsonValue;
+  enabled_metrics: enabledMetricsType;
   status: string;
 };
 
@@ -83,11 +83,16 @@ export interface UserProgramResponse {
     start_date: Date;
     duration: number;
     end_date: Date;
-    enabled_metrics: Prisma.JsonValue;
+    enabled_metrics: enabledMetricsType;
     status: string;
   } | null;
   erro?: string; // Optional error message property
 }
 
+export interface enabledMetricsType {
+  peso: boolean;
+  dieta: boolean;
+  treino: boolean;
+}
 
 

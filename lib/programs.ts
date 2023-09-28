@@ -5,7 +5,7 @@ import prismadb from "./prismadb"
 import { generateId } from "./utils"
 import { programsFormSchema, programsFormSchemaType } from "@/types/programs"
 import { checkClientByWhatsapp, createNewClient } from "./client"
-import { JsonObject, JsonValue } from "@prisma/client/runtime/library"
+import { revalidatePath } from "next/cache"
 
 export const getUserPrograms = async () => {
   const { userId } = auth()
@@ -135,7 +135,11 @@ export const getProgramDays = async (programId: string, enabledMetrics:any) => {
         exercise: await getActiveMetricsDB(enabledMetrics, "treino"),
         weight: await getActiveMetricsDB(enabledMetrics, "peso"),
         notes: true,
-        checkpointId: true
+        checkpointId: true,
+        programId: true
+      },
+      orderBy: {
+        date: "asc"
       }
     })
     return { days: days }
@@ -199,16 +203,6 @@ const createCheckpoint = async (programId: string, date: Date) => {
   }
 }
 
-export const getProgramTableNumberOfCols = async (enabledMetrics: any) => {
-  let count = 0;
-  for (const key in enabledMetrics) {
-      //@ts-ignore
-      if (enabledMetrics.hasOwnProperty(key) && enabledMetrics[key] === true) {
-        count++;
-      }
-  }
-  return count + 2; //+1 date +1 notas
-}
 
 export const getProperty = async (name:string) => {
   if (name === "peso") {
@@ -225,4 +219,20 @@ const getActiveMetricsDB = async (enabledMetrics: any, metric:string) => {
     return true
   }
   return false
+}
+
+export const setDiet = async (date:Date, programId:string, boolean:boolean) => {
+    const result = await prismadb.dailyData.update({
+      where: {
+        programId_date: {
+          programId:programId,
+          date:date,
+        },
+      },
+      data: {
+        diet: boolean
+      }
+    })
+    revalidatePath(`/p/${programId}`)
+    console.log("Diet set: ", result.date, "value:", result.diet)
 }
