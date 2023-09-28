@@ -18,7 +18,7 @@ export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr
     return (
         <>
             <div className="flex justify-center max-w-[750px] mx-auto w-full">
-                <div className="max-w-[550px] border border-black/5 rounded-lg w-full">
+                <div className="max-w-[550px] w-full mb-[100px] shadow-lg ">
                     <div className="flex flex-col w-full">
 
                         {/* CABEÇALHO */}
@@ -90,18 +90,22 @@ export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr
                                                     </PopoverContent>
                                                 </Popover>
                                             }
+
                                         </div>
+                                        {
+                                            day.checkpointId && (
+                                                <>
+                                                    <div className="flex flex-col my-2 justify-center items-center">
+                                                        <Button className="text-xs text-white">Avaliação 📐</Button>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
                                     </>
                                 )
                             })
                         }
 
-                        {/* {
-                            Days.map((day: DailyDataType, index: number) => {
-
-                            }
-                            )
-                        } */}
 
                     </div>
                 </div>
