@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache"
 
 export const getUserPrograms = async () => {
   const { userId } = auth()
-  if (!userId) {return { erro: "user not logged in" }}
+  if (!userId) { return { erro: "user not logged in" } }
 
   try {
     const programs = await prismadb.program.findMany({
@@ -35,7 +35,7 @@ export const getUserPrograms = async () => {
   }
 }
 
-export const getUserProgram = async (programId:string) => {
+export const getUserProgram = async (programId: string) => {
   const { userId } = auth()
   if (!userId) {
     return { erro: "user not logged in" }
@@ -122,8 +122,8 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
   }
 }
 
-export const getProgramDays = async (programId: string, enabledMetrics:any) => {
-    
+export const getProgramDays = async (programId: string, enabledMetrics: any) => {
+
   try {
     const days = await prismadb.dailyData.findMany({
       where: {
@@ -155,7 +155,7 @@ const createProgramDays = async (programId: string, startDate: Date, endDate: Da
     let day = 0
     while (currentDate <= endDate) {
 
-      if (day % 30 === 0 && day !== 0 ) { // avaliacao mensal
+      if (day % 30 === 0 && day !== 0) { // avaliacao mensal
         const checkpoint = await createCheckpoint(programId, currentDate)
 
         if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
@@ -204,35 +204,97 @@ const createCheckpoint = async (programId: string, date: Date) => {
 }
 
 
-export const getProperty = async (name:string) => {
+export const getProperty = async (name: string) => {
   if (name === "peso") {
-  return "weight"
+    return "weight"
   } else if (name === "dieta") {
-  return "diet"
+    return "diet"
   } else if (name === "treino") {
-  return "exercise"
+    return "exercise"
   }
 }
 
-const getActiveMetricsDB = async (enabledMetrics: any, metric:string) => {    
+const getActiveMetricsDB = async (enabledMetrics: any, metric: string) => {
   if (enabledMetrics[`${metric}`] === true) {
     return true
   }
   return false
 }
 
-export const setDiet = async (date:Date, programId:string, boolean:boolean) => {
-    const result = await prismadb.dailyData.update({
-      where: {
-        programId_date: {
-          programId:programId,
-          date:date,
-        },
+export const setDiet = async (date: Date, programId: string, boolean: boolean) => {
+  const result = await prismadb.dailyData.update({
+    where: {
+      programId_date: {
+        programId: programId,
+        date: date,
       },
-      data: {
-        diet: boolean
-      }
-    })
-    revalidatePath(`/p/${programId}`)
-    console.log("Diet set: ", result.date, "value:", result.diet)
+    },
+    data: {
+      diet: boolean
+    }
+  })
+  revalidatePath(`/p/${programId}`)
+  console.log("Diet set: ", result.date, "value:", result.diet)
+}
+
+export const setExercise = async (date: Date, programId: string, boolean: boolean) => {
+  const result = await prismadb.dailyData.update({
+    where: {
+      programId_date: {
+        programId: programId,
+        date: date,
+      },
+    },
+    data: {
+      exercise: boolean
+    }
+  })
+  revalidatePath(`/p/${programId}`)
+  console.log("Exercise set: ", result.date, "value:", result.diet)
+}
+
+export const setWeight = async (date: Date, programId: string, weight: string) => {
+  if (weight === "") {
+    console.log("empty weight")
+    return
+  }
+  if (/^-?\d+(\.\d+)?$/.test(weight) === false){
+    console.log("invalid weight")
+    return
+  }
+  const formattedWeight = weight.replace(',', '.')
+  const result = await prismadb.dailyData.update({
+    where: {
+      programId_date: {
+        programId: programId,
+        date: date,
+      },
+    },
+    data: {
+      weight: formattedWeight
+    }
+  })
+  revalidatePath(`/p/${programId}`)
+  console.log("Weight set: ", result.date, "value:", result.weight)
+}
+
+export const setNotes = async (date: Date, programId: string, notes: string, oldnote: string) => {
+  if (notes === "") {
+    return
+  } else if (notes === oldnote) {
+    return
+  }
+  const result = await prismadb.dailyData.update({
+    where: {
+      programId_date: {
+        programId: programId,
+        date: date,
+      },
+    },
+    data: {
+      notes: notes
+    }
+  })
+  revalidatePath(`/p/${programId}`)
+  console.log("notes set: ", result.date, "value:", result.notes)
 }
