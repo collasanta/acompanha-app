@@ -4,10 +4,13 @@ import { formatDateToDdMmYy } from "@/lib/utils";
 import { DailyDataType, DailyDataTypeArr, enabledMetricsType } from "@/types/programs";
 import { Button } from "./ui/button";
 import { setDiet } from "@/lib/programs";
+import { JsonValue } from "@prisma/client/runtime/library";
 
-export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr, enabledMetrics: enabledMetricsType }) => {
+export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue }) => {
     let currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0);
+
+    const EnabledMetrics = JSON.parse(enabledMetrics as string) as enabledMetricsType
 
     return (
         <>
@@ -18,9 +21,9 @@ export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr
                         {/* CABEÇALHO */}
                         <div className={`w-full sticky top-0 font-semibold space-x-4 bg-muted flex p-1 text-muted-foreground border-b border-black/5 justify-between text-center`}>
                             <div className="bg-gray text-center rounded-lg w-[90px]">Dia</div>
-                            {enabledMetrics.dieta && <div className="w-[50px]">Dieta</div>}
-                            {enabledMetrics.treino && <div className="w-[50px]">Treino</div>}
-                            {enabledMetrics.peso && <div className="w-[50px]">Peso</div>}
+                            {EnabledMetrics.dieta && <div className="w-[50px]">Dieta</div>}
+                            {EnabledMetrics.treino && <div className="w-[50px]">Treino</div>}
+                            {EnabledMetrics.peso && <div className="w-[50px]">Peso</div>}
                             <div className="min-w-[50px] mr-1">Notas</div>
                         </div>
 
@@ -34,7 +37,7 @@ export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr
                                         <div key={day.date.toDateString()} className={`flex flex-row space-x-4 border-b border-black/1  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-[#f1f1f1]" : ""}`}>
                                             <div className={`text-center min-w-[90px] min-h-[30px] text-sm text-muted-foreground `}>{formatDateToDdMmYy(day.date)}</div>
                                             
-                                            {enabledMetrics.dieta && notFuture &&
+                                            {EnabledMetrics.dieta && notFuture &&
                                                 <Button
                                                     onClick={() => setDiet(day.date, day.programId, !day.diet)}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center
@@ -42,14 +45,14 @@ export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr
                                                     {day.diet}
                                                 </Button>}
 
-                                            {enabledMetrics.treino && notFuture &&
+                                            {EnabledMetrics.treino && notFuture &&
                                                 <Button
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center
                                                 ${day.exercise === true ? "bg-[#059669]" : day.exercise === null ? "bg-secondary" : "bg-[#ff6961]"}`}>
                                                     {day.exercise}
                                                 </Button>}
 
-                                            {enabledMetrics.peso && notFuture &&
+                                            {EnabledMetrics.peso && notFuture &&
                                                 <input
                                                     placeholder={day.weight?.toString()}
                                                     className={`w-[50px] text-black rounded-md align-middle cursor-pointer text-center
@@ -57,7 +60,7 @@ export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr
                                                     
                                                 </input>}
 
-                                            {enabledMetrics.peso && notFuture &&
+                                            {EnabledMetrics.peso && notFuture &&
                                                 <Button className={`w-[50px]  bg-muted rounded-lg cursor-pointer text-center p-1
                                                 ${day.notes ? "bg-[#059669]" : "bg-secondary"}`}>
                                                     ✍

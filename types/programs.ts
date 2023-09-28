@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { Decimal } from "@prisma/client/runtime/library";
+import { Decimal, JsonValue } from "@prisma/client/runtime/library";
 import * as z from "zod"
 
 export const programsFormSchema = z.object({
@@ -42,7 +42,7 @@ export interface programsFrontEndListType {
   start_date: Date;
   duration: number;
   end_date: Date;
-  enabled_metrics: Prisma.JsonValue;
+  enabled_metrics: JsonValue;
   status: string;
 }
 
@@ -83,16 +83,16 @@ export interface UserProgramResponse {
     start_date: Date;
     duration: number;
     end_date: Date;
-    enabled_metrics: enabledMetricsType;
+    enabled_metrics: JsonValue;
     status: string;
   } | null;
   erro?: string; // Optional error message property
 }
 
 export interface enabledMetricsType {
-  peso: boolean;
-  dieta: boolean;
-  treino: boolean;
-}
+  peso: boolean | null;
+  dieta: boolean | null;
+  treino: boolean | null;
+} 
 
 

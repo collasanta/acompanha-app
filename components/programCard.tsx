@@ -75,7 +75,7 @@ export const ProgramCard = (
                                 <div className="mt-2 text-center flex flex-col  justify-center border bg-card border-black/5 rounded-lg p-2">
                                     <a className="font-[500]">Métricas Acompanhadas</a>
                                     <div className="flex text-center">
-                                        {Object.entries(program.enabled_metrics).map(([metricName, metricValue], index) => {
+                                        {Object.entries(program?.enabled_metrics!).map(([metricName, metricValue], index) => {
                                             if (metricValue === true) {
                                                 return (
                                                     <div className="text-center text-muted-foreground mx-auto mt-1">
