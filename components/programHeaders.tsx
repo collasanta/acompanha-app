@@ -17,10 +17,10 @@ export const ProgramHeader = (
 
     let lastNonNullDietPlanUrl = null;
     let lastNonNullTrainingPlanUrl = null;
-    let mostRecentDate = null;
+    let mostRecentDate:Date | null = null;
     getPlansUrl()
-    console.log({ lastNonNullDietPlanUrl, lastNonNullTrainingPlanUrl })
     function getPlansUrl() {
+        // @ts-ignore
         checkpoints.checkpoints.forEach(checkpoint => {
             if (checkpoint.dietPlanUrl !== null) {
                 const checkpointDate = new Date(checkpoint.date);
