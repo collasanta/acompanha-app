@@ -37,7 +37,7 @@ const DashboardPage = async () => {
           </Button>
         </a>
       </div>
-      <div className="px-4 md:px-20 lg:px-32 space-y-4 pt-8 mx-auto flex justify-center md:min-w-[400px]">
+      <div className="px-4 md:px-20 lg:px-32 space-y-4 pt-8 mx-auto flex flex-col justify-center md:min-w-[400px]">
         {programs && programs?.map((program: programsFrontEndListType) => (
           <ProgramCard
             key={program.id}

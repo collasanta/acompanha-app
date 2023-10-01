@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache"
 
 export const getUserPrograms = async () => {
   const { userId } = auth()
-  if (!userId) { return { erro: "user not logged in" } }
+  if (!userId) { return { erro: "usuário não logado " } }
 
   try {
     const programs = await prismadb.program.findMany({
@@ -38,7 +38,7 @@ export const getUserPrograms = async () => {
 export const getUserProgram = async (programId: string) => {
   const { userId } = auth()
   if (!userId) {
-    return { erro: "user not logged in" }
+    return { erro: "usuário não logado " }
   }
 
   try {
@@ -70,7 +70,7 @@ export const getUserProgram = async (programId: string) => {
 export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
   try {
     let { userId } = auth()
-    if (!userId) { return { erro: "user not logged in" } }
+    if (!userId) { return { erro: "usuário não logado " } }
 
 
     const typeCheck = programsFormSchema.safeParse(finalForm)
@@ -155,10 +155,13 @@ const createProgramDays = async (programId: string, startDate: Date, endDate: Da
     let day = 0
     while (currentDate <= endDate) {
 
-      if (day % 30 === 0 && day !== 0) { // avaliacao mensal
-        const checkpoint = await createCheckpoint(programId, currentDate)
+      console.log("currentDate: ", currentDate, "endDate: ", endDate)
+
+      if (day === 0) { // avaliacao inicial
+        const checkpoint = await createCheckpoint(programId, currentDate, "initial")
 
         if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
+          console.log("0 Erro ao criar checkpoint: ", checkpoint.erro)
           return { erro: checkpoint.erro }
         }
 
@@ -168,33 +171,63 @@ const createProgramDays = async (programId: string, startDate: Date, endDate: Da
           checkpointId: checkpoint.checkpoint
         })
 
+      } else if (day % 30 === 0 && day !== 0 && currentDate !== endDate) { // avaliacao mensal
+
+        const checkpoint = await createCheckpoint(programId, currentDate, "review")
+
+        if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
+          console.log("1 Erro ao criar checkpoint: ", checkpoint.erro)
+          return { erro: checkpoint.erro }
+        }
+
+        days.push({
+          programId: programId,
+          date: currentDate,
+          checkpointId: checkpoint.checkpoint
+        })
+      } else if (currentDate.getTime() === endDate.getTime()) { // avaliacao final
+        const checkpoint = await createCheckpoint(programId, currentDate, "final")
+
+        if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
+          console.log("2 Erro ao criar checkpoint: ", checkpoint.erro)
+          return { erro: checkpoint.erro }
+        }
+
+        days.push({
+          programId: programId,
+          date: currentDate,
+          checkpointId: checkpoint.checkpoint
+        })
       } else {
         days.push({
           programId: programId,
           date: currentDate,
         })
-
       }
-
       day++
+      console.log("day: ", day)
       currentDate = new Date(currentDate.getTime() + 86400000)
     }
+
+    console.log("Dias: ", days)
     const newDays = await prismadb.dailyData.createMany({
       data: days
     })
     console.log("Dias criados: ", newDays)
     return { days: newDays }
   } catch (error: any) {
+    console.log("Erro ao criar dias: ", error.message)
     return { erro: error.message }
   }
 }
 
-const createCheckpoint = async (programId: string, date: Date) => {
+const createCheckpoint = async (programId: string, date: Date, description: string) => {
   try {
     const checkpoint = await prismadb.checkpoint.create({
       data: {
         date: date,
         programId: programId,
+        description: description
       }
     })
     return { checkpoint: checkpoint.id }
@@ -258,7 +291,7 @@ export const setWeight = async (date: Date, programId: string, weight: string) =
     console.log("empty weight")
     return
   }
-  if (/^-?\d+(\.\d+)?$/.test(weight) === false){
+  if (/^-?\d+(\.\d+)?$/.test(weight) === false) {
     console.log("invalid weight")
     return
   }
@@ -298,3 +331,110 @@ export const setNotes = async (date: Date, programId: string, notes: string, old
   revalidatePath(`/p/${programId}`)
   console.log("notes set: ", result.date, "value:", result.notes)
 }
+
+export const getCheckpointsByProgramId = async (programId: string) => {
+  const checkpoints = await prismadb.checkpoint.findMany({
+    where: {
+      programId: programId
+    },
+    orderBy: {
+      date: "asc"
+    }
+  })
+  return { checkpoints: checkpoints }
+}
+
+export const getCheckpointById = async (checkpointId: string) => {
+  const checkpoint = await prismadb.checkpoint.findUnique({
+    where: {
+      id: checkpointId
+    }
+  })
+  return { checkpoint: checkpoint }
+}
+
+export const setFormsLink = async (checkpointId: string, link: string, oldLink: string) => {
+  if (link === "") {
+    return
+  } else if (link === oldLink) {
+    console.log("same")
+    return
+  }
+
+  const result = await prismadb.checkpoint.update({
+    where: {
+      id: checkpointId
+    },
+    data: {
+      formUrl: link
+    }
+  })
+
+  console.log("setFormsLinkResult", result)
+  revalidatePath(`/p/${result.programId}`)
+  console.log("notes set: ", result.date, "value:", result.formUrl)
+}
+
+export const setDietLink = async (checkpointId: string, link: string, oldLink: string) => {
+  if (link === "") {
+    return
+  } else if (link === oldLink) {
+    console.log("same")
+    return
+  }
+
+  const result = await prismadb.checkpoint.update({
+    where: {
+      id: checkpointId
+    },
+    data: {
+      dietPlanUrl: link
+    }
+  })
+
+  console.log("setDietLinkResult", result)
+  revalidatePath(`/p/${result.programId}`)
+  console.log("dietPlanUrl set: ", "value:", result.dietPlanUrl)
+}
+
+export const setTrainingLink = async (checkpointId: string, link: string, oldLink: string) => {
+  if (link === "") {
+    return
+  } else if (link === oldLink) {
+    console.log("same")
+    return
+  }
+
+  const result = await prismadb.checkpoint.update({
+    where: {
+      id: checkpointId
+    },
+    data: {
+      trainingPlanUrl: link
+    }
+  })
+
+  revalidatePath(`/p/${result.programId}`)
+  console.log("trainingLink set: ", result.date, "value:", result.trainingPlanUrl)
+}
+
+export const setFormFilled = async (checkpointId: string, boolean: boolean, oldBoolean: boolean) => {
+   if (boolean === oldBoolean) {
+    console.log("same")
+    return
+  }
+
+  const result = await prismadb.checkpoint.update({
+    where: {
+      id: checkpointId
+    },
+    data: {
+      formFilled: boolean
+    }
+  })
+
+  console.log("setTrainingLinkResult", result)
+  revalidatePath(`/p/${result.programId}`)
+  console.log("formFilledSet: ", "value:", result.formFilled)
+}
+

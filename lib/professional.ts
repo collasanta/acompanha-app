@@ -6,7 +6,7 @@ import { professionalFormType } from "@/types/professionals"
 
 export const isNewUser = async () => {
     const { userId } = auth()
-    if (!userId) {return { erro: "user not logged in" }}
+    if (!userId) {return { erro: "usuário não logado " }}
 
     const professional = await prismadb.professional.findUnique({
         where: { id: userId },
@@ -20,7 +20,7 @@ export const isNewUser = async () => {
 
 export const createNewProfessional = async (formData: professionalFormType) => {
     const { userId } = auth()
-    if (!userId) {return { erro: "user not logged in" }}
+    if (!userId) {return { erro: "usuário não logado " }}
 
     try {
         const user = await clerkClient.users.getUser(userId!)

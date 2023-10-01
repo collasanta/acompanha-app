@@ -42,11 +42,10 @@ import { registerNewProgram } from "@/lib/programs"
 export default function Home() {
   const [finalForm, setFinalForm] = useState<programsFormSchemaType>()
   const [validForm, setValidForm] = useState(false)
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const router = useRouter()
 
   async function registerProgram() {
-    console.log("oi")
-
     const result = await registerNewProgram(finalForm!)
     if (result.erro) {
       const errorMessage = result.erro;
@@ -63,7 +62,6 @@ export default function Home() {
     const finalForm = { ...values, endDate: endDate };
     setFinalForm(finalForm)
     setValidForm(true)
-    console.log("finalForm", finalForm)
   }
 
   const form = useForm<programsFormSchemaType>({
@@ -174,7 +172,7 @@ export default function Home() {
                     </Popover>
                   </div>
                   <FormControl>
-                    <Popover>
+                    <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen} >
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
@@ -194,18 +192,18 @@ export default function Home() {
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
-                        <PopoverClose>
+                        {/* <PopoverClose> */}
                         <Calendar
                           mode="single"
                           selected={field.value}
-                          onSelect={field.onChange}
+                          onSelect={(e) => { field.onChange(e); setIsCalendarOpen(false); }}
                           disabled={(date) =>
                             date < new Date() || date < new Date("1900-01-01")
                           }
                           initialFocus
                           locale={ptBR}
                         />
-                        </PopoverClose>
+                        {/* </PopoverClose> */}
                       </PopoverContent>
                     </Popover>
                   </FormControl>

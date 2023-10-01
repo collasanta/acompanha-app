@@ -7,14 +7,15 @@ import { setDiet, setExercise, setNotes, setWeight } from "@/lib/programs";
 import { JsonValue } from "@prisma/client/runtime/library";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Textarea } from "@/components/ui/textarea"
+import { useAuth } from "@clerk/nextjs";
+import { FormButton } from "./formButton";
 
 
-export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue }) => {
+export const TrackingTable = ({ Days, enabledMetrics, checkPoints }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<any> }) => {
     let currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0);
-    
+    const { isSignedIn } = useAuth();
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
-
     return (
         <>
             <div className="flex justify-center max-w-[750px] mx-auto w-full">
@@ -30,14 +31,25 @@ export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr
                             <div className="min-w-[70px]">Notas</div>
                         </div>
 
+
+
+
                         {/* DIAS */}
 
                         {
-                            Days.map((day: DailyDataType) => {
+                            Days.map((day: DailyDataType, index) => {
                                 const notFuture = day.date.getTime() < Date.now()
                                 return (
                                     <>
-                                        <div key={day.date.toDateString()} className={`flex flex-row border-b border-black/1  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted" : "bg-[white]"}`}>
+                                        {/* AVALIAÇÃO INICIAL */}
+                                        {
+                                            day.checkpointId && index === 0 && (
+                                                <>
+                                                    <FormButton checkPoints={checkPoints} day={day} EnabledMetrics={EnabledMetrics} isSignedIn={isSignedIn!} />
+                                                </>
+                                            )
+                                        }
+                                        <div key={day.date.toDateString()} className={`flex flex-row border-b border-t border-black/1  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted" : "bg-[white]"}`}>
 
                                             <div className={`text-center flex items-center justify-center min-w-[80px] min-h-[30px] text-sm text-muted-foreground `}>{formatDateToDdMmYy(day.date)}</div>
 
@@ -80,27 +92,28 @@ export const TrackingTable = ({ Days, enabledMetrics }: { Days: DailyDataTypeArr
                                                         </Button>
                                                     </PopoverTrigger>
                                                     <PopoverContent>
-                                                    <Textarea
-                                                        onBlur={(e) => setNotes(day.date, day.programId, e.target.value, day.notes!)}
-                                                        placeholder="digite como foi seu dia aqui"
-                                                        
-                                                    >
-                                                        {day.notes}
-                                                    </Textarea>
+                                                        <Textarea
+                                                            onBlur={(e) => setNotes(day.date, day.programId, e.target.value, day.notes!)}
+                                                            placeholder="digite como foi seu dia aqui"
+
+                                                        >
+                                                            {day.notes}
+                                                        </Textarea>
                                                     </PopoverContent>
                                                 </Popover>
                                             }
 
                                         </div>
+
+                                        {/* AVALIAÇÕES + FINAL */}
                                         {
-                                            day.checkpointId && (
+                                            day.checkpointId && index !== 0 && (
                                                 <>
-                                                    <div className="flex flex-col my-2 justify-center items-center">
-                                                        <Button className="text-xs text-white">Avaliação 📐</Button>
-                                                    </div>
+                                                    <FormButton checkPoints={checkPoints} day={day} EnabledMetrics={EnabledMetrics} isSignedIn={isSignedIn!} />
                                                 </>
                                             )
                                         }
+
                                     </>
                                 )
                             })

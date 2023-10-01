@@ -33,7 +33,6 @@ export const NewUserModal = () => {
 
     async function onSubmit(values: professionalFormType) {
         const registerResult = await createNewProfessional(values)
-        console.log("registerResult", registerResult)
         if (registerResult === true) {
             setOpen(false)
         } else if (typeof registerResult === "object" && registerResult.erro) {

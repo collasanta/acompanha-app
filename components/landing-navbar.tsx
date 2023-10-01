@@ -17,19 +17,19 @@ export const LandingNavbar = () => {
   }
 
   return (
-    <nav className="p-4 bg-transparent flex items-center justify-between">
+    <nav className="p-4 bg-white flex items-center justify-between">
       <Link href="/" className="flex items-center">
         <div className="relative w-16 h-16">
           <Image fill alt="Logo" src="/logo.png" />
         </div>
-        <h1 className={cn("text-2xl font-bold text-white", font.className)}>
+        <h1 className={cn("font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-yellow-600 to-yellow-100", font.className)}>
           Acompanha.app
         </h1>
       </Link>
       <div className="flex items-center gap-x-2">
         <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
-          <Button variant="outline" className="rounded-full">
-            Try it Now
+          <Button variant="outline" className="rounded-full text-gray-500">
+            Entrar
           </Button>
         </Link>
       </div>

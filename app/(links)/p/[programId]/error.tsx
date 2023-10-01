@@ -2,9 +2,9 @@
 
 import { Empty } from "@/components/ui/empty";
 
-const Error = () => {
+const Error = ({error}: {error: Error}) => {
   return ( 
-    <Empty label="Something went wrong." />
+    <Empty label={`Erro: ${error.message}`} />
    );
 }
  

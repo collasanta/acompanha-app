@@ -59,9 +59,13 @@ model DailyData {
 }
 
 model Checkpoint {
-  id             String      @id @default(uuid())
-  formUrl        String?
-  programId      String
-  date DateTime
-  daily_data     DailyData[]
+  id              String      @id @default(uuid())
+  formUrl         String?
+  programId       String
+  description     String
+  date            DateTime
+  dietPlanUrl     String?
+  trainingPlanUrl String?
+  formFilled      Boolean?
+  daily_data      DailyData[]
 }
