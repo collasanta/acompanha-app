@@ -36,10 +36,10 @@ export const getUserPrograms = async () => {
 }
 
 export const getUserProgram = async (programId: string) => {
-  const { userId } = auth()
-  if (!userId) {
-    return { erro: "usuário não logado " }
-  }
+  // const { userId } = auth()
+  // if (!userId) {
+  //   return { erro: "usuário não logado " }
+  // }
 
   try {
     const program = await prismadb.program.findUnique({
@@ -291,11 +291,11 @@ export const setWeight = async (date: Date, programId: string, weight: string) =
     console.log("empty weight")
     return
   }
-  if (/^-?\d+(\.\d+)?$/.test(weight) === false) {
+  const formattedWeight = weight.replace(',', '.')
+  if (/^-?\d+(\.\d+)?$/.test(formattedWeight) === false) {
     console.log("invalid weight")
     return
   }
-  const formattedWeight = weight.replace(',', '.')
   const result = await prismadb.dailyData.update({
     where: {
       programId_date: {
@@ -312,7 +312,7 @@ export const setWeight = async (date: Date, programId: string, weight: string) =
 }
 
 export const setNotes = async (date: Date, programId: string, notes: string, oldnote: string) => {
-  if (notes === "") {
+  if (notes === undefined) {
     return
   } else if (notes === oldnote) {
     return
@@ -437,4 +437,5 @@ export const setFormFilled = async (checkpointId: string, boolean: boolean, oldB
   revalidatePath(`/p/${result.programId}`)
   console.log("formFilledSet: ", "value:", result.formFilled)
 }
+
 

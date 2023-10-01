@@ -6,7 +6,7 @@ import { professionalFormType } from "@/types/professionals"
 
 export const isNewUser = async () => {
     const { userId } = auth()
-    if (!userId) {return { erro: "usuário não logado " }}
+    if (!userId) { return { erro: "usuário não logado " } }
 
     const professional = await prismadb.professional.findUnique({
         where: { id: userId },
@@ -20,7 +20,7 @@ export const isNewUser = async () => {
 
 export const createNewProfessional = async (formData: professionalFormType) => {
     const { userId } = auth()
-    if (!userId) {return { erro: "usuário não logado " }}
+    if (!userId) { return { erro: "usuário não logado " } }
 
     try {
         const user = await clerkClient.users.getUser(userId!)
@@ -41,6 +41,28 @@ export const createNewProfessional = async (formData: professionalFormType) => {
     } catch (error: any) {
         return {
             erro: error.message
+        }
+    }
+}
+
+export const checkIfProfessionalOwnsProgram = async (programId: string) => {
+    const { userId } = auth()
+    if (!userId) { return false }
+
+    const professional = await prismadb.professional.findUnique({
+        where: { id: userId },
+        include: {
+            programs: true,
+        },
+    })
+    if (!professional) {
+        return false
+    } else {
+        const program = professional.programs.find((program) => program.id === programId)
+        if (program) {
+            return true
+        } else {
+            return false
         }
     }
 }
