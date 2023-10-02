@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import { ModalProvider } from '@/components/model-provider'
 import ToasterProvider from '@/components/toaster-provider'
-import { CrispProvider } from '@/components/crisp-provider'
+// import { CrispProvider } from '@/components/crisp-provider'
 import GoogleAnalytics from '@/components/google-analytics'
 import { Analytics } from '@vercel/analytics/react';
 import {ptBR} from '@clerk/localizations'
@@ -25,7 +25,7 @@ export default function RootLayout({
     <ClerkProvider localization={ptBR}>
       <html lang="en">
       <GoogleAnalytics GA_MEASUREMENT_ID={process.env.GA_MEASUREMENT_ID!}/>
-        <CrispProvider />
+        {/* <CrispProvider /> */}
         <body className={inter.className}>
           <ModalProvider />
           <ToasterProvider />

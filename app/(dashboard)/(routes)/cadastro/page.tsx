@@ -60,6 +60,7 @@ export default function Home() {
   }
 
   function onSubmit(values: programsFormSchemaType) {
+    console.log("values", values)
     const startDate = new Date(values.startDate);
     const endDate = new Date(startDate.getTime() + values.duration * 24 * 60 * 60 * 1000); // Add days in milliseconds
     const finalForm = { ...values, endDate: endDate };

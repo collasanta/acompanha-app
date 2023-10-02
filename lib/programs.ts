@@ -209,6 +209,7 @@ const createProgramDays = async (programId: string, startDate: Date, duration: n
         })
         console.log("days: ", days)
       }
+      
       day++
       currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1))
     }

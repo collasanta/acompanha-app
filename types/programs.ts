@@ -19,8 +19,9 @@ export const programsFormSchema = z.object({
     message: "Duração do programa deve ser de pelo menos 10 dias",
   }),
   startDate: z.coerce.date().refine((value) => {
-    const currentDate = new Date();
-    return value > currentDate;
+    // const currentDate = new Date();
+    // return value > currentDate;
+    return value;
   }, {
     message: "A data de início deve ser no futuro",
   }),
