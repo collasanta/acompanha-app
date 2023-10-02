@@ -109,7 +109,7 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
       }
     })
 
-    const newDays = createProgramDays(newProgram.id, finalForm.startDate, finalForm.endDate!)
+    const newDays = createProgramDays(newProgram.id, finalForm.startDate, finalForm.duration)
     if (typeof newDays === 'object' && 'erro' in newDays) {
       console.log("Erro ao criar dias: ", newDays.erro)
       return { erro: newDays.erro };
@@ -148,30 +148,31 @@ export const getProgramDays = async (programId: string, enabledMetrics: any) => 
   }
 }
 
-const createProgramDays = async (programId: string, startDate: Date, endDate: Date) => {
+const createProgramDays = async (programId: string, startDate: Date, duration: number) => {
   try {
     const days = []
     let currentDate = startDate
-    let day = 0
-    while (currentDate <= endDate) {
+    let day = 1
 
-      console.log("currentDate: ", currentDate, "endDate: ", endDate)
+    while (day <= duration) {
+      
 
-      if (day === 0) { // avaliacao inicial
+      if (day === 1) { // avaliacao inicial
         const checkpoint = await createCheckpoint(programId, currentDate, "initial")
 
         if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
           console.log("0 Erro ao criar checkpoint: ", checkpoint.erro)
           return { erro: checkpoint.erro }
         }
-
+        console.log("currentDate: ", currentDate, "day:", day)
         days.push({
           programId: programId,
           date: currentDate,
           checkpointId: checkpoint.checkpoint
         })
+        console.log("days: ", days)
 
-      } else if (day % 30 === 0 && day !== 0 && currentDate !== endDate) { // avaliacao mensal
+      } else if (day % 30 === 0 && day !== 1 && day !== duration) { // avaliacao mensal
 
         const checkpoint = await createCheckpoint(programId, currentDate, "review")
 
@@ -179,41 +180,42 @@ const createProgramDays = async (programId: string, startDate: Date, endDate: Da
           console.log("1 Erro ao criar checkpoint: ", checkpoint.erro)
           return { erro: checkpoint.erro }
         }
-
+        console.log("currentDate: ", currentDate, "day:", day)
         days.push({
           programId: programId,
           date: currentDate,
           checkpointId: checkpoint.checkpoint
         })
-      } else if (currentDate.getTime() === endDate.getTime()) { // avaliacao final
+        console.log("days: ", days)
+      } else if (day === duration) { // avaliacao final
         const checkpoint = await createCheckpoint(programId, currentDate, "final")
 
         if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
           console.log("2 Erro ao criar checkpoint: ", checkpoint.erro)
           return { erro: checkpoint.erro }
         }
-
+        console.log("currentDate: ", currentDate, "day:", day)
         days.push({
           programId: programId,
           date: currentDate,
           checkpointId: checkpoint.checkpoint
         })
+        console.log("days: ", days)
       } else {
+        console.log("currentDate: ", currentDate, "day:", day)
         days.push({
           programId: programId,
           date: currentDate,
         })
+        console.log("days: ", days)
       }
       day++
-      console.log("day: ", day)
-      currentDate = new Date(currentDate.getTime() + 86400000)
+      currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1))
     }
 
-    console.log("Dias: ", days)
     const newDays = await prismadb.dailyData.createMany({
       data: days
     })
-    console.log("Dias criados: ", newDays)
     return { days: newDays }
   } catch (error: any) {
     console.log("Erro ao criar dias: ", error.message)
@@ -235,7 +237,6 @@ const createCheckpoint = async (programId: string, date: Date, description: stri
     return { erro: error.message }
   }
 }
-
 
 export const getProperty = async (name: string) => {
   if (name === "peso") {
@@ -353,10 +354,15 @@ export const getCheckpointById = async (checkpointId: string) => {
   return { checkpoint: checkpoint }
 }
 
-export const setFormsLink = async (checkpointId: string, link: string, oldLink: string) => {
-  if (link === "") {
+export const setFormsLink = async (checkpointId: string, link: string | null, oldLink: string) => {
+  if (link === null) {
     return
   } else if (link === oldLink) {
+    console.log("same")
+    return
+  } else if (link === "" && oldLink !== null) {
+    link = null
+  } else if (link === "" && oldLink === null) {
     console.log("same")
     return
   }
@@ -372,13 +378,18 @@ export const setFormsLink = async (checkpointId: string, link: string, oldLink: 
 
   console.log("setFormsLinkResult", result)
   revalidatePath(`/p/${result.programId}`)
-  console.log("notes set: ", result.date, "value:", result.formUrl)
+  console.log("formLink set: ", result.date, "value:", result.formUrl)
 }
 
-export const setDietLink = async (checkpointId: string, link: string, oldLink: string) => {
-  if (link === "") {
+export const setDietLink = async (checkpointId: string, link: string | null, oldLink: string) => {
+  if (link === null) {
     return
   } else if (link === oldLink) {
+    console.log("same")
+    return
+  } else if (link === "" && oldLink !== null) {
+    link = null
+  } else if (link === "" && oldLink === null) {
     console.log("same")
     return
   }
@@ -397,13 +408,19 @@ export const setDietLink = async (checkpointId: string, link: string, oldLink: s
   console.log("dietPlanUrl set: ", "value:", result.dietPlanUrl)
 }
 
-export const setTrainingLink = async (checkpointId: string, link: string, oldLink: string) => {
-  if (link === "") {
+export const setTrainingLink = async (checkpointId: string, link: string | null, oldLink: string) => {
+  if (link === null) {
     return
   } else if (link === oldLink) {
     console.log("same")
     return
+  } else if (link === "" && oldLink !== null) {
+    link = null
+  } else if (link === "" && oldLink === null) {
+    console.log("same")
+    return
   }
+
 
   const result = await prismadb.checkpoint.update({
     where: {
@@ -419,7 +436,7 @@ export const setTrainingLink = async (checkpointId: string, link: string, oldLin
 }
 
 export const setFormFilled = async (checkpointId: string, boolean: boolean, oldBoolean: boolean) => {
-   if (boolean === oldBoolean) {
+  if (boolean === oldBoolean) {
     console.log("same")
     return
   }

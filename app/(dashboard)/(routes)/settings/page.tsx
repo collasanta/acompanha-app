@@ -4,7 +4,7 @@ const SettingsPage = async () => {
         <div>
         <div className="mb-8 space-y-4">
           <h2 className="text-2xl md:text-4xl font-bold text-center">
-            Settings
+            Configurações
           </h2>
           <p className="text-muted-foreground font-light text-small md:text-lg text-center">
             All your generations are saved here

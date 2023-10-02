@@ -1,5 +1,5 @@
 'use client'
-import { ArrowDown, Pointer } from "lucide-react"
+import { ArrowDown, MinusCircleIcon, PlusCircleIcon, Pointer } from "lucide-react"
 import { useState } from "react"
 import { programsFrontEndListType } from "@/types/programs";
 import Link from "next/link";
@@ -15,15 +15,13 @@ export const ProgramCard = (
     }
 
     return (
-        <div className="flex flex-col border max-w-[750px] w-full bg-[#fbfbfb] border-[#bfbfbf] text-card-foreground shadow-sm rounded-lg text-[13px]  py-2 px-2 hover:shadow-lg transition cursor-pointer">
+        <div className="flex shadow-sm rounded-sm sm:py-4 sm:px-2 py-1 px-3 flex-col border mx-auto max-w-[550px] w-full bg-secondary border border-0 text-card-foreground text-[13px] hover:shadow-lg transition cursor-pointer">
             <div onClick={handleClick} className="flex items-center justify-between ">
-                <div className="flex md:flex-row items-center gap-x-2 truncate">
-                    {/* <div className="w-fit bg-emerald-500/10 rounded-full">
-                        <Image src={program.videoInfos.videoThumb} width={112} height={64} alt="thumbnail" className="rounded-md"/>
-                    </div> */}
+                <div className="ml-3 flex md:flex-row items-center gap-x-2 truncate">
+                📝
                 </div>
                 <div className="flex flex-col sm:flex-row">
-                    <p className="font-semibold text-sm pr-2 text-center whitespace-break-spaces"
+                    <p className="pr-2 text-center whitespace-break-spaces font-semibold text-muted-foreground text-sm"
                     >
                         {program.client.name.length > 30 ? program.client.name.substring(0, 30) + "..." : program.client.name}
                     </p>
@@ -33,7 +31,7 @@ export const ProgramCard = (
                 </div>
                 <div>
                     {
-                        isOpen ? <ArrowDown className="w-5 h-5 transform rotate-180" /> : <ArrowDown className="w-5 h-5" />
+                                               isOpen ? <MinusCircleIcon className="w-5 h-5 transform rotate-180" color="#52525b" /> : <PlusCircleIcon className="w-5 h-5" color="#52525b" />
                     }
                 </div>
             </div>

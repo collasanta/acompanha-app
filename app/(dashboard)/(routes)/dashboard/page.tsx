@@ -18,7 +18,7 @@ const DashboardPage = async () => {
   }
 
   return (
-    <div>
+    <div className="pb-[100px]">
       <div className="mb-8 space-y-4">
         <h2 className="text-2xl md:text-4xl font-bold text-center">
           Programas

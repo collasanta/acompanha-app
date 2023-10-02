@@ -32,8 +32,8 @@ export default async function ProgramPage({ params }: { params: { programId: str
 
   return (
     <div className="">
-      <div className="w-full flex justify-center pt-[10px]">
-        <ProgramHeader program={program!} checkpoints={checkPoints} />
+      <div className="w-full flex justify-center">
+        <ProgramHeader program={program!} checkpoints={checkPoints.checkpoints} />
       </div>
       <div className="w-full mx-auto">
         <TrackingTable isAdmin={isAdmin} Days={days!} enabledMetrics={program?.enabled_metrics!} checkPoints={checkPoints.checkpoints} />

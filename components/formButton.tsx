@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { DailyDataType } from "@/types/programs"
 import { Button } from "./ui/button"
 import Link from "next/link"
@@ -6,8 +5,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { SettingsIcon } from "lucide-react"
 import { Switch } from "./ui/switch"
 import { setDietLink, setFormFilled, setFormsLink, setTrainingLink } from "@/lib/programs"
+import { checkpointType } from "@/types/checkpoints"
 
-export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin }: { checkPoints: any, day: DailyDataType, EnabledMetrics: any, isAdmin: boolean }) => {
+export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin }: { checkPoints: Array<checkpointType>, day: DailyDataType, EnabledMetrics: enabledMetricsType, isAdmin: boolean }) => {
     const getButtonText = () => {
         if (checkPoints.find(item => item.id === day.checkpointId!)?.description === "initial") return "Formulário de Avaliação Inicial 📐"
         if (checkPoints.find(item => item.id === day.checkpointId!)?.description === "review") return "Formulário de Avaliação 📐"
@@ -16,14 +16,23 @@ export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin }: { chec
     const buttonText = getButtonText()
     return (
         <>
-            <div className={`btn-primary disabled:z-index[-1] flex flex-row space-x-4 py-2 justify-center items-center ${checkPoints.find(item => item.id === day.checkpointId).formFilled && "bg-white" }`}>
+            <div className={`btn-primary disabled:z-index[-1] flex flex-row space-x-4 py-2 justify-center items-center ${checkPoints.find(item => item.id === day.checkpointId)?.formFilled && "bg-white"}`}>
                 <Button className={`text-xs text-white ${checkPoints.find(item => item.id === day.checkpointId!)?.formFilled && "bg-gray-400 hover:bg-gray-400"}`}>
                     {
-                        checkPoints.find(item => item.id === day.checkpointId!)?.formFilled ? buttonText + "✅" :
+                        checkPoints.find(item => item.id === day.checkpointId!)?.formFilled ? buttonText + "✅"
+                            :
 
-                            <Link target="_blank" href={checkPoints.find(item => item.id === day.checkpointId!)?.formUrl && !checkPoints.find(item => item.id === day.checkpointId!)?.formFilled ? checkPoints.find(item => item.id === day.checkpointId!)?.formUrl : "#"}>
-                                {buttonText}
-                            </Link>
+                            checkPoints.find(item => item.id === day.checkpointId!)?.formUrl && !checkPoints.find(item => item.id === day.checkpointId!)?.formFilled ?
+                                <>
+                                    <Link target="_blank" href={checkPoints.find(item => item.id === day.checkpointId!)?.formUrl!}>
+                                        {buttonText}
+                                    </Link>
+                                </>
+                                :
+                                <>
+                                    {buttonText}
+                                </>
+
                     }
                 </Button>
                 {isAdmin && (
