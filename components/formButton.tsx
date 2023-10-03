@@ -1,4 +1,4 @@
-import { DailyDataType } from "@/types/programs"
+import { DailyDataType, enabledMetricsType } from "@/types/programs"
 import { Button } from "./ui/button"
 import Link from "next/link"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
@@ -44,17 +44,17 @@ export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin }: { chec
                             <div className="space-y-5">
                                 <div className="flex space-x-2 items-center align-middle">
                                     <div className="min-w-[80px]">📐 Forms:</div>
-                                    <div> <input defaultValue={checkPoints.find(item => item.id === day.checkpointId!)?.formUrl} placeholder={"  colar link aqui"} className="bg-secondary rounded-lg text-cyan-700 pl-3" onBlur={(e) => setFormsLink(day.checkpointId!, e.target.value, checkPoints.find(item => item.id === day.checkpointId!)?.formUrl)}></input></div>
+                                    <div> <input defaultValue={checkPoints.find(item => item.id === day.checkpointId!)?.formUrl!} placeholder={"  colar link aqui"} className="bg-secondary rounded-lg text-cyan-700 pl-3" onBlur={(e) => setFormsLink(day.checkpointId!, e.target.value, checkPoints.find(item => item.id === day.checkpointId!)?.formUrl!)}></input></div>
                                 </div>
                                 <div className="flex flex-row items-center justify-end mr-4">
                                     <div className="text-gray-600 text-sm"> Paciente Preencheu? </div>
-                                    <Switch className="ml-4 " checked={checkPoints.find(item => item.id === day.checkpointId!)?.formFilled} onCheckedChange={(e) => setFormFilled(day.checkpointId!, !!e, checkPoints.find(item => item.id === day.checkpointId!)?.formFilled)}></Switch >
+                                    <Switch className="ml-4 " checked={checkPoints.find(item => item.id === day.checkpointId!)?.formFilled!} onCheckedChange={(e) => setFormFilled(day.checkpointId!, !!e, checkPoints.find(item => item.id === day.checkpointId!)?.formFilled!)}></Switch >
                                 </div>
                                 {
                                     EnabledMetrics.dieta && (
                                         <div className="flex space-x-2 items-center align-middle">
                                             <div className="min-w-[80px]">🥦 Dieta:</div>
-                                            <div> <input defaultValue={checkPoints.find(item => item.id === day.checkpointId!)?.dietPlanUrl} placeholder={"  colar link aqui"} className="bg-secondary rounded-lg  text-cyan-700 pl-3" onBlur={(e) => setDietLink(day.checkpointId!, e.target.value, checkPoints.find(item => item.id === day.checkpointId!)?.dietPlanUrl)}></input></div>
+                                            <div> <input defaultValue={checkPoints.find(item => item.id === day.checkpointId!)?.dietPlanUrl!} placeholder={"  colar link aqui"} className="bg-secondary rounded-lg  text-cyan-700 pl-3" onBlur={(e) => setDietLink(day.checkpointId!, e.target.value, checkPoints.find(item => item.id === day.checkpointId!)?.dietPlanUrl!)}></input></div>
                                         </div>
                                     )
                                 }
@@ -62,7 +62,7 @@ export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin }: { chec
                                     EnabledMetrics.treino && (
                                         <div className="flex space-x-2 items-center align-middle">
                                             <div className="min-w-[80px]">💪 Treino:</div>
-                                            <div> <input defaultValue={checkPoints.find(item => item.id === day.checkpointId!)?.trainingPlanUrl} placeholder={"  colar link aqui"} className="bg-secondary rounded-lg  text-cyan-700 pl-3" onBlur={(e) => setTrainingLink(day.checkpointId!, e.target.value, checkPoints.find(item => item.id === day.checkpointId!)?.trainingPlanUrl)}></input></div>
+                                            <div> <input defaultValue={checkPoints.find(item => item.id === day.checkpointId!)?.trainingPlanUrl!} placeholder={"  colar link aqui"} className="bg-secondary rounded-lg  text-cyan-700 pl-3" onBlur={(e) => setTrainingLink(day.checkpointId!, e.target.value, checkPoints.find(item => item.id === day.checkpointId!)?.trainingPlanUrl!)}></input></div>
                                         </div>
                                     )
                                 }

@@ -19,17 +19,16 @@ const routes = [
         color: "text-emerald-500"
     },
     {
-        label:"Settings",
+        label:"Configurações",
         icon: Settings,
-        href: "/settings",
+        href: "/configuracoes",
         color: "text-emerald-500"
     },
 ]
 
 const Sidebar = ({
-    setIsOpen 
-}: {setIsOpen:any}) => {
-
+    setIsOpen = () => {null}
+} : { setIsOpen? : any }) => {
     const pathname = usePathname()
     return (
         <>
