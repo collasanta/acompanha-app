@@ -26,7 +26,6 @@ export default function RootLayout({
     <ClerkProvider localization={ptBR}>
       <html lang="en">
         <meta name="apple-mobile-web-app-capable" content="yes"></meta>
-        <meta name="viewport" content="initial-scale=1, viewport-fit=cover, width=device-width"></meta>
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"></meta>
         <link href="../public/splashscreens/iphone5_splash.png" sizes='320x568' rel="apple-touch-startup-image" />
         <link href="../public/splashscreens/iphone6_splash.png" sizes='375x667' rel="apple-touch-startup-image" />
