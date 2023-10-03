@@ -155,7 +155,7 @@ const createProgramDays = async (programId: string, startDate: Date, duration: n
     let day = 1
 
     while (day <= duration) {
-      
+
 
       if (day === 1) { // avaliacao inicial
         const checkpoint = await createCheckpoint(programId, currentDate, "initial")
@@ -209,7 +209,7 @@ const createProgramDays = async (programId: string, startDate: Date, duration: n
         })
         console.log("days: ", days)
       }
-      
+
       day++
       currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1))
     }
@@ -257,63 +257,78 @@ const getActiveMetricsDB = async (enabledMetrics: any, metric: string) => {
 }
 
 export const setDiet = async (date: Date, programId: string, boolean: boolean) => {
-  const result = await prismadb.dailyData.update({
-    where: {
-      programId_date: {
-        programId: programId,
-        date: date,
+  try {
+    const result = await prismadb.dailyData.update({
+      where: {
+        programId_date: {
+          programId: programId,
+          date: date,
+        },
       },
-    },
-    data: {
-      diet: boolean
-    }
-  })
-  revalidatePath(`/p/${programId}`)
-  console.log("Diet set: ", result.date, "value:", result.diet)
+      data: {
+        diet: boolean
+      }
+    })
+    console.log("Diet set: ", result.date, "value:", result.diet)
+  } catch (error: any) {
+    revalidatePath(`/p/${programId}`)
+    console.log("Erro ao setar dieta: ", error.message)
+  }
 }
 
 export const setExercise = async (date: Date, programId: string, boolean: boolean) => {
-  const result = await prismadb.dailyData.update({
-    where: {
-      programId_date: {
-        programId: programId,
-        date: date,
+  try {
+    const result = await prismadb.dailyData.update({
+      where: {
+        programId_date: {
+          programId: programId,
+          date: date,
+        },
       },
-    },
-    data: {
-      exercise: boolean
-    }
-  })
-  revalidatePath(`/p/${programId}`)
-  console.log("Exercise set: ", result.date, "value:", result.diet)
+      data: {
+        exercise: boolean
+      }
+    })
+    console.log("Exercise set: ", result.date, "value:", result.diet)
+  } catch (error: any) {
+    revalidatePath(`/p/${programId}`)
+    console.log("Erro ao setar dieta: ", error.message)
+  }
 }
 
-export const setWeight = async (date: Date, programId: string, weight: string | null) => {
-  if (weight === "") {
+export const setWeight = async (date: Date, programId: string, weight: string | null, oldWeight: string | null) => {
+  if (weight === "" && oldWeight !== null) {
     weight = null
+  } else if (weight === "" && oldWeight === null) {
+    return
   }
 
   if (weight !== null) {
     weight = weight?.replace(',', '.')
     if (/^-?\d+(\.\d+)?$/.test(weight!) === false) {
       console.log("invalid weight")
+      revalidatePath(`/p/${programId}`)
       return
     }
   }
 
-  const result = await prismadb.dailyData.update({
-    where: {
-      programId_date: {
-        programId: programId,
-        date: date,
+  try {
+    const result = await prismadb.dailyData.update({
+      where: {
+        programId_date: {
+          programId: programId,
+          date: date,
+        },
       },
-    },
-    data: {
-      weight: weight
-    }
-  })
-  revalidatePath(`/p/${programId}`)
-  console.log("Weight set: ", result.date, "value:", result.weight)
+      data: {
+        weight: weight
+      }
+    })
+    console.log("Weight set: ", result.date, "value:", result.weight)
+  } catch (error: any) {
+    revalidatePath(`/p/${programId}`)
+    console.log("Erro ao setar peso: ", error.message)
+  }
 }
 
 export const setNotes = async (date: Date, programId: string, notes: string, oldnote: string) => {

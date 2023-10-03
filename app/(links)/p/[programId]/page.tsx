@@ -3,7 +3,7 @@ import { ProgramHeader } from "@/components/programHeaders";
 import { TrackingTable } from "@/components/trackingTable";
 import { checkIfProfessionalOwnsProgram } from "@/lib/professional";
 import { getCheckpointsByProgramId, getProgramDays, getUserProgram } from "@/lib/programs";
-import { UserProgramResponse } from "@/types/programs";
+import { DailyDataType, UserProgramResponse } from "@/types/programs";
 
 export default async function ProgramPage({ params }: { params: { programId: string } }) {
   const { programId } = params
@@ -17,9 +17,10 @@ export default async function ProgramPage({ params }: { params: { programId: str
     throw new Error(userProgram.erro)
   }
 
-  let days
+  let days: Array<DailyDataType>
   const programDays = await getProgramDays(programId, program?.enabled_metrics!)
   if (typeof programDays === 'object' && programDays.days) {
+    // @ts-ignore
     days = programDays.days;
   }
   else if (typeof programDays === 'object' && programDays.erro) {

@@ -52,7 +52,7 @@ export interface DailyDataType {
   date: Date;
   diet: boolean | null;
   exercise: boolean | null;
-  weight: Decimal | null;
+  weight: string | null;
   notes: string | null;
   checkpointId: string | null;
 }
@@ -94,6 +94,6 @@ export interface enabledMetricsType {
   peso: boolean | null;
   dieta: boolean | null;
   treino: boolean | null;
-} 
+}
 
 

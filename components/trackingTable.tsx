@@ -7,13 +7,39 @@ import { setDiet, setExercise, setNotes, setWeight } from "@/lib/programs";
 import { JsonValue } from "@prisma/client/runtime/library";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Textarea } from "@/components/ui/textarea"
-import { useAuth } from "@clerk/nextjs";
 import { FormButton } from "./formButton";
 import { checkpointType } from "@/types/checkpoints";
-import { PencilIcon } from "lucide-react";
+import { experimental_useOptimistic as useOptimistic } from "react";
 
+export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
+    const [optimisticDays, setOptimisticDays] = useOptimistic(
+        Days,
+        (state, updatedDay: DailyDataType) => {
+            const dayIndex = state.findIndex((day: DailyDataType) => day.date.getTime() === updatedDay.date.getTime())
+            if (dayIndex === -1) {
+                return state
+            } else {
+                const newState = [...state]
+                newState[dayIndex] = updatedDay
+                return newState
+            }
+        }
 
-export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin:boolean }) => {
+    )
+
+    function setOptimisticDay({ date, programId, diet, exercise, weight, notes, checkpointId
+    }: DailyDataType) {
+        setOptimisticDays({
+            date,
+            programId,
+            diet,
+            exercise,
+            weight,
+            notes,
+            checkpointId
+        })
+    }
+
     let currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0);
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
@@ -22,7 +48,6 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
             <div className="flex justify-center px-[5px]">
                 <div className="max-w-[550px] w-full mb-[100px] shadow-lg ">
                     <div className="flex flex-col w-full">
-
                         {/* CABEÇALHO */}
                         <div className={`w-full sticky top-0 font-semibold bg-muted flex p-1 text-muted-foreground border-b border-t border-black/5 justify-between text-center`}>
                             <div className="bg-gray text-center rounded-lg w-[80px] ">Dia</div>
@@ -31,14 +56,9 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                             {EnabledMetrics.peso && <div className="w-[50px] ">Peso</div>}
                             <div className="min-w-[70px]">Notas</div>
                         </div>
-
-
-
-
                         {/* DIAS */}
-
                         {
-                            Days.map((day: DailyDataType, index) => {
+                            optimisticDays.map((day: DailyDataType, index) => {
                                 const notFuture = day.date.getTime() < Date.now()
                                 return (
                                     <>
@@ -57,7 +77,10 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                             {EnabledMetrics.dieta && notFuture &&
                                                 <Button
                                                     variant={"trackingtable"}
-                                                    onClick={() => setDiet(day.date, day.programId, !day.diet)}
+                                                    onClick={async () => {
+                                                        setOptimisticDay({ date: day.date, programId: day.programId, diet: !day.diet, exercise: day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
+                                                        await setDiet(day.date, day.programId, !day.diet)
+                                                    }}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center 
                                                     ${day.diet ? "bg-[#10B77F] placeholder-white text-white" : day.diet === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff6961]" : "bg-muted" : "bg-[#ff6961]"}`}>
                                                     {day.diet}
@@ -66,7 +89,10 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                             {EnabledMetrics.treino && notFuture &&
                                                 <Button
                                                     variant={"trackingtable"}
-                                                    onClick={() => setExercise(day.date, day.programId, !day.exercise)}
+                                                    onClick={async () => {
+                                                        setOptimisticDay({ date: day.date, programId: day.programId, diet: day.diet, exercise: !day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
+                                                        await setExercise(day.date, day.programId, !day.exercise)
+                                                    }}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center
                                                     ${day.exercise ? "bg-[#10B77F] placeholder-white text-white" : day.exercise === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff6961]" : "bg-muted" : "bg-[#ff6961]"}`}>
                                                     {day.exercise}
@@ -76,14 +102,17 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                 <input
                                                     type="string"
                                                     defaultValue={day.weight?.toString()}
-                                                    onBlur={(e) => setWeight(day.date, day.programId, e.target.value)}
+                                                    onBlur={async (e) => {
+                                                        setOptimisticDay({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: e.target.value === "" ? null : e.target.value, notes: day.notes, checkpointId: day.checkpointId });
+                                                        await setWeight(day.date, day.programId, e.target.value, day.weight)
+                                                    }}
                                                     onChange={(e) => e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1')}
                                                     className={`w-[50px] text-gray-600 text-[13px] rounded-md align-middle cursor-pointer text-center
-                                                ${day.weight ? "bg-[#baffe6] font-[500] placeholder-gray-600 text-gray-600" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted" : "bg-[#ff6961]"}`}>
+                                                ${day.weight ? "bg-[#baffe6] font-[500] placeholder-gray-600 text-gray-500" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted" : "bg-[#ff6961]"}`}>
 
                                                 </input>}
 
-                                            {EnabledMetrics.peso && notFuture &&
+                                            {notFuture &&
                                                 <Popover>
                                                     <PopoverTrigger type="button" className="w-[70px]">
                                                         <Button
@@ -95,10 +124,12 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                     </PopoverTrigger>
                                                     <PopoverContent>
                                                         <Textarea
-                                                            onBlur={(e) => setNotes(day.date, day.programId, e.target.value, day.notes!)}
+                                                            onBlur={async (e) => {
+                                                                setOptimisticDay({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: day.weight, notes: e.target.value === "" ? null : e.target.value, checkpointId: day.checkpointId });
+                                                                await setNotes(day.date, day.programId, e.target.value, day.notes!)
+                                                            }}
                                                             placeholder="digite como foi seu dia aqui"
                                                             defaultValue={day.notes!}
-
                                                         >
                                                         </Textarea>
                                                     </PopoverContent>
