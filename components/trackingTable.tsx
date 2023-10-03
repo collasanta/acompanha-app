@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useAuth } from "@clerk/nextjs";
 import { FormButton } from "./formButton";
 import { checkpointType } from "@/types/checkpoints";
+import { PencilIcon } from "lucide-react";
 
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin:boolean }) => {
@@ -74,11 +75,11 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                             {EnabledMetrics.peso && notFuture &&
                                                 <input
                                                     type="string"
-                                                    placeholder={day.weight?.toString()}
+                                                    defaultValue={day.weight?.toString()}
                                                     onBlur={(e) => setWeight(day.date, day.programId, e.target.value)}
                                                     onChange={(e) => e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1')}
                                                     className={`w-[50px] text-gray-600 text-[13px] rounded-md align-middle cursor-pointer text-center
-                                                ${day.weight ? "bg-[#f4fdff] placeholder-gray-600 text-gray-600" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted" : "bg-[#ff6961]"}`}>
+                                                ${day.weight ? "bg-[#baffe6] font-[500] placeholder-gray-600 text-gray-600" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted" : "bg-[#ff6961]"}`}>
 
                                                 </input>}
 
@@ -87,9 +88,9 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                     <PopoverTrigger type="button" className="w-[70px]">
                                                         <Button
                                                             variant={"trackingtable"}
-                                                            className={`bg-muted rounded-full w-[40px] text-[11px] cursor-pointer text-center p-1
-                                                ${day.notes ? "bg-[#fff8db]" : "bg-secondary"}`}>
-                                                            📝
+                                                            className={`bg-muted bg-white shadow-md rounded-full w-[40px] text-[11px] cursor-pointer text-center
+                                                ${day.notes ? "bg-[#fff8db]" : "bg-secondary shadow-none border border-[1px] "}`}>
+                                                            ✍
                                                         </Button>
                                                     </PopoverTrigger>
                                                     <PopoverContent>

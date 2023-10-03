@@ -288,16 +288,19 @@ export const setExercise = async (date: Date, programId: string, boolean: boolea
   console.log("Exercise set: ", result.date, "value:", result.diet)
 }
 
-export const setWeight = async (date: Date, programId: string, weight: string) => {
+export const setWeight = async (date: Date, programId: string, weight: string | null) => {
   if (weight === "") {
-    console.log("empty weight")
-    return
+    weight = null
   }
-  const formattedWeight = weight.replace(',', '.')
-  if (/^-?\d+(\.\d+)?$/.test(formattedWeight) === false) {
-    console.log("invalid weight")
-    return
+
+  if (weight !== null) {
+    weight = weight?.replace(',', '.')
+    if (/^-?\d+(\.\d+)?$/.test(weight!) === false) {
+      console.log("invalid weight")
+      return
+    }
   }
+
   const result = await prismadb.dailyData.update({
     where: {
       programId_date: {
@@ -306,7 +309,7 @@ export const setWeight = async (date: Date, programId: string, weight: string) =
       },
     },
     data: {
-      weight: formattedWeight
+      weight: weight
     }
   })
   revalidatePath(`/p/${programId}`)

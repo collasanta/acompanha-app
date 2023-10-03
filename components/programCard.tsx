@@ -11,14 +11,15 @@ export const ProgramCard = (
     const [isOpen, setIsOpen] = useState(collapsed);
 
     function handleClick() {
+        console.log("oi")
         setIsOpen(!isOpen);
     }
 
     return (
-        <div className="flex shadow-sm rounded-sm sm:py-4 sm:px-2 py-1 px-3 flex-col border mx-auto max-w-[550px] w-full bg-secondary border border-0 text-card-foreground text-[13px] hover:shadow-lg transition cursor-pointer">
-            <div onClick={handleClick} className="flex items-center justify-between ">
+        <div onClick={handleClick} className="flex shadow-sm rounded-sm sm:py-4 sm:px-2 py-1 px-3 flex-col border mx-auto max-w-[550px] w-full bg-secondary border border-0 text-card-foreground text-[13px] hover:shadow-lg transition cursor-pointer">
+            <div className="flex items-center justify-between ">
                 <div className="ml-3 flex md:flex-row items-center gap-x-2 truncate">
-                📝
+                    📝
                 </div>
                 <div className="flex flex-col sm:flex-row">
                     <p className="pr-2 text-center whitespace-break-spaces font-semibold text-muted-foreground text-sm"
@@ -31,7 +32,7 @@ export const ProgramCard = (
                 </div>
                 <div>
                     {
-                                               isOpen ? <MinusCircleIcon className="w-5 h-5 transform rotate-180" color="#52525b" /> : <PlusCircleIcon className="w-5 h-5" color="#52525b" />
+                        isOpen ? <MinusCircleIcon className="w-5 h-5 transform rotate-180" color="#52525b" /> : <PlusCircleIcon className="w-5 h-5" color="#52525b" />
                     }
                 </div>
             </div>
