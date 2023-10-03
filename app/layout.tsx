@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Acompanha.app',
-  description: 'Ajudando você a acompanhar seus pacientes',
+  description: 'Sua Ficha de Acompanhamento Online',
 }
 
 export default function RootLayout({
@@ -24,6 +24,7 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={ptBR}>
       <html lang="en">
+      <meta name="apple-mobile-web-app-capable" content="yes"></meta>
       <GoogleAnalytics GA_MEASUREMENT_ID={process.env.GA_MEASUREMENT_ID!}/>
         {/* <CrispProvider /> */}
         <body className={inter.className}>
