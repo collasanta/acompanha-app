@@ -25,7 +25,10 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={ptBR}>
       <html lang="en">
-        <meta name="apple-mobile-web-app-capable" content="yes"></meta>
+        <meta name="apple-mobile-web-app-title" content="acompanha.app" />
+        <meta name="apple-touch-fullscreen" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default"></meta>
         <meta name="theme-color" content="#f1f5f9"></meta>
         <link href="iphone5_splash.png" sizes='320x568' media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
