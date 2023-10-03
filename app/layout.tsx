@@ -8,7 +8,6 @@ import ToasterProvider from '@/components/toaster-provider'
 import GoogleAnalytics from '@/components/google-analytics'
 import { Analytics } from '@vercel/analytics/react';
 import { ptBR } from '@clerk/localizations'
-import { item } from '../public/splashscreens/iphone5_splash.png'
 
 const inter = Inter({ subsets: ['latin'] })
 
