@@ -25,7 +25,6 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={ptBR}>
       <html lang="en">
-        <Head>
           <meta name="apple-mobile-web-app-capable" content="yes"></meta>
           <link href="../public/splashscreens/iphone5_splash.png" sizes='320x568'  rel="apple-touch-startup-image" />
           <link href="../public/splashscreens/iphone6_splash.png" sizes='375x667' rel="apple-touch-startup-image" />
@@ -47,9 +46,6 @@ export default function RootLayout({
           <link href="../public/splashscreens/ipadpro1_splash.png" sizes='834x1112' media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
           <link href="../public/splashscreens/ipadpro3_splash.png" sizes='834x1194' media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
           <link href="../public/splashscreens/ipadpro2_splash.png" sizes='1024x1366' media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" /> */}
-
-        </Head>
-
         <GoogleAnalytics GA_MEASUREMENT_ID={process.env.GA_MEASUREMENT_ID!} />
         {/* <CrispProvider /> */}
         <body className={inter.className}>
