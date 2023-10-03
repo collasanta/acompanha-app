@@ -337,19 +337,23 @@ export const setNotes = async (date: Date, programId: string, notes: string, old
   } else if (notes === oldnote) {
     return
   }
-  const result = await prismadb.dailyData.update({
-    where: {
-      programId_date: {
-        programId: programId,
-        date: date,
+  try {
+    const result = await prismadb.dailyData.update({
+      where: {
+        programId_date: {
+          programId: programId,
+          date: date,
+        },
       },
-    },
-    data: {
-      notes: notes
-    }
-  })
-  revalidatePath(`/p/${programId}`)
-  console.log("notes set: ", result.date, "value:", result.notes)
+      data: {
+        notes: notes
+      }
+    })
+    console.log("notes set: ", result.date, "value:", result.notes)
+  } catch (error: any) {
+    revalidatePath(`/p/${programId}`)
+    console.log("Erro ao setar notas: ", error.message)
+  }
 }
 
 export const getCheckpointsByProgramId = async (programId: string) => {

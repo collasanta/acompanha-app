@@ -27,7 +27,7 @@ export default function RootLayout({
       <html lang="en">
         <meta name="apple-mobile-web-app-capable" content="yes"></meta>
         <meta name="apple-mobile-web-app-status-bar-style" content="default"></meta>
-        <meta name="theme-color" content="#ffffff"></meta>
+        <meta name="theme-color" content="#f1f5f9"></meta>
         <link href="iphone5_splash.png" sizes='320x568' media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
         <link href="iphone6_splash.png" sizes='375x667' media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
         <link href="iphoneplus_splash.png" sizes='621x1104' media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
