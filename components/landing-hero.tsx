@@ -40,7 +40,7 @@ export const LandingHero = () => {
           </Link>
         </div>
         <div className="text-zinc-400 text-xs md:text-sm font-normal">
-          Automatize seus processos e foque no que realmente importa
+          Se diferencie e Garanta melhores resultados para seus pacientes 
         </div>
         <div className="mx-auto">
         {/* <Image width={250} height={500} alt="gif" src="/gif.gif" className="mx-auto rounded-md" /> */}

@@ -269,6 +269,8 @@ export const setDiet = async (date: Date, programId: string, boolean: boolean) =
         diet: boolean
       }
     })
+    console.log("-----------------Diet-------------------------")
+    console.log("received boolean back diet: ", boolean)
     console.log("Diet set: ", result.date, "value:", result.diet)
   } catch (error: any) {
     revalidatePath(`/p/${programId}`)
@@ -289,7 +291,9 @@ export const setExercise = async (date: Date, programId: string, boolean: boolea
         exercise: boolean
       }
     })
-    console.log("Exercise set: ", result.date, "value:", result.diet)
+    console.log("-----------------exercise-------------------------")
+    console.log("received boolean back exervcise: ", boolean)
+    console.log("Exercise set: ", result.date, "value:", result.exercise)
   } catch (error: any) {
     revalidatePath(`/p/${programId}`)
     console.log("Erro ao setar dieta: ", error.message)

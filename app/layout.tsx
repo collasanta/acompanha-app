@@ -15,7 +15,7 @@ import Loading from './loading'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Acompanha.app',
+  title: 'acompanha.app',
   description: 'Sua Ficha de Acompanhamento Online',
   appleWebApp: {
     capable: true,

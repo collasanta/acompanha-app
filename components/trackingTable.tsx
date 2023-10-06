@@ -10,35 +10,24 @@ import { Textarea } from "@/components/ui/textarea"
 import { FormButton } from "./formButton";
 import { checkpointType } from "@/types/checkpoints";
 import { experimental_useOptimistic as useOptimistic } from "react";
+import { nanoid } from "nanoid";
+import { revalidatePath } from "next/cache";
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
+    console.log("component re-render")
+
     const [optimisticDays, setOptimisticDays] = useOptimistic(
         Days,
-        (state, updatedDay: DailyDataType) => {
+          (state, updatedDay: DailyDataType) => {
             const dayIndex = state.findIndex((day: DailyDataType) => day.date.getTime() === updatedDay.date.getTime())
             if (dayIndex === -1) {
                 return state
             } else {
-                const newState = [...state]
-                newState[dayIndex] = updatedDay
-                return newState
+                state.splice(dayIndex, 1, updatedDay)
+                return [...state]
             }
         }
-
     )
-
-    function setOptimisticDay({ date, programId, diet, exercise, weight, notes, checkpointId
-    }: DailyDataType) {
-        setOptimisticDays({
-            date,
-            programId,
-            diet,
-            exercise,
-            weight,
-            notes,
-            checkpointId
-        })
-    }
 
     let currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0);
@@ -78,7 +67,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                 <Button
                                                     variant={"trackingtable"}
                                                     onClick={async () => {
-                                                        setOptimisticDay({ date: day.date, programId: day.programId, diet: !day.diet, exercise: day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
+                                                        setOptimisticDays({ date: day.date, programId: day.programId, diet: !day.diet, exercise: day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
                                                         await setDiet(day.date, day.programId, !day.diet)
                                                     }}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center 
@@ -90,7 +79,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                 <Button
                                                     variant={"trackingtable"}
                                                     onClick={async () => {
-                                                        setOptimisticDay({ date: day.date, programId: day.programId, diet: day.diet, exercise: !day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
+                                                        setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: !day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
                                                         await setExercise(day.date, day.programId, !day.exercise)
                                                     }}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center
@@ -103,7 +92,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                     type="string"
                                                     defaultValue={day.weight?.toString()}
                                                     onBlur={async (e) => {
-                                                        setOptimisticDay({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: e.target.value === "" ? null : e.target.value, notes: day.notes, checkpointId: day.checkpointId });
+                                                        setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: e.target.value === "" ? null : e.target.value, notes: day.notes, checkpointId: day.checkpointId });
                                                         await setWeight(day.date, day.programId, e.target.value, day.weight)
                                                     }}
                                                     onChange={(e) => e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1')}
@@ -125,7 +114,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                     <PopoverContent>
                                                         <Textarea
                                                             onBlur={async (e) => {
-                                                                setOptimisticDay({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: day.weight, notes: e.target.value === "" ? null : e.target.value, checkpointId: day.checkpointId });
+                                                                setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: day.weight, notes: e.target.value === "" ? null : e.target.value, checkpointId: day.checkpointId });
                                                                 await setNotes(day.date, day.programId, e.target.value, day.notes!)
                                                             }}
                                                             placeholder="digite como foi seu dia aqui"

@@ -11,7 +11,6 @@ export const ProgramCard = (
     const [isOpen, setIsOpen] = useState(collapsed);
 
     function handleClick() {
-        console.log("oi")
         setIsOpen(!isOpen);
     }
 
