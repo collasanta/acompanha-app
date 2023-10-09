@@ -71,7 +71,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                         await setDiet(day.date, day.programId, !day.diet)
                                                     }}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center 
-                                                    ${day.diet ? "bg-[#10B77F] placeholder-white text-white" : day.diet === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff6961]" : "bg-muted" : "bg-[#ff6961]"}`}>
+                                                    ${day.diet ? "bg-[#10B77F] placeholder-white text-white" : day.diet === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff7777]" : "bg-muted" : "bg-[#ff7777]"}`}>
                                                     {day.diet}
                                                 </Button>}
 
@@ -83,7 +83,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                         await setExercise(day.date, day.programId, !day.exercise)
                                                     }}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center
-                                                    ${day.exercise ? "bg-[#10B77F] placeholder-white text-white" : day.exercise === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff6961]" : "bg-muted" : "bg-[#ff6961]"}`}>
+                                                    ${day.exercise ? "bg-[#10B77F] placeholder-white text-white" : day.exercise === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff7777]" : "bg-muted" : "bg-[#ff7777]"}`}>
                                                     {day.exercise}
                                                 </Button>}
 
@@ -97,7 +97,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                     }}
                                                     onChange={(e) => e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1')}
                                                     className={`w-[50px] text-gray-600 text-[13px] rounded-md align-middle cursor-pointer text-center
-                                                ${day.weight ? "bg-[#baffe6] font-[500] placeholder-gray-600 text-gray-500" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted" : "bg-[#ff6961]"}`}>
+                                                ${day.weight ? "bg-[#baffe6] font-[500] placeholder-gray-600 text-gray-500" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted" : "bg-[#ff7777]"}`}>
 
                                                 </input>}
 

@@ -12,7 +12,7 @@ export const LandingHero = () => {
 
   return (
     <div className="bg-white">
-      <div className="p-2 m-4 text-white font-bold py-5 md:py-30 text-center space-y-5 bg-secondary rounded-[40px]">
+      <div className="p-2 shadow-lg m-4 text-white font-bold py-5 md:py-30 text-center space-y-5 bg-secondary rounded-[40px]">
         <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl space-y-5 font-extrabold text-gray-500">
           <h1>Fazendo da saúde </h1>
           <div className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 to-emerald-600">
@@ -30,7 +30,7 @@ export const LandingHero = () => {
           </div>
         </div>
         <div className="text-sm md:text-xl font-medium text-zinc-400">
-          Acompanhe o resultados dos seus clientes diariamente 
+          Acompanhe o resultados dos seus clientes diariamente de forma automática
         </div>
         <div>
           <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
