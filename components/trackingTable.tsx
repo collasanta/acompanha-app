@@ -130,8 +130,8 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                         await setWeight(day.date, day.programId, e.target.value, day.weight)
                                                     }}
                                                     onChange={(e) => e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1')}
-                                                    className={`w-[55px] h-[40px] border border-[1px]  text-muted-foreground text-[13px] rounded-md align-middle cursor-pointer text-center
-                                                ${day.weight ? "bg-[#e2fff5] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted" : "bg-[#ff7777]"}`}>
+                                                    className={`w-[55px] h-[40px] border border-[1px] text-muted-foreground text-[13px] rounded-md align-middle cursor-pointer text-center
+                                                ${day.weight ? "bg-[#e2fff5] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border-black/1 border" : "bg-muted border-dotted" : "bg-[#ff7777] border-dotted"}`}>
 
                                                 </input>
                                                 :
@@ -146,8 +146,9 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                             <Button
                                                                 variant={"trackingtable"}
                                                                 className={`bg-white shadow-md rounded-full w-[40px] border border-[0.5px] text-[11px] cursor-pointer text-center
-                                                            ${day.notes ? "bg-card text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted shadow-none" : "bg-muted shadow-none"}`}>
-                                                                {day.notes && "📝"}
+                                                            ${day.notes ? "bg-[#fffee2] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted shadow-none border-dotted" : "bg-muted shadow-none border-dotted"}`}>
+                                                                {day.notes ? "📝" : day.date.getTime() === currentDate.getTime() ? "✍" : ""}
+                                                                
                                                             </Button>
                                                         </PopoverTrigger>
                                                         <PopoverContent>
