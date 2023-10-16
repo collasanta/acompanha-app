@@ -16,7 +16,7 @@ export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin }: { chec
     const buttonText = getButtonText()
     return (
         <>
-            <div className={`btn-primary disabled:z-index[-1] flex flex-row space-x-4 py-2 justify-center items-center ${checkPoints.find(item => item.id === day.checkpointId)?.formFilled && "bg-white"}`}>
+            <div className={`btn-primary disabled:z-index[-1] flex flex-row space-x-4 py-2 justify-center items-center ${checkPoints.find(item => item.id === day.checkpointId)?.formFilled && "bg-muted"}`}>
                 <Button className={`text-xs text-white ${checkPoints.find(item => item.id === day.checkpointId!)?.formFilled && "bg-gray-400 hover:bg-gray-400"}`}>
                     {
                         checkPoints.find(item => item.id === day.checkpointId!)?.formFilled ? buttonText + "✅"

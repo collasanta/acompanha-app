@@ -31,8 +31,8 @@ export const ProgramHeader = (
 
 
     return (
-        <div className="bg-white w-full flex justify-center">
-            <div className="flex flex-col py-2 shadow-md border w-full mx-[5px] max-w-[550px] w-full bg-muted border border-0 text-card-foreground text-[13px] py-1 px-1">
+        <div className="bg-white mt-1 w-full flex justify-center">
+            <div className=" flex flex-col py-2 shadow-md border w-full mx-[5px] max-w-[550px] w-full bg-white border border-1 text-card-foreground text-[13px] py-1 px-1">
                 <div onClick={handleClick} className="flex items-center justify-between cursor-pointer">
                     <div className="flex md:flex-row items-center gap-x-2 truncate">
                         {/* <div className="w-fit bg-emerald-500/10 rounded-full">
