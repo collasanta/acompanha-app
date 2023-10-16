@@ -85,7 +85,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                 </>
                                             )
                                         }
-                                        <div key={day.date.toDateString()} className={`flex flex-row border-b border-t border-black/1 align-middle items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted" : "bg-[white] font-bold"}`}>
+                                        <div key={day.date.toDateString()} className={`flex flex-row border-b border-t border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted" : "bg-[white] font-bold"}`}>
 
                                             <div className={`border-r bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>{formatDateToDdMmYy(day.date)}</div>
 
@@ -112,7 +112,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                         setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: !day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
                                                         await setExercise(day.date, day.programId, !day.exercise)
                                                     }}
-                                                    className={`w-[50px] bg-secondary cursor-pointer text-center
+                                                    className={`w-[50px] bg-secondary my-auto cursor-pointer text-center 
                                                     ${day.exercise ? "bg-[#10B77F] placeholder-white text-white" : day.exercise === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff7777]" : "bg-muted" : "bg-[#ff7777]"}`}>
                                                     {day.exercise}
                                                 </Button>
@@ -130,16 +130,16 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                         await setWeight(day.date, day.programId, e.target.value, day.weight)
                                                     }}
                                                     onChange={(e) => e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1')}
-                                                    className={`w-[55px] h-[30px] border border-[1px]  text-muted-foreground text-[13px] rounded-md align-middle cursor-pointer text-center
-                                                ${day.weight ? "bg-card text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted" : "bg-[#ff7777]"}`}>
+                                                    className={`w-[55px] h-[40px] border border-[1px]  text-muted-foreground text-[13px] rounded-md align-middle cursor-pointer text-center
+                                                ${day.weight ? "bg-[#e2fff5] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted" : "bg-[#ff7777]"}`}>
 
                                                 </input>
                                                 :
-                                                <div className="w-[55px]" />
+                                                <div className="w-[55px] h-[40px]" />
                                             }
 
 
-                                            <div className="w-[70px]">
+                                            <div className="w-[70px] max-h-[40px]">
                                                 {notFuture &&
                                                     <Popover>
                                                         <PopoverTrigger type="button" className="w-[70px] align-middle flex justify-center items-center">
