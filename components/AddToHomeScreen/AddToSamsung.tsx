@@ -40,7 +40,7 @@ export default function AddToSamsung(props: Props) {
                     </div>
                 </div>
                 <button className="border-2 p-1" onClick={doNotShowAgain}>Clique aqui se já tiver instalado</button>
-                <ImArrowDown className="text-4xl absolute -bottom-[50px] right-[-3px] text-red-700 z-10 animate-bounce" />
+                <ImArrowDown className="text-4xl absolute -bottom-[50px] right-[-3px] text-red-500 z-10 animate-bounce" />
             </div>
 
         </div>

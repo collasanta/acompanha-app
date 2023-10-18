@@ -15,7 +15,7 @@ export default function AddToMobileChrome(props: Props) {
 
     return (
         <div className="fixed top-0 left-0 right-0 h-[60%] z-50 pt-12 px-4 text-white">
-            <ImArrowUp className="text-4xl absolute top-[10px] right-[10px] text-red-700 z-10 animate-bounce" />
+            <ImArrowUp className="text-4xl absolute top-[10px] right-[10px] text-red-500 z-10 animate-bounce" />
             <div className="relative bg-primary p-4 h-full rounded-xl flex flex-col justify-around items-center text-center">
                 <button className="absolute top-0 right-0 p-3" onClick={closePrompt}>
                     <FaTimes className="text-2xl" />
@@ -29,7 +29,7 @@ export default function AddToMobileChrome(props: Props) {
                     <p>Deslize para baixo e clique em:</p>
                     <div className="bg-zinc-50 flex justify-between items-center w-full px-4 py-2 rounded-lg text-zinc-900">
                         <MdAddToHomeScreen className="text-2xl" />
-                        <p>Add a tela inicial</p>
+                        <p>Adicionar a tela inicial</p>
                     </div>
                 </div>
                 <button className="border-2 p-1" onClick={doNotShowAgain}>Clique aqui se já tiver instalado</button>

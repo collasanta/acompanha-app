@@ -34,7 +34,7 @@ export default function AddToIosSafari(props: Props) {
                 </div>
                 <button className="border-2 p-1" onClick={doNotShowAgain}>Clique aqui se já tiver instalado</button>
                 <ImArrowDown
-                    className="text-4xl absolute -bottom-[50px] text-red-700 -z-10 animate-bounce"
+                    className="text-4xl absolute -bottom-[50px] text-red-500 -z-10 animate-bounce"
                 />
             </div>
 
