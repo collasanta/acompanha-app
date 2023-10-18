@@ -2,8 +2,8 @@
     "theme_color": "#f1f5f9",
     "background_color": "#ffffff",
     "display": "standalone",
-    "scope": "/",
-    "start_url": "/",
+
+
     "name": "diario.fit",
     "short_name": "diario.fit",
     "description": "seu acompanhamento fitness di\u00e1rio",
