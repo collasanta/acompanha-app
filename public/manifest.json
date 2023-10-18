@@ -6,7 +6,7 @@
     "start_url": "/",
     "name": "Diario.Fit",
     "short_name": "Diario.Fit",
-    "description": "Seu Diário Fitness de hábitos saudáveis",
+    "description": "Uma nova forma para acompanhar seus pacientes diariamente",
     "icons": [
         {
             "src": "/icon-192x192.png",

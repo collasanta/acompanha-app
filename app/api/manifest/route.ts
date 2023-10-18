@@ -8,6 +8,7 @@ export async function GET(req: NextRequest) {
     }
     try {
         manifest.start_url = `/p/${program}`
+        manifest.description = "Seu Diário de Acompanhamento Fitness"
         let newManifest = {...manifest}
         return new NextResponse(JSON.stringify(newManifest), {status:200, headers:{"Content-Type":"application/json"}})
         

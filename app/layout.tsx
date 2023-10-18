@@ -14,8 +14,8 @@ import Loading from './loading'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  // title: 'diario.fit',
-  // description: 'Seu Diário Fitness',
+  title: 'Diário.Fit',
+  description: 'Seu Diário Fitness',
   // manifest: '/manifest.json',
   icons: { apple: '/icon.png' },
   appleWebApp: {
