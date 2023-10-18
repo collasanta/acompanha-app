@@ -1,4 +1,4 @@
-import AddToHomeScreen from "@/components/AddToHomeScreen/AddToHomeScreen";
+import AddToHomeScreen from "@/components/PWA/AddToHomeScreen/AddToHomeScreen";
 import { ProgramCard } from "@/components/programCard";
 import { ProgramHeader } from "@/components/programHeaders";
 import { TrackingTable } from "@/components/trackingTable";

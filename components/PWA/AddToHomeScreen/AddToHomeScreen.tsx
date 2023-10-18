@@ -12,7 +12,7 @@ const AddToMobileChromeIos = dynamic(() => import('./AddToMobileChromeIos'), { l
 const AddToSamsung = dynamic(() => import('./AddToSamsung'), { loading: () => <ModuleLoading /> });
 const AddToOtherBrowser = dynamic(() => import('./AddToOtherBrowser'), { loading: () => <ModuleLoading /> });
 
-import useUserAgent from '../../hooks/use-user-agent';
+import useUserAgent from '../../../hooks/use-user-agent';
 
 type AddToHomeScreenPromptType = 'safari' | 'chrome' | 'firefox' | 'other' | 'firefoxIos' | 'chromeIos' | 'samsung' | '';
 const COOKIE_NAME = 'addToHomeScreenPrompt';

@@ -25,6 +25,7 @@ model Client {
   professional   Professional @relation(fields: [professionalId], references: [id])
   professionalId String
   programs       Program[]
+  notificationSubscription   WebPushSubscriptions[]
 }
 
 model Program {
@@ -42,6 +43,7 @@ model Program {
   daysPaid        Int
   status          String
   daily_data      DailyData[]
+  subscription    WebPushSubscriptions[]
 }
 
 model DailyData {
@@ -68,4 +70,13 @@ model Checkpoint {
   trainingPlanUrl String?
   formFilled      Boolean?
   daily_data      DailyData[]
+}
+
+model WebPushSubscriptions {
+  id        String @id @default(uuid())
+  subscription  Json
+  clientId      String
+  programId     String
+  client        Client @relation(fields: [clientId], references: [id]) 
+  program       Program @relation(fields: [programId], references: [id])
 }

@@ -7,16 +7,13 @@ import { setDiet, setExercise, setNotes, setWeight } from "@/lib/programs";
 import { JsonValue } from "@prisma/client/runtime/library";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Textarea } from "@/components/ui/textarea"
-import { FormButton } from "./formButton";
 import { checkpointType } from "@/types/checkpoints";
-import { Suspense, experimental_useOptimistic as useOptimistic } from "react";
-import { nanoid } from "nanoid";
-import { revalidatePath } from "next/cache";
-import AddToHomeScreen from "./AddToHomeScreen/AddToHomeScreen";
+import { experimental_useOptimistic as useOptimistic } from "react";
+import AddToHomeScreen from "./PWA/AddToHomeScreen/AddToHomeScreen";
+import Notifications from "./PWA/WebPush/WebPushNotifications";
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
     console.log("component re-render")
-
     const [optimisticDays, setOptimisticDays] = useOptimistic(
         Days,
         (state, updatedDay: DailyDataType) => {
@@ -35,6 +32,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
     return (
         <>
+            <Notifications programId={Days[0].programId}/>
             <AddToHomeScreen />
             <div className="flex justify-center px-[5px]">
                 <div className="max-w-[550px] w-full mb-[100px] shadow-lg border-r-2 border-l-2 border-b-2 mt-3  ">

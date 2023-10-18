@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { FaTimes } from 'react-icons/fa'
 import { HiDotsVertical } from 'react-icons/hi'
 import { ImArrowDownRight } from 'react-icons/im'
-import ffIcon from '../../public/firefox-install.png'
+import ffIcon from '../../../public/firefox-install.png'
 
 interface Props {
     closePrompt: () => void;
