@@ -76,5 +76,6 @@ export async function generateMetadata(
   const { programId } = params  
   return {
     manifest: `/api/manifest?program=${programId}`,
+    description: 'Seu Diário de Acompanhamento está pronto, clique para acessar!',
   }
 }

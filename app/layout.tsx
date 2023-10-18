@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Diário.Fit',
-  description: 'Acompanhamento diário de hábitos saudáveis',
+  description: 'Acompanhe seus pacientes diariamente de forma fácil',
   // manifest: '/manifest.json',
   icons: { apple: '/icon.png' },
   appleWebApp: {
