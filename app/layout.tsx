@@ -15,13 +15,13 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Diário.Fit',
-  description: 'Seu Diário Fitness',
+  description: 'Acompanhamento diário de hábitos saudáveis',
   // manifest: '/manifest.json',
   icons: { apple: '/icon.png' },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'acompanha.app',
+    title: 'Diário.Fit',
     startupImage: [
       { media: '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)', url: '/iphone5_splash.png' },
       { media: '(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)', url: '/iphone6_splash.png' },
