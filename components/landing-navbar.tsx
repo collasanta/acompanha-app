@@ -23,7 +23,7 @@ export const LandingNavbar = () => {
           <Image fill alt="Logo" src="/logo.png" />
         </div>
         <h1 className={cn("font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-yellow-600 to-yellow-100", font.className)}>
-          acompanha.app
+          Diário.Fit
         </h1>
       </Link>
       <div className="flex items-center gap-x-2">

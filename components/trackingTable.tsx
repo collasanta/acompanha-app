@@ -12,6 +12,7 @@ import { checkpointType } from "@/types/checkpoints";
 import { Suspense, experimental_useOptimistic as useOptimistic } from "react";
 import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
+import AddToHomeScreen from "./AddToHomeScreen/AddToHomeScreen";
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
     console.log("component re-render")
@@ -34,7 +35,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
     return (
         <>
-
+            <AddToHomeScreen />
             <div className="flex justify-center px-[5px]">
                 <div className="max-w-[550px] w-full mb-[100px] shadow-lg border-r-2 border-l-2 border-b-2 mt-3  ">
                     <div className="flex flex-col w-full">
