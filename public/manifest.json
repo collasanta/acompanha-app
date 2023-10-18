@@ -2,11 +2,11 @@
     "theme_color": "#f1f5f9",
     "background_color": "#ffffff",
     "display": "standalone",
-
-
-    "name": "diario.fit",
-    "short_name": "diario.fit",
-    "description": "seu acompanhamento fitness di\u00e1rio",
+    "scope": "/",
+    "start_url": "/",
+    "name": "Diario.Fit",
+    "short_name": "Diario.Fit",
+    "description": "Seu Diário Fitness de hábitos saudáveis",
     "icons": [
         {
             "src": "/icon-192x192.png",

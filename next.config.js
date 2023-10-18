@@ -25,5 +25,6 @@ module.exports = {...nextConfig,   ...withPWA(
     dest: 'public',
     register: true,
     skipWaiting: true,
+    dynamicStartUrl: true
   }
 )}

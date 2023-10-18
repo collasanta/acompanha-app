@@ -5,6 +5,7 @@ import { programsFrontEndListType } from "@/types/programs";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { checkpointType } from "@/types/checkpoints";
+import manifest from "../public/manifest.json";
 
 export const ProgramHeader = (
     { program, collapsed = false, programPage = false, checkpoints }: { program: programsFrontEndListType, collapsed?: boolean, programPage?: boolean, checkpoints: Array<checkpointType> }
@@ -28,7 +29,6 @@ export const ProgramHeader = (
             }
         });
     }
-
 
     return (
         <div className="bg-white mt-1 w-full flex justify-center">

@@ -8,7 +8,6 @@ import ToasterProvider from '@/components/toaster-provider'
 import GoogleAnalytics from '@/components/google-analytics'
 import { Analytics } from '@vercel/analytics/react';
 import { ptBR } from '@clerk/localizations'
-import Head from 'next/head'
 import { Suspense } from 'react'
 import Loading from './loading'
 
@@ -17,7 +16,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'diario.fit',
   description: 'Seu Diário Fitness',
-  manifest: '/manifest.json',
+  // manifest: '/manifest.json',
   icons: { apple: '/icon.png' },
   appleWebApp: {
     capable: true,
