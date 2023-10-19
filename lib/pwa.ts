@@ -12,6 +12,8 @@ export async function saveWebPushSubscription(subscription: PushSubscription, pr
     }
   })
 
+  console.log("New Subscription Saving Proccess Started in device":, device)
+  
   const newSubscription = await prismadb.webPushSubscriptions.create({
     data: {
       programId: programId,
@@ -21,6 +23,7 @@ export async function saveWebPushSubscription(subscription: PushSubscription, pr
     }
   })
 
+  console.log("sub saving database result: ", newSubscription)
   return newSubscription
 }
 

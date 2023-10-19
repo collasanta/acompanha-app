@@ -9,11 +9,15 @@ import { useEffect, useState } from "react"
 
 const unregisterServiceWorkers = async () => {
   const registrations = await navigator.serviceWorker.getRegistrations()
+  console.log('deregistering service workers', registrations)
   await Promise.all(registrations.map((r) => r.unregister()))
 }
 
 const registerServiceWorker = async () => {
-  return await navigator.serviceWorker.register('/sw.js')
+  console.log("registering service worker")
+  const registersw = await navigator.serviceWorker.register('/sw.js')
+  console.log('service worker registered', registersw)
+  return registersw
 }
 
 const subscribe = async (programId: string) => {
@@ -21,16 +25,23 @@ const subscribe = async (programId: string) => {
 
   const swRegistration = await registerServiceWorker()
 
-  await window?.Notification.requestPermission()
+  console.log("requesting permission")
+  const permission = await window?.Notification.requestPermission()
+
+  console.log("permission", permission)
 
   try {
     const options = {
       applicationServerKey: VAPID_PUBLIC_KEY,
       userVisibleOnly: true,
     }
+    console.log("initiating subscripition")
     const subscription = await swRegistration.pushManager.subscribe(options)
-    await saveWebPushSubscription(subscription, programId, window.navigator.userAgent!)
-
+    console.log("subscription created", subscription)
+    console.log("device info", window.navigator.userAgent!)
+    console.log("saving subscription in DB", subscription)
+    const newSubDB = await saveWebPushSubscription(subscription, programId, window.navigator.userAgent!)
+    console.log("subSavedStatus", newSubDB)
   } catch (err) {
     console.error('Error', err)
   }
