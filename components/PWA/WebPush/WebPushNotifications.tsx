@@ -29,7 +29,7 @@ const subscribe = async (programId: string) => {
       userVisibleOnly: true,
     }
     const subscription = await swRegistration.pushManager.subscribe(options)
-    await saveWebPushSubscription(subscription, programId)
+    await saveWebPushSubscription(subscription, programId, window.navigator.userAgent!)
 
   } catch (err) {
     console.error('Error', err)
@@ -43,10 +43,6 @@ export default function Notifications({ programId }: { programId: string }) {
 
   useEffect(() => {
     const showNotifications = async () => {
-      const notificationsSupported = () =>
-        window.Notification &&
-        navigator.serviceWorker &&
-        window.PushManager
 
       if (!(window.Notification && navigator.serviceWorker && window.PushManager)) {
         console.log("notifications not supported")

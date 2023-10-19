@@ -77,6 +77,8 @@ model WebPushSubscriptions {
   subscription  Json
   clientId      String
   programId     String
+  device        String @default("")
   client        Client @relation(fields: [clientId], references: [id]) 
   program       Program @relation(fields: [programId], references: [id])
+  createdAt     DateTime @default(now())
 }

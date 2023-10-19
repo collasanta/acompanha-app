@@ -1,7 +1,7 @@
 'use server'
 import prismadb from "./prismadb"
 
-export async function saveWebPushSubscription(subscription: PushSubscription, programId: string) {
+export async function saveWebPushSubscription(subscription: PushSubscription, programId: string, device: string) {
   
   const clientId = await prismadb.program.findFirst({
     where: {
@@ -16,7 +16,8 @@ export async function saveWebPushSubscription(subscription: PushSubscription, pr
     data: {
       programId: programId,
       subscription: subscription,
-      clientId: clientId?.clientId!
+      clientId: clientId?.clientId!,
+      device: device
     }
   })
 
