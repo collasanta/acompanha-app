@@ -142,7 +142,13 @@ export const getProgramDays = async (programId: string, enabledMetrics: any) => 
         date: "asc"
       }
     })
-    return { days: days }
+
+    const daysWithWeightAsString = days.map(day => ({
+      ...day,
+      weight: day?.weight ? day.weight.toString() : null
+    }));
+
+    return { days: daysWithWeightAsString }
   } catch (error: any) {
     return { erro: error.message }
   }
@@ -217,6 +223,7 @@ const createProgramDays = async (programId: string, startDate: Date, duration: n
     const newDays = await prismadb.dailyData.createMany({
       data: days
     })
+
     return { days: newDays }
   } catch (error: any) {
     console.log("Erro ao criar dias: ", error.message)

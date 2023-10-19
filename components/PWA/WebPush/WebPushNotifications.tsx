@@ -30,6 +30,8 @@ const subscribe = async (programId: string) => {
 
   console.log("permission", permission)
 
+  window.alert("permission" + permission)
+
   try {
     const options = {
       applicationServerKey: VAPID_PUBLIC_KEY,

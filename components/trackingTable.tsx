@@ -13,7 +13,7 @@ import AddToHomeScreen from "./PWA/AddToHomeScreen/AddToHomeScreen";
 import Notifications from "./PWA/WebPush/WebPushNotifications";
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
-    console.log("component re-render")
+    console.log("render trackingTable.tsx")
     const [optimisticDays, setOptimisticDays] = useOptimistic(
         Days,
         (state, updatedDay: DailyDataType) => {
