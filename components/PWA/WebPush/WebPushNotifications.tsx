@@ -2,7 +2,7 @@
 
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { saveWebPushSubscription } from "@/lib/pwa"
+import { saveWebPushSubscription, urlBase64ToUint8Array } from "@/lib/pwa"
 import { useEffect, useState } from "react"
 
 const unregisterServiceWorkers = async () => {
@@ -86,7 +86,7 @@ export default function Notifications({ programId }: { programId: string }) {
                       const permission = await window?.Notification.requestPermission()
                       console.log('permission', permission)
                       const options = {
-                          applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+                          applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!),
                           userVisibleOnly: true,
                         }                        
                       const subscription =  await saveWebPushSubscription(JSON.stringify(await swRegistration.pushManager.subscribe(options)), programId, window.navigator.userAgent!)                      
