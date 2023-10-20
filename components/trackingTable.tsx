@@ -12,6 +12,7 @@ import { experimental_useOptimistic as useOptimistic } from "react";
 import AddToHomeScreen from "./PWA/AddToHomeScreen/AddToHomeScreen";
 import Notifications from "./PWA/WebPush/WebPushNotifications";
 
+
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
     console.log("render trackingTable.tsx")
     const [optimisticDays, setOptimisticDays] = useOptimistic(
@@ -33,6 +34,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
     return (
         <>
             <Notifications programId={Days[0].programId}/>
+            
             <AddToHomeScreen />
             <div className="flex justify-center px-[5px]">
                 <div className="max-w-[550px] w-full mb-[100px] shadow-lg border-r-2 border-l-2 border-b-2 mt-3  ">

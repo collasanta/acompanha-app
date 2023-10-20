@@ -2,8 +2,12 @@
 
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { saveWebPushSubscription } from "@/lib/pwa"
+import { saveWebPushSubscription
+ } from "@/lib/pwa"
 import { useEffect, useState } from "react"
+//@ts-ignore
+import { useSubscribe, Errors } from 'react-pwa-push-notifications';
+const { getSubscription } = useSubscribe({ publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY });
 
 const unregisterServiceWorkers = async () => {
   const registrations = await navigator.serviceWorker.getRegistrations()
@@ -83,13 +87,19 @@ export default function Notifications({ programId }: { programId: string }) {
                     // subscribe()
                       await unregisterServiceWorkers()
                       const swRegistration = await registerServiceWorker()
-                      const permission = await window?.Notification.requestPermission()
-                      console.log('permission', permission)
+                      // const permission = await window?.Notification.requestPermission()
+                      // console.log('permission', permission)
+                      
                       const options = {
-                          applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-                          userVisibleOnly: true,
-                        }                        
-                      const subscription =  await saveWebPushSubscription(JSON.stringify(await swRegistration.pushManager.subscribe(options)), programId, window.navigator.userAgent!)                      
+                        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+                        userVisibleOnly: true,
+                      }                        
+                      // const oldSubscription = JSON.stringify(await swRegistration.pushManager.subscribe(options))
+                      
+                      const Subscription = await getSubscription();
+                      console.log('Subscription', Subscription)
+                      const subscription =  await saveWebPushSubscription(JSON.stringify(Subscription), programId, window.navigator.userAgent!) 
+                      console.log('subscription db saved', subscription)                     
                       setOpen(false)
                   }}>
                     Ativar Notificações
