@@ -23,27 +23,16 @@ const registerServiceWorker = async () => {
 
 const subscribe = async (programId: string) => {
   await unregisterServiceWorkers()
-
   const swRegistration = await registerServiceWorker()
-
-  console.log("requesting permission")
   const permission = await window?.Notification.requestPermission()
-
-  console.log("permission", permission)
-
-  window.alert("permission" + permission)
-
+  console.log('permission', permission)
   try {
     const options = {
       applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
       userVisibleOnly: true,
     }
-    console.log("initiating subscripition")
     const subscription = await swRegistration.pushManager.subscribe(options)
-    console.log("device info", window.navigator.userAgent!)
-    console.log("saving subscription in DB", subscription)
     const newSubDB = await saveWebPushSubscription(JSON.stringify(subscription), programId, window.navigator.userAgent!)
-    console.log("subSavedStatus", newSubDB)
   } catch (err) {
     console.error('Error', err)
   }
