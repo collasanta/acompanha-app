@@ -24,7 +24,7 @@ module.exports = {...nextConfig,   ...withPWA(
   pluginOptions = {
     dest: 'public',
     register: false,
-    skipWaiting: true,
+    // skipWaiting: true,
     // fallbacks: {
     //   document: '/_offline.tsx',
     // },
