@@ -7,8 +7,11 @@ import { useEffect, useState } from "react"
 
 const unregisterServiceWorkers = async () => {
   const registrations = await navigator.serviceWorker.getRegistrations()
-  console.log('deregistering service workers', registrations)
+  console.log('deregistering service workers: ', registrations)
   await Promise.all(registrations.map((r) => r.unregister()))
+  const registrations2 = await navigator.serviceWorker.getRegistrations()
+  console.log('deregistering service workers done', registrations2)
+
 }
 
 const registerServiceWorker = async () => {
