@@ -28,8 +28,8 @@ module.exports = {...nextConfig,   ...withPWA(
     // fallbacks: {
     //   document: '/_offline.tsx',
     // },
-    // publicExcludes: ['**/*'],
-    // buildExcludes:[() => true]
+    publicExcludes: ['**/*'],
+    buildExcludes:[() => true]
     // dynamicStartUrl: true
   }
 )}
