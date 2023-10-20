@@ -21,22 +21,22 @@ const registerServiceWorker = async () => {
   return registersw
 }
 
-const subscribe = async (programId: string) => {
-  await unregisterServiceWorkers()
-  const swRegistration = await registerServiceWorker()
-  const permission = await window?.Notification.requestPermission()
-  console.log('permission', permission)
-  try {
-    const options = {
-      applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-      userVisibleOnly: true,
-    }
-    const subscription = await swRegistration.pushManager.subscribe(options)
-    const newSubDB = await saveWebPushSubscription(JSON.stringify(subscription), programId, window.navigator.userAgent!)
-  } catch (err) {
-    console.error('Error', err)
-  }
-}
+// const subscribe = async (programId: string) => {
+//   await unregisterServiceWorkers()
+//   const swRegistration = await registerServiceWorker()
+//   const permission = await window?.Notification.requestPermission()
+//   console.log('permission', permission)
+//   try {
+//     const options = {
+//       applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+//       userVisibleOnly: true,
+//     }
+//     const subscription = 
+//     await saveWebPushSubscription(JSON.stringify(await swRegistration.pushManager.subscribe(options)), programId, window.navigator.userAgent!)
+//   } catch (err) {
+//     console.error('Error', err)
+//   }
+// }
 
 export default function Notifications({ programId }: { programId: string }) {
 
@@ -78,9 +78,19 @@ export default function Notifications({ programId }: { programId: string }) {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogAction>
-                  <Button className='' onClick={() => {
-                    subscribe(programId);
-                    setOpen(false)
+                  <Button className='' onClick=
+                  {async() => {
+                    // subscribe()
+                      await unregisterServiceWorkers()
+                      const swRegistration = await registerServiceWorker()
+                      const permission = await window?.Notification.requestPermission()
+                      console.log('permission', permission)
+                      const options = {
+                          applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+                          userVisibleOnly: true,
+                        }                        
+                      const subscription =  await saveWebPushSubscription(JSON.stringify(await swRegistration.pushManager.subscribe(options)), programId, window.navigator.userAgent!)                      
+                      setOpen(false)
                   }}>
                     Ativar Notificações
                   </Button>
