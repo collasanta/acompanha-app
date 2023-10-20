@@ -14,7 +14,6 @@ export async function GET() {
 
     const subscriptions = await getAllWebPushSubscriptions()
 
-    console.log("subscriptions api: ", subscriptions)
     if (!subscriptions) {
         return NextResponse.json(
             { error: 'no subscriptions found' },
@@ -23,9 +22,8 @@ export async function GET() {
     }
 
     const Subs = JSON.parse(subscriptions)
-    console.log("Subs: ", Subs)
     
-    Subs.forEach((s:any) => {
+    Subs.map(async (s:any) => {
         console.log("s: ", s)
         const payload = JSON.stringify({
           title: 'Seu Nutricionista quer saber como foi seu dia',
@@ -33,8 +31,12 @@ export async function GET() {
           icon: '/nutricionista.png',
         })
         //@ts-ignore
-        const send = webpush.sendNotification(s?.subscription!, payload)
-
+        try {
+            const send = await webpush.sendNotification(s?.subscription!, payload)
+            console.log("send: ", send)
+        } catch (error) {
+            console.log("error: ", error)
+        }
       })
     
       return NextResponse.json(
