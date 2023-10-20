@@ -1,11 +1,9 @@
 'use client'
-const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { saveWebPushSubscription } from "@/lib/pwa"
 import { useEffect, useState } from "react"
-
-
 
 const unregisterServiceWorkers = async () => {
   const registrations = await navigator.serviceWorker.getRegistrations()
@@ -34,15 +32,14 @@ const subscribe = async (programId: string) => {
 
   try {
     const options = {
-      applicationServerKey: VAPID_PUBLIC_KEY,
+      applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
       userVisibleOnly: true,
     }
     console.log("initiating subscripition")
     const subscription = await swRegistration.pushManager.subscribe(options)
-    console.log("subscription created", subscription)
     console.log("device info", window.navigator.userAgent!)
     console.log("saving subscription in DB", subscription)
-    const newSubDB = await saveWebPushSubscription(subscription, programId, window.navigator.userAgent!)
+    const newSubDB = await saveWebPushSubscription(JSON.stringify(subscription), programId, window.navigator.userAgent!)
     console.log("subSavedStatus", newSubDB)
   } catch (err) {
     console.error('Error', err)
@@ -89,8 +86,8 @@ export default function Notifications({ programId }: { programId: string }) {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogAction>
-                  <Button onClick={async () => {
-                    await subscribe(programId);
+                  <Button onClick={() => {
+                    subscribe(programId);
                     setOpen(false)
                   }}>
                     Ativar Notificações

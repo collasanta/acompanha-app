@@ -1,7 +1,7 @@
 'use server'
 import prismadb from "./prismadb"
 
-export async function saveWebPushSubscription(subscription: PushSubscription, programId: string, device: string) {
+export async function saveWebPushSubscription(subscription: string, programId: string, device: string) {
   
   const clientId = await prismadb.program.findFirst({
     where: {
@@ -14,17 +14,18 @@ export async function saveWebPushSubscription(subscription: PushSubscription, pr
 
   console.log("New Subscription Saving Proccess Started in device:", device)
   
+  
+
   const newSubscription = await prismadb.webPushSubscriptions.create({
     data: {
       programId: programId,
-      subscription: subscription,
+      subscription: JSON.parse(subscription),
       clientId: clientId?.clientId!,
       device: device
     }
   })
 
-  console.log("sub saving database result: ", newSubscription)
-  return newSubscription
+  console.log("new sub saved in database: ", newSubscription)
 }
 
 export async function getAllWebPushSubscriptions() {
@@ -33,5 +34,9 @@ export async function getAllWebPushSubscriptions() {
       subscription: true
     }
   })
-  return subscriptions
+
+  const stringSubs = JSON.stringify(subscriptions)
+  console.log("subscriptions: ", subscriptions)
+
+  return stringSubs
 }

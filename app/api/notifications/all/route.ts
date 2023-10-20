@@ -1,7 +1,9 @@
 import { getAllWebPushSubscriptions } from '@/lib/pwa';
 import { NextResponse, NextRequest } from 'next/server'
 import webpush, { PushSubscription } from 'web-push'
- 
+
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
     webpush.setVapidDetails(
         'mailto:contato@diario.fit',
@@ -12,6 +14,7 @@ export async function GET() {
 
     const subscriptions = await getAllWebPushSubscriptions()
 
+    console.log("subscriptions api: ", subscriptions)
     if (!subscriptions) {
         return NextResponse.json(
             { error: 'no subscriptions found' },
@@ -19,13 +22,16 @@ export async function GET() {
         );
     }
 
-    subscriptions.forEach((s) => {
+    const Subs = JSON.parse(subscriptions)
+    console.log("Subs: ", Subs)
+    
+    Subs.forEach((s:any) => {
+        console.log("s: ", s)
         const payload = JSON.stringify({
           title: 'Seu Nutricionista quer saber como foi seu dia',
           body: 'Clique aqui para preencher o diário',
           icon: '/nutricionista.png',
         })
-        
         //@ts-ignore
         const send = webpush.sendNotification(s?.subscription!, payload)
 
