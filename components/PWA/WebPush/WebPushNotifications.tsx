@@ -86,7 +86,7 @@ export default function Notifications({ programId }: { programId: string }) {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogAction>
-                  <Button onClick={() => {
+                  <Button className='' onClick={() => {
                     subscribe(programId);
                     setOpen(false)
                   }}>
