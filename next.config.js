@@ -29,7 +29,7 @@ module.exports = {...nextConfig,   ...withPWA(
     //   document: '/_offline.tsx',
     // },
     publicExcludes: ['**/*'],
-    buildExcludes:[() => true]
+    // buildExcludes:[() => true]
     // dynamicStartUrl: true
   }
 )}
