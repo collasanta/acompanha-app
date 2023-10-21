@@ -36,32 +36,32 @@ export default function Notifications({ programId }: { programId: string }) {
     }
   }, [])
 
-  useEffect(() => {
-    console.log(" typeof window ", typeof window)
-    console.log(" window.workbox ", window.workbox)
-    console.log("serviceWorker in navigator ", "serviceWorker" in navigator)
-    if (
-      typeof window !== "undefined" &&
-      "serviceWorker" in navigator &&
-      window.workbox !== undefined
-    ) {
-      // run only in browser
-      navigator.serviceWorker.ready.then((reg) => {
-        reg.pushManager.getSubscription().then((sub) => {
-          if (
-            sub &&
-            !(
-              sub.expirationTime &&
-              Date.now() > sub.expirationTime - 5 * 60 * 1000
-            )
-          ) {
-            setOpen(false);
-          }
-        });
-        setRegistration(reg);
-      });
-    }
-  }, []);
+//   useEffect(() => {
+//     console.log(" typeof window ", typeof window)
+//     console.log(" window.workbox ", window.workbox)
+//     console.log("serviceWorker in navigator ", "serviceWorker" in navigator)
+//     if (
+//       typeof window !== "undefined" &&
+//       "serviceWorker" in navigator &&
+//       window.workbox !== undefined
+//     ) {
+//       // run only in browser
+//       navigator.serviceWorker.ready.then((reg) => {
+//         reg.pushManager.getSubscription().then((sub) => {
+//           if (
+//             sub &&
+//             !(
+//               sub.expirationTime &&
+//               Date.now() > sub.expirationTime - 5 * 60 * 1000
+//             )
+//           ) {
+//             setOpen(false);
+//           }
+//         });
+//         setRegistration(reg);
+//       });
+//     }
+//   }, []);
 
   const subscribeButtonOnClick: MouseEventHandler<HTMLButtonElement> = async (
     event
