@@ -28,13 +28,21 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
         }
     )
 
+    const isOffline = async () => {
+        if (!navigator.onLine) {
+            window.alert("Você está offline, conecte a internet e tente novamente")
+            return true
+        }
+        return false
+    }
+
     let currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0);
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
     return (
         <>
-            <Notifications programId={Days[0].programId}/>
-            
+            <Notifications programId={Days[0].programId} />
+
             <AddToHomeScreen />
             <div className="flex justify-center px-[5px]">
                 <div className="max-w-[550px] w-full mb-[100px] shadow-lg border-r-2 border-l-2 border-b-2 mt-3  ">
@@ -95,8 +103,11 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                 <Button
                                                     variant={"trackingtable"}
                                                     onClick={async () => {
+                                                        if (await isOffline() === true) {
+                                                            return null
+                                                        }
                                                         setOptimisticDays({ date: day.date, programId: day.programId, diet: !day.diet, exercise: day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
-                                                        await setDiet(day.date, day.programId, !day.diet)
+                                                        setDiet(day.date, day.programId, !day.diet)
                                                     }}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center 
                                                     ${day.diet ? "bg-[#10B77F] placeholder-white text-white" : day.diet === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff7777]" : "bg-muted" : "bg-[#ff7777]"}`}>
@@ -110,8 +121,11 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                 <Button
                                                     variant={"trackingtable"}
                                                     onClick={async () => {
+                                                        if (await isOffline() === true) {
+                                                            return null
+                                                        }
                                                         setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: !day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
-                                                        await setExercise(day.date, day.programId, !day.exercise)
+                                                        setExercise(day.date, day.programId, !day.exercise)
                                                     }}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center 
                                                     ${day.exercise ? "bg-[#10B77F] placeholder-white text-white" : day.exercise === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff7777]" : "bg-muted" : "bg-[#ff7777]"}`}>
@@ -127,8 +141,11 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                     type="string"
                                                     defaultValue={day.weight ? parseFloat(day.weight).toFixed(1) + " kg" : ""}
                                                     onBlur={async (e) => {
+                                                        if (await isOffline() === true) {
+                                                            return null
+                                                        }
                                                         setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: e.target.value === "" ? null : e.target.value, notes: day.notes, checkpointId: day.checkpointId });
-                                                        await setWeight(day.date, day.programId, e.target.value, day.weight)
+                                                        setWeight(day.date, day.programId, e.target.value, day.weight)
                                                     }}
                                                     onChange={(e) => e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1')}
                                                     className={`w-[55px] h-[40px] border border-[1px] text-muted-foreground text-[13px] rounded-md align-middle cursor-pointer text-center
@@ -149,14 +166,17 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                                 className={`bg-white shadow-md rounded-full w-[40px] border border-[0.5px] text-[11px] cursor-pointer text-center
                                                             ${day.notes ? "bg-[#fffee2] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted shadow-none border-dotted" : "bg-muted shadow-none border-dotted"}`}>
                                                                 {day.notes ? "📝" : day.date.getTime() === currentDate.getTime() ? "✍" : ""}
-                                                                
+
                                                             </Button>
                                                         </PopoverTrigger>
                                                         <PopoverContent>
                                                             <Textarea
                                                                 onBlur={async (e) => {
+                                                                    if (await isOffline() === true) {
+                                                                        return null
+                                                                    }
                                                                     setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: day.weight, notes: e.target.value === "" ? null : e.target.value, checkpointId: day.checkpointId });
-                                                                    await setNotes(day.date, day.programId, e.target.value, day.notes!)
+                                                                    setNotes(day.date, day.programId, e.target.value, day.notes!)
                                                                 }}
                                                                 placeholder="digite como foi seu dia aqui"
                                                                 defaultValue={day.notes!}
