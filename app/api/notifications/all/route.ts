@@ -1,4 +1,5 @@
 import { getAllWebPushSubscriptions } from '@/lib/pwa';
+import { WebPushNotificationDataType } from '@/types/notifications';
 import { NextResponse, NextRequest } from 'next/server'
 import webpush, { PushSubscription } from 'web-push'
 
@@ -23,11 +24,11 @@ export async function GET() {
 
     const Subs = JSON.parse(subscriptions)
     
-    Subs.map(async (s:any) => {
+    Subs.map(async (s:WebPushNotificationDataType) => {
         console.log("s: ", s)
         const payload = JSON.stringify({
-          title: 'Seu Nutricionista quer saber como foi seu dia',
-          body: 'Clique aqui para preencher o diário',
+          title: `${s.client.name.split(" ")[0]}, já preencheu hoje? 👀`,
+          body:`Nutricionista ${s.program.professional.name.split(" ")[0]} quer saber como está indo o programa!`,
           icon: '/nutricionista.png',
         })
         //@ts-ignore

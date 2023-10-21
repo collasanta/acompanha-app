@@ -30,14 +30,30 @@ export async function saveWebPushSubscription(subscription: string, programId: s
 
 export async function getAllWebPushSubscriptions() {
   const subscriptions = await prismadb.webPushSubscriptions.findMany({
-    select: {
-      subscription: true
+    include: {
+      client: {
+        select: {
+          name: true
+        }
+      },
+      program: {
+        select: {
+          professional: {
+            select: {
+              name: true
+            }
+          }
+        }
+      }
     }
-  })
+  });
+
 
   const stringSubs = JSON.stringify(subscriptions)
 
   return stringSubs
 }
+
+
 
 
