@@ -33,12 +33,9 @@ export default function Notifications({ programId }: { programId: string }) {
       "serviceWorker" in navigator &&
       window.workbox !== undefined
     ) {
-        window.alert("useffect started")
       navigator.serviceWorker.ready.then((reg) => {
-        window.alert("getting sw ready")
         reg.pushManager.getSubscription().then((sub) => {
           setRegistration(reg);
-          window.alert("subscription ready")
           if (!(window.Notification && navigator.serviceWorker && window.PushManager)) {
               console.log("notifications not supported")
             } else if (Notification.permission === 'denied') {
@@ -57,29 +54,22 @@ export default function Notifications({ programId }: { programId: string }) {
   const subscribeButtonOnClick: MouseEventHandler<HTMLButtonElement> = async (
     event
   ) => {
-    window.alert("started");
     if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
       throw new Error("Environment variables supplied not sufficient.");
     }
     if (!registration) {
-      window.alert("No SW registration available.");
       console.error("No SW registration available.");
       return;
     }
     event.preventDefault();
-    window.alert("passed prevent default");
     const sub = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(
         process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
       ),
     });
-    window.alert("subscribed");
     saveWebPushSubscription(JSON.stringify(sub), programId, window.navigator.userAgent!)
-    window.alert("saving sub to DB")
     setOpen(false)
-    console.log("Web push subscribed!");
-    console.log(sub);
   };
 
   return (
