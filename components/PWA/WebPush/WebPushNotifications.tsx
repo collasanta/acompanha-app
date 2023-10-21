@@ -28,39 +28,24 @@ export default function Notifications({ programId }: { programId: string }) {
   }, [])
 
   useEffect(() => {
-    console.log(" typeof window ", typeof window)
-    console.log(" window.workbox ", window.workbox)
-    console.log("serviceWorker in navigator ", "serviceWorker" in navigator)
     if (
       typeof window !== "undefined" &&
       "serviceWorker" in navigator &&
       window.workbox !== undefined
     ) {
-      // run only in browser
       navigator.serviceWorker.ready.then((reg) => {
-        reg.pushManager.getSubscription().then((sub) => {
-          if (
-            sub &&
-            !(
-              sub.expirationTime &&
-              Date.now() > sub.expirationTime - 5 * 60 * 1000
-            )
-          ) {
-            setOpen(false);
-          }
-        });
         setRegistration(reg);
-        if (!(window.Notification && navigator.serviceWorker && window.PushManager)) {
-            console.log("notifications not supported")
-          } else if (Notification.permission === 'denied') {
-            console.log("notifications denied")
-          } else if (Notification.permission === 'granted') {
-            console.log("notifications granted")
-          } else {
-            console.log("show enable notifications")
-            setOpen(true)
-          }
       });
+      if (!(window.Notification && navigator.serviceWorker && window.PushManager)) {
+        console.log("notifications not supported")
+      } else if (Notification.permission === 'denied') {
+        console.log("notifications denied")
+      } else if (Notification.permission === 'granted') {
+        console.log("notifications granted")
+      } else {
+        console.log("show enable notifications")
+        setOpen(true)
+      }
     }
   }, []);
 
@@ -94,12 +79,6 @@ export default function Notifications({ programId }: { programId: string }) {
 
   return (
     <>
-    {/* <div>
-        botao fora
-    <button className='h-[55px] bg-primary text-primary-foreground rounded-md text-sm font-medium ' onClick={subscribeButtonOnClick}>
-              Ativar Notificações
-            </button>
-    </div> */}
       <AlertDialog open={open}>
         <AlertDialogContent className="rounded-[50px]">
           <AlertDialogHeader>
@@ -110,7 +89,7 @@ export default function Notifications({ programId }: { programId: string }) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             {/* <AlertDialogAction className="mx-20"> */}
-            <button className='h-[55px] bg-primary text-primary-foreground rounded-md text-sm font-medium ' onClick={subscribeButtonOnClick}>
+            <button className='h-[50px] bg-primary text-primary-foreground rounded-md text-sm font-medium ' onClick={subscribeButtonOnClick}>
               Ativar Notificações
             </button>
             {/* </AlertDialogAction> */}
