@@ -95,12 +95,12 @@ export default function Notifications({ programId }: { programId: string }) {
 
   return (
     <>
-    <div>
+    {/* <div>
         botao fora
     <button className='h-[55px] bg-primary text-primary-foreground rounded-md text-sm font-medium ' onClick={subscribeButtonOnClick}>
               Ativar Notificações
             </button>
-    </div>
+    </div> */}
       <AlertDialog open={open}>
         <AlertDialogContent className="rounded-[50px]">
           <AlertDialogHeader>
