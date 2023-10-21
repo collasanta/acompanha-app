@@ -23,18 +23,9 @@ export default function Notifications({ programId }: { programId: string }) {
   const [open, setOpen] = useState<boolean>(false)
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
 
-//   useEffect(() => {
-//     if (!(window.Notification && navigator.serviceWorker && window.PushManager)) {
-//       console.log("notifications not supported")
-//     } else if (Notification.permission === 'denied') {
-//       console.log("notifications denied")
-//     } else if (Notification.permission === 'granted') {
-//       console.log("notifications granted")
-//     } else {
-//       console.log("show enable notifications")
-//       setOpen(true)
-//     }
-//   }, [])
+  useEffect(() => {
+
+  }, [])
 
   useEffect(() => {
     console.log(" typeof window ", typeof window)
@@ -59,7 +50,16 @@ export default function Notifications({ programId }: { programId: string }) {
           }
         });
         setRegistration(reg);
-        setOpen(true)
+        if (!(window.Notification && navigator.serviceWorker && window.PushManager)) {
+            console.log("notifications not supported")
+          } else if (Notification.permission === 'denied') {
+            console.log("notifications denied")
+          } else if (Notification.permission === 'granted') {
+            console.log("notifications granted")
+          } else {
+            console.log("show enable notifications")
+            setOpen(true)
+          }
       });
     }
   }, []);
@@ -85,7 +85,7 @@ export default function Notifications({ programId }: { programId: string }) {
       ),
     });
     window.alert("subscribed");
-    await saveWebPushSubscription(JSON.stringify(sub), programId, window.navigator.userAgent!)
+    saveWebPushSubscription(JSON.stringify(sub), programId, window.navigator.userAgent!)
     window.alert("saving sub to DB")
     setOpen(false)
     console.log("Web push subscribed!");
