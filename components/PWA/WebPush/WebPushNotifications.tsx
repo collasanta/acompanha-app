@@ -81,7 +81,7 @@ export default function Notifications({ programId }: { programId: string }) {
       ),
     });
 
-    await saveWebPushSubscription(JSON.stringify(sub), programId, window.navigator.userAgent!)
+    saveWebPushSubscription(JSON.stringify(sub), programId, window.navigator.userAgent!)
 
     setOpen(false)
     console.log("Web push subscribed!");
