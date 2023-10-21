@@ -23,45 +23,46 @@ export default function Notifications({ programId }: { programId: string }) {
   const [open, setOpen] = useState<boolean>(false)
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
 
-  useEffect(() => {
-    if (!(window.Notification && navigator.serviceWorker && window.PushManager)) {
-      console.log("notifications not supported")
-    } else if (Notification.permission === 'denied') {
-      console.log("notifications denied")
-    } else if (Notification.permission === 'granted') {
-      console.log("notifications granted")
-    } else {
-      console.log("show enable notifications")
-      setOpen(true)
-    }
-  }, [])
-
 //   useEffect(() => {
-//     console.log(" typeof window ", typeof window)
-//     console.log(" window.workbox ", window.workbox)
-//     console.log("serviceWorker in navigator ", "serviceWorker" in navigator)
-//     if (
-//       typeof window !== "undefined" &&
-//       "serviceWorker" in navigator &&
-//       window.workbox !== undefined
-//     ) {
-//       // run only in browser
-//       navigator.serviceWorker.ready.then((reg) => {
-//         reg.pushManager.getSubscription().then((sub) => {
-//           if (
-//             sub &&
-//             !(
-//               sub.expirationTime &&
-//               Date.now() > sub.expirationTime - 5 * 60 * 1000
-//             )
-//           ) {
-//             setOpen(false);
-//           }
-//         });
-//         setRegistration(reg);
-//       });
+//     if (!(window.Notification && navigator.serviceWorker && window.PushManager)) {
+//       console.log("notifications not supported")
+//     } else if (Notification.permission === 'denied') {
+//       console.log("notifications denied")
+//     } else if (Notification.permission === 'granted') {
+//       console.log("notifications granted")
+//     } else {
+//       console.log("show enable notifications")
+//       setOpen(true)
 //     }
-//   }, []);
+//   }, [])
+
+  useEffect(() => {
+    console.log(" typeof window ", typeof window)
+    console.log(" window.workbox ", window.workbox)
+    console.log("serviceWorker in navigator ", "serviceWorker" in navigator)
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      window.workbox !== undefined
+    ) {
+      // run only in browser
+      navigator.serviceWorker.ready.then((reg) => {
+        reg.pushManager.getSubscription().then((sub) => {
+          if (
+            sub &&
+            !(
+              sub.expirationTime &&
+              Date.now() > sub.expirationTime - 5 * 60 * 1000
+            )
+          ) {
+            setOpen(false);
+          }
+        });
+        setRegistration(reg);
+        setOpen(true)
+      });
+    }
+  }, []);
 
   const subscribeButtonOnClick: MouseEventHandler<HTMLButtonElement> = async (
     event
@@ -70,13 +71,11 @@ export default function Notifications({ programId }: { programId: string }) {
     if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
       throw new Error("Environment variables supplied not sufficient.");
     }
-    const registration = await navigator.serviceWorker.ready
     if (!registration) {
       window.alert("No SW registration available.");
       console.error("No SW registration available.");
       return;
     }
-    window.alert("registration ready");
     event.preventDefault();
     window.alert("passed prevent default");
     const sub = await registration.pushManager.subscribe({
