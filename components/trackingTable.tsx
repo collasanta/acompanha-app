@@ -5,7 +5,7 @@ import { DailyDataType, DailyDataTypeArr, enabledMetricsType } from "@/types/pro
 import { Button } from "./ui/button";
 import { setDiet, setExercise, setNotes, setWeight } from "@/lib/programs";
 import { JsonValue } from "@prisma/client/runtime/library";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Textarea } from "@/components/ui/textarea"
 import { checkpointType } from "@/types/checkpoints";
 import { experimental_useOptimistic as useOptimistic } from "react";
@@ -159,29 +159,43 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
                                             <div className="w-[70px] max-h-[40px]">
                                                 {notFuture &&
-                                                    <Popover>
+                                                    <Popover modal={true}>
                                                         <PopoverTrigger type="button" className="w-[70px] align-middle flex justify-center items-center">
                                                             <Button
                                                                 variant={"trackingtable"}
+                                                                onClick={async () => {
+                                                                    if (await isOffline() === true) {
+
+                                                                        return null
+                                                                    }
+                                                                }}
                                                                 className={`bg-white shadow-md rounded-full w-[40px] border border-[0.5px] text-[11px] cursor-pointer text-center
                                                             ${day.notes ? "bg-[#fffee2] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted shadow-none border-dotted" : "bg-muted shadow-none border-dotted"}`}>
                                                                 {day.notes ? "📝" : day.date.getTime() === currentDate.getTime() ? "✍" : ""}
 
                                                             </Button>
                                                         </PopoverTrigger>
-                                                        <PopoverContent>
-                                                            <Textarea
-                                                                onBlur={async (e) => {
-                                                                    if (await isOffline() === true) {
-                                                                        return null
-                                                                    }
-                                                                    setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: day.weight, notes: e.target.value === "" ? null : e.target.value, checkpointId: day.checkpointId });
-                                                                    setNotes(day.date, day.programId, e.target.value, day.notes!)
-                                                                }}
-                                                                placeholder="digite como foi seu dia aqui"
-                                                                defaultValue={day.notes!}
-                                                            >
-                                                            </Textarea>
+                                                        <PopoverContent className="w-screen max-w-[450px] bg-card " onOpenAutoFocus={(e) => e.preventDefault()}>
+                                                            <div className="flex flex-col items-center">
+                                                                <Textarea
+                                                                    autoFocus={false}
+                                                                    onBlur={async (e) => {
+                                                                        if (await isOffline() === true) {
+                                                                            return null
+                                                                        }
+                                                                        setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: day.weight, notes: e.target.value === "" ? null : e.target.value, checkpointId: day.checkpointId });
+                                                                        setNotes(day.date, day.programId, e.target.value, day.notes!)
+                                                                    }}
+                                                                    placeholder="digite aqui como foi seu dia 👇"
+                                                                    defaultValue={day.notes!}
+                                                                    className="min-h-[120px] bg-[#fffee2] text-muted-foreground bg-[#fffee2] bg-opacity-50"
+
+                                                                >
+                                                                </Textarea>
+                                                                <PopoverClose className="pt-2">
+                                                                    <Button variant="secondary" className="text-muted-foreground shadow-md">Salvar</Button>
+                                                                </PopoverClose>
+                                                            </div>
                                                         </PopoverContent>
                                                     </Popover>
                                                 }
