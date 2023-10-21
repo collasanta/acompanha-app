@@ -2,9 +2,10 @@
 
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { saveWebPushSubscription
- } from "@/lib/pwa"
-import { useEffect, useState } from "react"
+import {
+  saveWebPushSubscription
+} from "@/lib/pwa"
+import { MouseEventHandler, useEffect, useState } from "react"
 //@ts-ignore
 import { useSubscribe, Errors } from 'react-pwa-push-notifications';
 const { getSubscription } = useSubscribe({ publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY });
@@ -68,6 +69,101 @@ export default function Notifications({ programId }: { programId: string }) {
     showNotifications()
   }, [])
 
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [subscription, setSubscription] = useState<PushSubscription | null>(
+    null
+  );
+  const [registration, setRegistration] =
+    useState<ServiceWorkerRegistration | null>(null);
+
+    useEffect(() => {
+      console.log("oi0")
+      console.log( " typeof window ", typeof window )
+      console.log( " window.workbox ", window.workbox )
+      console.log( "serviceWorker in navigator ", "serviceWorker" in navigator )
+      if (
+        typeof window !== "undefined" &&
+        "serviceWorker" in navigator &&
+        window.workbox !== undefined
+      ) {
+        // run only in browser
+        console.log("oi")
+        navigator.serviceWorker.ready.then((reg) => {
+          reg.pushManager.getSubscription().then((sub) => {
+            if (
+              sub &&
+              !(
+                sub.expirationTime &&
+                Date.now() > sub.expirationTime - 5 * 60 * 1000
+              )
+            ) {
+              setSubscription(sub);
+              setIsSubscribed(true);
+            }
+          });
+          setRegistration(reg);
+        });
+      }
+    }, []);
+
+  const base64ToUint8Array = (base64: string) => {
+    const padding = "=".repeat((4 - (base64.length % 4)) % 4);
+    const b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");
+
+    const rawData = window.atob(b64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  };
+
+  const subscribeButtonOnClick: MouseEventHandler<HTMLButtonElement> = async (
+    event
+  ) => {
+    if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
+      throw new Error("Environment variables supplied not sufficient.");
+    }
+    if (!registration) {
+      console.error("No SW registration available.");
+      return;
+    }
+    event.preventDefault();
+    const sub = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: base64ToUint8Array(
+        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
+      ),
+    });
+    // TODO: you should call your API to save subscription data on the server in order to send web push notification from the server
+    await saveWebPushSubscription(JSON.stringify(sub), programId, window.navigator.userAgent!)
+    setSubscription(sub);
+    setIsSubscribed(true);
+    console.log("Web push subscribed!");
+    console.log(sub);
+  };
+
+  const sendNotificationButtonOnClick: MouseEventHandler<
+    HTMLButtonElement
+  > = async (event) => {
+    event.preventDefault();
+    if (!subscription) {
+      console.error("Web push not subscribed");
+      return;
+    }
+
+    await fetch("/api/notifications/all", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+      // body: JSON.stringify({
+      //   subscription,
+      // }),
+    });
+  };
+
   return (
     <>
       {
@@ -81,30 +177,33 @@ export default function Notifications({ programId }: { programId: string }) {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogAction>
-                  <Button className='' onClick=
-                  {async() => {
-                    // subscribe()
-                      await unregisterServiceWorkers()
-                      const swRegistration = await registerServiceWorker()
-                      // const permission = await window?.Notification.requestPermission()
-                      // console.log('permission', permission)
+                {/* <AlertDialogAction> */}
+                  <button className='py-4 pr-4 mr-4 border border-2 border-black' onClick={subscribeButtonOnClick}>
+                    {/* // {async() => {
+                  //   // subscribe()
+                  //     await unregisterServiceWorkers()
+                  //     const swRegistration = await registerServiceWorker()
+                  //     // const permission = await window?.Notification.requestPermission()
+                  //     // console.log('permission', permission)
                       
-                      const options = {
-                        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-                        userVisibleOnly: true,
-                      }                        
-                      // const oldSubscription = JSON.stringify(await swRegistration.pushManager.subscribe(options))
+                  //     const options = {
+                  //       applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+                  //       userVisibleOnly: true,
+                  //     }                        
+                  //     // const oldSubscription = JSON.stringify(await swRegistration.pushManager.subscribe(options))
                       
-                      const Subscription = await getSubscription();
-                      console.log('Subscription', Subscription)
-                      const subscription =  await saveWebPushSubscription(JSON.stringify(Subscription), programId, window.navigator.userAgent!) 
-                      console.log('subscription db saved', subscription)                     
-                      setOpen(false)
-                  }}>
+                  //     const Subscription = await getSubscription();
+                  //     console.log('Subscription', Subscription)
+                  //     const subscription =  await saveWebPushSubscription(JSON.stringify(Subscription), programId, window.navigator.userAgent!) 
+                  //     console.log('subscription db saved', subscription)                     
+                  //     setOpen(false)
+                  // }}> */}
                     Ativar Notificações
-                  </Button>
-                </AlertDialogAction>
+                  </button>
+                  <button className="mt-4 border border-2 border-black"onClick={sendNotificationButtonOnClick}>
+                    Send Notification
+                  </button>
+                {/* </AlertDialogAction> */}
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

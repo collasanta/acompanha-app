@@ -1,15 +1,10 @@
-/** @type {import('next').NextConfig} */
+const withPWA = require("@ducanh2912/next-pwa").default({
+  dest: "public",
+});
 
-// const withPWA = require('next-pwa')({
-//   dest: 'public'
-// })
-// const withPWA = require("@ducanh2912/next-pwa").default({
-//   dest: "public",
-//   register: false,
-//   skipWaiting: true,
-// });
-
+/** @type {import("next").NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   experimental: {
     serverActions: true,
   },
@@ -23,19 +18,6 @@ const nextConfig = {
       },
     ],
   },
-}
+};
 
-module.exports = {...nextConfig,   ...require("@ducanh2912/next-pwa").default(
-  pluginOptions = {
-    dest: 'public',
-    register: false,
-    skipWaiting: true,
-    reloadOnOnline: true, 
-    // fallbacks: {
-    //   document: '/_offline.tsx',
-    // },
-    // publicExcludes: ['**/*'],
-    // buildExcludes:[() => true]
-    // dynamicStartUrl: true
-  }
-)}
+module.exports = withPWA(nextConfig);
