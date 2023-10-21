@@ -26,6 +26,7 @@ export default function Notifications({ programId }: { programId: string }) {
         "serviceWorker" in navigator &&
         window.workbox !== undefined
       ) {
+        
         navigator.serviceWorker.ready.then((reg) => {
           reg.pushManager.getSubscription().then((sub) => {
             if (
@@ -39,6 +40,7 @@ export default function Notifications({ programId }: { programId: string }) {
               setOpen(false)
             }
           });
+          console.log("reg", reg)
           setRegistration(reg);
         });
       }
@@ -87,11 +89,11 @@ export default function Notifications({ programId }: { programId: string }) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction className="mx-20">
-              <button className='' onClick={subscribeButtonOnClick}>
+            {/* <AlertDialogAction className="mx-20"> */}
+              <button className='mx-20 py-2 bg-primary text-primary-foreground hover:bg-[#059669] inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-5' onClick={subscribeButtonOnClick}>
                 Ativar Notificações
               </button>
-            </AlertDialogAction>
+            {/* </AlertDialogAction> */}
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
