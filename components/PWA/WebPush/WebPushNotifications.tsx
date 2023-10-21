@@ -8,7 +8,7 @@ import {
 import { MouseEventHandler, useEffect, useState } from "react"
 //@ts-ignore
 // import { useSubscribe, Errors } from 'react-pwa-push-notifications';
-const { getSubscription } = useSubscribe({ publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY });
+// const { getSubscription } = useSubscribe({ publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY });
 
 const unregisterServiceWorkers = async () => {
   const registrations = await navigator.serviceWorker.getRegistrations()
