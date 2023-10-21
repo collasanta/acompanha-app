@@ -52,7 +52,6 @@
     "react-hook-form": "^7.46.1",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.11.0",
-    "react-pwa-push-notifications": "^1.0.0",
     "svix": "^1.12.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
