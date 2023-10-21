@@ -2,7 +2,6 @@
 
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import {
-  base64ToUint8Array,
   saveWebPushSubscription
 } from "@/lib/pwa"
 import { MouseEventHandler, useEffect, useState } from "react"
@@ -46,13 +45,26 @@ export default function Notifications({ programId }: { programId: string }) {
     }
   }, [])
 
+  const base64ToUint8Array = async (base64: string) => {
+    const padding = "=".repeat((4 - (base64.length % 4)) % 4);
+    const b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");
+  
+    const rawData = window.atob(b64);
+    const outputArray = new Uint8Array(rawData.length);
+  
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  };
+
   const subscribeButtonOnClick: MouseEventHandler<HTMLButtonElement> = async (
     event
   ) => {
     event.preventDefault();
     const sub = await registration?.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: base64ToUint8Array(
+      applicationServerKey: await base64ToUint8Array(
         process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
       ),
     });
