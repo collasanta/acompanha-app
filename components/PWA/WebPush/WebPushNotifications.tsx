@@ -33,19 +33,24 @@ export default function Notifications({ programId }: { programId: string }) {
       "serviceWorker" in navigator &&
       window.workbox !== undefined
     ) {
+        window.alert("useffect started")
       navigator.serviceWorker.ready.then((reg) => {
-        setRegistration(reg);
+        window.alert("getting sw ready")
+        reg.pushManager.getSubscription().then((sub) => {
+          setRegistration(reg);
+          window.alert("subscription ready")
+          if (!(window.Notification && navigator.serviceWorker && window.PushManager)) {
+              console.log("notifications not supported")
+            } else if (Notification.permission === 'denied') {
+              console.log("notifications denied")
+            } else if (Notification.permission === 'granted') {
+              console.log("notifications granted")
+            } else {
+              console.log("show enable notifications")
+              setOpen(true)
+            }
+        });
       });
-      if (!(window.Notification && navigator.serviceWorker && window.PushManager)) {
-        console.log("notifications not supported")
-      } else if (Notification.permission === 'denied') {
-        console.log("notifications denied")
-      } else if (Notification.permission === 'granted') {
-        console.log("notifications granted")
-      } else {
-        console.log("show enable notifications")
-        setOpen(true)
-      }
     }
   }, []);
 
