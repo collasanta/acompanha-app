@@ -33,34 +33,35 @@ export default function Notifications({ programId }: { programId: string }) {
     } else {
       console.log("show enable notifications")
       setOpen(true)
-      // Get Service Worker registration
-      if (
-        typeof window !== "undefined" &&
-        "serviceWorker" in navigator &&
-        window.workbox !== undefined
-      ) {
-        
-        navigator.serviceWorker.ready.then((reg) => {
-          reg.pushManager.getSubscription().then((sub) => {
-            if (
-              sub &&
-              !(
-                sub.expirationTime &&
-                Date.now() > sub.expirationTime - 5 * 60 * 1000
-              )
-            ) {
-              console.log("User already Subscribed");
-              setOpen(false)
-            }
-          });
-          console.log("reg", reg)
-          setRegistration(reg);
-        });
-      }
     }
   }, [])
 
-
+  useEffect(() => {
+    console.log(" typeof window ", typeof window)
+    console.log(" window.workbox ", window.workbox)
+    console.log("serviceWorker in navigator ", "serviceWorker" in navigator)
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      window.workbox !== undefined
+    ) {
+      // run only in browser
+      navigator.serviceWorker.ready.then((reg) => {
+        reg.pushManager.getSubscription().then((sub) => {
+          if (
+            sub &&
+            !(
+              sub.expirationTime &&
+              Date.now() > sub.expirationTime - 5 * 60 * 1000
+            )
+          ) {
+            setOpen(false);
+          }
+        });
+        setRegistration(reg);
+      });
+    }
+  }, []);
 
   const subscribeButtonOnClick: MouseEventHandler<HTMLButtonElement> = async (
     event
@@ -99,9 +100,9 @@ export default function Notifications({ programId }: { programId: string }) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             {/* <AlertDialogAction className="mx-20"> */}
-              <button className='mx-20 py-2 bg-primary text-primary-foreground hover:bg-[#059669] inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-5' onClick={subscribeButtonOnClick}>
-                Ativar Notificações
-              </button>
+            <button className='mx-20 py-2 bg-primary text-primary-foreground hover:bg-[#059669] inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-5' onClick={subscribeButtonOnClick}>
+              Ativar Notificações
+            </button>
             {/* </AlertDialogAction> */}
           </AlertDialogFooter>
         </AlertDialogContent>
