@@ -98,7 +98,8 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
 
                                         {/* DIAS */}
-                                        <div key={day.date.toDateString()} className={`flex flex-row border-b border-t border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted" : "bg-[white] font-bold"}`}>
+                                        <div key={day.date.toDateString()}  className={` flex flex-row border-b border-t border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted " : "bg-[white] font-bold"}`}>
+                                        {/* <div key={day.date.toDateString()} className={`flex flex-row border-b border-t border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted" : "bg-[white] font-bold"}`}> */}
 
                                             <div className={`border-r bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
                                                 <div className="min-w-[30px] flex justify-center">
@@ -228,12 +229,18 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                         {
                                             ((index + 1) !== 0 && (index + 1) % 30 === 0) &&
 
-                                            <div key={day.date.toDateString() + "stat"} className={`flex flex-row border-b border-t border-black/1 align-middle h-[50px] items-center  justify-between text-center "bg-[white] font-bold"}`}>
+                                            <div key={day.date.toDateString() + "stat"} className={`flex flex-row bg-muted border-b border-t border-black/1 align-middle h-[50px] items-center  justify-between text-center font-bold"}`}>
 
-                                                <div className={`border-r bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
+                                                <div className={`border-r  bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
                                                     <div className="min-w-[30px] flex justify-center">
                                                         <a className="text-center">
-                                                            {index === optimisticDays.length - 1 && optimisticDays.length + " Dias"}{index === 29 && "1º Mês"} {index === 59 && "2º Mês"} {index === 90 && "2º Mês"} {index === 90 && "3º Mês"} {index === 120 && "4º Mês"} {index === 150 && "5º Mês"} {index === 180 && "6º Mês"} {index === 210 && "7º Mês"} {index === 240 && "8º Mês"} {index === 270 && "9º Mês"} {index === 300 && "12º Mês"}
+
+                                                            {
+                                                            optimisticDays.length <= 30 ? index + 1 + " Dias" :
+                                                                <>
+                                                                    { (index + 1) % 30 === 0 && `${(index + 1) / 30}º Mês`}
+                                                                </>
+                                                            }
                                                         </a>
                                                     </div>
                                                 </div>
@@ -241,9 +248,9 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
                                                 {EnabledMetrics.dieta ?
                                                     <div
-                                                        className={`w-[50px] rounded-md bg-secondary my-auto cursor-pointer text-center  text-muted-foreground text-[12.5px] text-center  flex flex-col`}>
-                                                        <a>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).diet?.total + "d"}  </a>
+                                                        className={`rounded-md w-[50px] bg-white  bg-secondary my-auto cursor-pointer text-center  text-muted-foreground text-[12.5px] text-center  flex flex-col`}>
                                                         <a>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).diet?.percentage! + "%"}</a>
+                                                        <a>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).diet?.total + " dias"}  </a>
                                                     </div>
                                                     :
                                                     <div className="w-[50px]" />
@@ -251,9 +258,9 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
                                                 {EnabledMetrics.treino ?
                                                     <div
-                                                        className={`w-[50px] rounded-md bg-secondary my-auto cursor-pointer text-center  text-muted-foreground text-[12.5px] text-center  flex flex-col`}>
-                                                        <a>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).exercise?.total + "d"}  </a>
+                                                        className={`rounded-md w-[50px] bg-white   bg-secondary my-auto cursor-pointer text-center  text-muted-foreground text-[12.5px] text-center  flex flex-col`}>
                                                         <a>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).exercise?.percentage! + "%"}</a>
+                                                        <a>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).exercise?.total + " dias"}  </a>
                                                     </div>
                                                     :
                                                     <div className="w-[50px]" />
@@ -262,8 +269,8 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
                                                 {EnabledMetrics.peso ?
                                                     <div
-                                                        className={`bg-secondary  w-[55px] h-[40px] pl-1 text-muted-foreground flex row items-center rounded-md align-middle text-center text-sm cursor-pointer`}>
-                                                        {getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).weight?.total + " kg"}
+                                                        className={`rounded-md text-center text-[12px] justify-center bg-white text-sm  w-[55px] h-[40px] text-muted-foreground align-middle items-center flex`}>
+                                                        <a className="align-middle">{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).weight?.total + " kg"}</a>
                                                     </div>
                                                     :
                                                     <div className="w-[55px] h-[40px]" />

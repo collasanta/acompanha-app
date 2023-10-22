@@ -18,7 +18,14 @@ export function getLast30DaysStatsByIndex(indexInput: number, optimisticDays: Da
     let totalDiet = 0;
     let totalExercise = 0;
     let totalDaysUntilNow = 0
-    let WeightVariation = parseFloat(lastWeight!) - parseFloat(firstWeight!)
+    let WeightVariation: number | string = parseFloat(lastWeight!) - parseFloat(firstWeight!)
+    if (isNaN(WeightVariation)) {
+        WeightVariation = 0
+    } else if(WeightVariation < 0){
+        WeightVariation = WeightVariation.toFixed(1).toString()
+    } else if (WeightVariation > 0) {
+        WeightVariation = `+${WeightVariation.toFixed(1)}`
+    }
 
     for (const day of last30DaysData) {
         if (day.date < new Date()) {
@@ -45,6 +52,6 @@ export function getLast30DaysStatsByIndex(indexInput: number, optimisticDays: Da
     return {
         ...(enabledMetrics.dieta ? { diet: { total: totalDiet, percentage: percentageDiet !== 'NaN' ? percentageDiet : 0 } } : {}),
         ...(enabledMetrics.treino ? { exercise: { total: totalExercise, percentage: percentageExercise !== 'NaN' ? percentageExercise : 0 } } : {}),
-        ...(enabledMetrics.peso ? { weight: { total: WeightVariation ? WeightVariation.toFixed(1) : 0 } } : {}),
+        ...(enabledMetrics.peso ? { weight: { total: WeightVariation } } : {}),
     };
 }
