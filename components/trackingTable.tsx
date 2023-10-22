@@ -11,6 +11,7 @@ import { checkpointType } from "@/types/checkpoints";
 import { experimental_useOptimistic as useOptimistic } from "react";
 import AddToHomeScreen from "./PWA/AddToHomeScreen/AddToHomeScreen";
 import Notifications from "./PWA/WebPush/WebPushNotifications";
+import { getLast30DaysStatsByIndex } from "@/lib/stats";
 
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
@@ -94,9 +95,20 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                 </>
                                             )
                                         }
+
+
+                                        {/* DIAS */}
                                         <div key={day.date.toDateString()} className={`flex flex-row border-b border-t border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted" : "bg-[white] font-bold"}`}>
 
-                                            <div className={`border-r bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>{formatDateToDdMmYy(day.date)}</div>
+                                            <div className={`border-r bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
+                                                <div className="min-w-[30px] flex justify-center">
+                                                    <a className="text-center">{formatDateToDdMmYy(day.date).split(" ")[0]}</a>
+                                                </div>
+
+                                                <div className="min-w-[30px] flex justify-center">
+                                                    <a className="italic text-[12px] text-gray-400 pl-1">{formatDateToDdMmYy(day.date).split(" ")[1]}</a>
+                                                </div>
+                                            </div>
 
 
                                             {EnabledMetrics.dieta && notFuture ?
@@ -110,7 +122,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                         setDiet(day.date, day.programId, !day.diet)
                                                     }}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center 
-                                                    ${day.diet ? "bg-[#10B77F] placeholder-white text-white" : day.diet === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff7777]" : "bg-muted" : "bg-[#ff7777]"}`}>
+                                                    ${day.diet ? "bg-[#10B77F] placeholder-white text-white" : day.diet === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff6870]" : "bg-muted" : "bg-[#ff6870]"}`}>
                                                     {day.diet}
                                                 </Button>
                                                 :
@@ -128,7 +140,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                         setExercise(day.date, day.programId, !day.exercise)
                                                     }}
                                                     className={`w-[50px] bg-secondary my-auto cursor-pointer text-center 
-                                                    ${day.exercise ? "bg-[#10B77F] placeholder-white text-white" : day.exercise === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff7777]" : "bg-muted" : "bg-[#ff7777]"}`}>
+                                                    ${day.exercise ? "bg-[#10B77F] placeholder-white text-white" : day.exercise === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff6870]" : "bg-muted" : "bg-[#ff6870]"}`}>
                                                     {day.exercise}
                                                 </Button>
                                                 :
@@ -149,7 +161,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                     }}
                                                     onChange={(e) => e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1')}
                                                     className={`w-[55px] h-[40px] border border-[1px] text-muted-foreground text-[13px] rounded-md align-middle cursor-pointer text-center
-                                                ${day.weight ? "bg-[#e2fff5] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border-black/1 border" : "bg-muted border-dotted" : "bg-[#ff7777] border-dotted"}`}>
+                                                ${day.weight ? "bg-[#e2fff5] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border-black/1 border" : "bg-muted border-dotted" : "bg-[#ff6870] border-dotted"}`}>
 
                                                 </input>
                                                 :
@@ -210,6 +222,60 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                             //         <FormButton checkPoints={checkPoints} day={day} EnabledMetrics={EnabledMetrics} isAdmin={isAdmin!} />
                                             //     </>
                                             // )
+                                        }
+
+                                        {/* MÊSES */}
+                                        {
+                                            ((index+1) !== 0 && (index+1) % 30 === 0)  &&
+
+                                            <div key={day.date.toDateString() + "stat"} className={`flex flex-row border-b border-t border-black/1 align-middle h-[50px] items-center  justify-between text-center "bg-[white] font-bold"}`}>
+
+                                                <div className={`border-r bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
+                                                    <div className="min-w-[30px] flex justify-center">
+                                                        <a className="text-center">
+                                                            { index === optimisticDays.length-1 && optimisticDays.length + " Dias" }{index === 29 && "1º Mês"} {index === 59 && "2º Mês"} {index === 90 && "2º Mês"} {index === 90 && "3º Mês"} {index === 120 && "4º Mês"} {index === 150 && "5º Mês"} {index === 180 && "6º Mês"} {index === 210 && "7º Mês"} {index === 240 && "8º Mês"} {index === 270 && "9º Mês"} {index === 300 && "12º Mês"}
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+
+                                                {EnabledMetrics.dieta ?
+                                                    <div
+                                                        className={`w-[50px] rounded-md bg-secondary my-auto cursor-pointer text-center  text-muted-foreground text-[12.5px] text-center  flex flex-col`}>
+                                                        <a>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).diet?.total + "d"}  </a>
+                                                        <a>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).diet?.percentage! + "%"}</a>
+                                                    </div>
+                                                    :
+                                                    <div className="w-[50px]" />
+                                                }
+
+                                                {EnabledMetrics.treino ?
+                                                    <div
+                                                        className={`w-[50px] rounded-md bg-secondary my-auto cursor-pointer text-center  text-muted-foreground text-[12.5px] text-center  flex flex-col`}>
+                                                        <a>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).exercise?.total + "d"}  </a>
+                                                        <a>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).exercise?.percentage! + "%"}</a>
+                                                    </div>
+                                                    :
+                                                    <div className="w-[50px]" />
+                                                }
+
+
+                                                {EnabledMetrics.peso ?
+                                                    <div
+                                                        className={`bg-secondary  w-[55px] h-[40px] pl-1 text-muted-foreground flex row items-center rounded-md align-middle text-center text-sm cursor-pointer`}>
+                                                        {getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).weight?.total + " kg"}
+                                                    </div>
+                                                    :
+                                                    <div className="w-[55px] h-[40px]" />
+                                                }
+
+
+                                                <div className="w-[70px] max-h-[40px]">
+
+                                                </div>
+
+                                            </div>
+
                                         }
 
                                     </>
