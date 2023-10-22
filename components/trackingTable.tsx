@@ -269,7 +269,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
                                                 {EnabledMetrics.peso ?
                                                     <div
-                                                        className={`text-center border-r-2 border-l-2 text-[12px] justify-center bg-white text-sm  w-[55px] h-[40px] text-muted-foreground align-middle items-center flex`}>
+                                                        className={`text-center border-r-2 border-l-2 text-[11px] justify-center bg-white text-sm  w-[55px] h-[40px] text-muted-foreground align-middle items-center flex`}>
                                                         <a className="align-middle">{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).weight?.total + " kg"}</a>
                                                     </div>
                                                     :
