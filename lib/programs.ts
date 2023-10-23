@@ -301,7 +301,6 @@ export const setExercise = async (date: Date, programId: string, boolean: boolea
     console.log("-----------------exercise-------------------------")
     console.log("received boolean back exervcise: ", boolean)
     console.log("Exercise set: ", result.date, "value:", result.exercise)
-    await revalidatePath(`/p/${programId}`)
   } catch (error: any) {
     revalidatePath(`/p/${programId}`)
     console.log("Erro ao setar dieta: ", error.message)

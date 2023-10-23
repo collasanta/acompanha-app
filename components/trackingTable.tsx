@@ -12,24 +12,26 @@ import { experimental_useOptimistic as useOptimistic, useState } from "react";
 import AddToHomeScreen from "./PWA/AddToHomeScreen/AddToHomeScreen";
 import Notifications from "./PWA/WebPush/WebPushNotifications";
 import { getLast30DaysStatsByIndex } from "@/lib/stats";
-
+import { useTransition } from "react";
+import { revalidatePath } from "next/cache";
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
     console.log("render trackingTable.tsx")
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [currentIndex, setCurrentIndex] = useState<number>(0)
-    // const [Days, // setOptimisticDays] = useOptimistic(
-    //     Days,
-    //     (state, updatedDay: DailyDataType) => {
-    //         const dayIndex = state.findIndex((day: DailyDataType) => day.date.getTime() === updatedDay.date.getTime())
-    //         if (dayIndex === -1) {
-    //             return state
-    //         } else {
-    //             state.splice(dayIndex, 1, updatedDay)
-    //             return [...state]
-    //         }
-    //     }
-    // )
+
+    const [optimisticDays, setOptimisticDays] = useOptimistic(
+        Days,
+        (state, updatedDay: DailyDataType) => {
+            const dayIndex = state.findIndex((day: DailyDataType) => day.date.getTime() === updatedDay.date.getTime())
+            if (dayIndex === -1) {
+                return state
+            } else {
+                state.splice(dayIndex, 1, updatedDay)
+                return [...state]
+            }
+        }
+    )
 
     const isOffline = async () => {
         if (!navigator.onLine) {
@@ -53,7 +55,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
                         {/* DIAS */}
                         {
-                            Days.map((day: DailyDataType, index) => {
+                            optimisticDays.map((day: DailyDataType, index) => {
                                 const notFuture = day.date.getTime() < Date.now()
                                 return (
                                     <>
@@ -73,7 +75,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                         {
                                             day.checkpointId && index === 0 && (
                                                 <>
-                                                    <div className={`pb-1 bg-white border-[1.5px] w-full sticky top-[0px] h-[50px] items-center font-semibold flex  text-muted-foreground  justify-between text-center`}>
+                                                    <div className={`pb-1 bg-white border-[1.5px] w-full z-[8000] sticky top-[0px] h-[50px] items-center font-semibold flex  text-muted-foreground  justify-between text-center`}>
                                                         <div className=" border-r-2 text-center w-[80px] bg-white p-1">
                                                             📆
                                                         </div>
@@ -100,7 +102,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
 
                                         {/* DIAS */}
-                                        <div key={day.date.toDateString()} className={` flex flex-row border-b border-t border border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted " : "bg-[white] font-bold"}`}>
+                                        <div key={day.date.toDateString()} className={`flex flex-row border-b border-t border border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted " : "bg-[white] font-bold"}`}>
 
                                             <div className={`border-r bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
                                                 <div className="min-w-[30px] flex justify-center">
@@ -147,17 +149,14 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                         variant={"trackingtable"}
                                                         disabled={isLoading}
                                                         onClick={async () => {
+                                                            setIsLoading(true)
                                                             if (await isOffline() === true) {
                                                                 return null
                                                             }
-                                                            // setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: !day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
-                                                            console.log("isloading clicked", isLoading)
-                                                            setIsLoading(true)
+                                                            setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: !day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
                                                             setCurrentIndex(index)
                                                             await setExercise(day.date, day.programId, !day.exercise)
-                                                            setIsLoading(false)
-                                                            
-
+                                                            setIsLoading(false)                                                            
                                                         }}
                                                         className={`w-[50px] bg-secondary my-auto cursor-pointer text-center 
                                                 ${day.exercise ? "bg-[#10B77F] placeholder-white text-white" : day.exercise === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : day.date.getTime() < currentDate.getTime() ? "bg-[#ff6870]" : "bg-muted" : "bg-[#ff6870]"}`}>
