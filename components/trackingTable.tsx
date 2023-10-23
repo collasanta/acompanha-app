@@ -152,14 +152,10 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                             }
                                                             // setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: !day.exercise, weight: day.weight, notes: day.notes, checkpointId: day.checkpointId });
                                                             console.log("isloading clicked", isLoading)
-                                                            let t1 = Date.now()
                                                             setIsLoading(true)
                                                             setCurrentIndex(index)
                                                             await setExercise(day.date, day.programId, !day.exercise)
                                                             setIsLoading(false)
-                                                            let time = Date.now() - t1
-                                                            console.log({time})
-                                                            window.alert(`${time}`)
                                                             
 
                                                         }}
