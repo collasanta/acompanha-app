@@ -226,8 +226,8 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
                                         {/* MÊSES */}
                                         {
-                                            ( ((index + 1) !== 0 && (index + 1) % 30 === 0)) || (optimisticDays.length <= 30 && (index + 1) === optimisticDays.length  ) &&
-
+                                            // ( ((index + 1) !== 0 && (index + 1) % 30 === 0)) || (optimisticDays.length <= 30 && (index + 1) === optimisticDays.length  ) &&
+                                            (((index + 1) !== 0 && (index + 1) % 30 === 0) || (optimisticDays.length <= 30 && (index + 1) === optimisticDays.length  ))   &&
                                             <div key={day.date.toDateString() + "stat"} className={`flex flex-row bg-white border-b border-t border-black/1 align-middle h-[50px] items-center  justify-between text-center font-bold"}`}>
 
                                                 <div className={`border-r-2   bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>

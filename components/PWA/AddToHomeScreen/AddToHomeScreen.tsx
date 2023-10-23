@@ -83,7 +83,7 @@ export default function AddToHomeScreen() {
                     ?
                     <>
                         <div
-                            className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-50"
+                            className="fixed top-0 left-0 right-0 bottom-0 z-50"
                             onClick={closePrompt}
                         >
                             <Prompt />
