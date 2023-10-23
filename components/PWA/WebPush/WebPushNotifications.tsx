@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import {
   saveWebPushSubscription
 } from "@/lib/pwa"
@@ -62,14 +62,18 @@ export default function Notifications({ programId }: { programId: string }) {
       return;
     }
     event.preventDefault();
-    const sub = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: base64ToUint8Array(
-        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
-      ),
-    });
-    saveWebPushSubscription(JSON.stringify(sub), programId, window.navigator.userAgent!)
-    setOpen(false)
+    try {
+      const sub = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: base64ToUint8Array(
+          process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
+        ),
+      });
+      saveWebPushSubscription(JSON.stringify(sub), programId, window.navigator.userAgent!)
+      setOpen(false)
+    } catch (error) {
+      setOpen(false)      
+    }
   };
 
   return (

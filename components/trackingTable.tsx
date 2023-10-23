@@ -45,8 +45,8 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
             <Notifications programId={Days[0].programId} />
 
             <AddToHomeScreen />
-            <div className="flex justify-center px-[5px]">
-                <div className="max-w-[550px] w-full mb-[100px] shadow-lg border-r-2 border-l-2 border-b-2 mt-3  ">
+            <div className="flex justify-center">
+                <div className="max-w-[550px] w-full mb-[100px] shadow-lg border-r-2 border-l-2 border-b-2 ">
                     <div className="flex flex-col w-full">
 
                         {/* DIAS */}
@@ -71,7 +71,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                         {
                                             day.checkpointId && index === 0 && (
                                                 <>
-                                                    <div className={`pb-1 bg-white border-t-2 w-full sticky top-[0.5px] shadow-lg h-[50px] items-center font-semibold flex  text-muted-foreground  justify-between text-center`}>
+                                                    <div className={`pb-1 bg-white border-[1.5px] w-full sticky top-[0px] h-[50px] items-center font-semibold flex  text-muted-foreground  justify-between text-center`}>
                                                         <div className=" border-r-2 text-center w-[80px] bg-white p-1">
                                                             📆
                                                         </div>
@@ -98,7 +98,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
 
                                         {/* DIAS */}
-                                        <div key={day.date.toDateString()}  className={` flex flex-row border-b border-t border-dashed border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted " : "bg-[white] font-bold"}`}>
+                                        <div key={day.date.toDateString()}  className={` flex flex-row border-b border-t border border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted " : "bg-[white] font-bold"}`}>
 
                                             <div className={`border-r bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
                                                 <div className="min-w-[30px] flex justify-center">
@@ -226,7 +226,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
                                         {/* MÊSES */}
                                         {
-                                            ((index + 1) !== 0 && (index + 1) % 30 === 0) &&
+                                            ( ((index + 1) !== 0 && (index + 1) % 30 === 0)) || (optimisticDays.length <= 30 && (index + 1) === optimisticDays.length  ) &&
 
                                             <div key={day.date.toDateString() + "stat"} className={`flex flex-row bg-white border-b border-t border-black/1 align-middle h-[50px] items-center  justify-between text-center font-bold"}`}>
 
