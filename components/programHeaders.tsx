@@ -42,7 +42,7 @@ export const ProgramHeader = (
                     <div className="flex flex-col sm:flex-row">
                         <p className="font-semibold text-muted-foreground text-sm pr-2 text-center whitespace-break-spaces"
                         >
-                            📝 {program.client.name.length > 30 ? program.client.name.substring(0, 30) + "..." : program.client.name}
+                            📔 {program.client.name.length > 30 ? program.client.name.substring(0, 30) + "..." : program.client.name}
                         </p>
                         <p className="text-sm text-muted-foreground text-center">
                             {program.name.length > 30 ? program.name.substring(0, 30) + "..." : program.name}
