@@ -18,7 +18,7 @@ export function generateId(){
   return id
 }
 
-export function formatDateToDdMmYy(date:Date) {
+export function formatDateToDdMmWeek(date:Date) {
   const day = String(date.getDate()).padStart(2, '0'); // Ensure two digits
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
   const year = String(date.getFullYear()).slice(-2); // Get the last two digits of the year
@@ -26,4 +26,14 @@ export function formatDateToDdMmYy(date:Date) {
   const dayOfWeekAbbr = daysOfWeek[date.getDay()];
   // return `${day}/${month}/${year}`;
   return `${day}/${month} ${dayOfWeekAbbr}`;
+}
+
+export function formatDateToDdMmYy(date:Date) {
+  const day = String(date.getDate()).padStart(2, '0'); // Ensure two digits
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const year = String(date.getFullYear()).slice(-2); // Get the last two digits of the year
+  const daysOfWeek = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  const dayOfWeekAbbr = daysOfWeek[date.getDay()];
+  // return `${day}/${month}/${year}`;
+  return `${day}/${month}/${year.padEnd(2, '0')}`;
 }

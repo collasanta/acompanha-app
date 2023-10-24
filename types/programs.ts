@@ -14,17 +14,9 @@ export const programsFormSchema = z.object({
   programName: z.string().min(10, {
     message: "Nome deve ter no mínimo 10 caracteres",
   }),
-  duration: z.coerce.number().min(10, {
-    message: "Duração do programa deve ser de pelo menos 10 dias",
-  }),
-  startDate: z.coerce.date().refine((value) => {
-    // const currentDate = new Date();
-    // return value > currentDate;
-    return value;
-  }, {
-    message: "A data de início deve ser no futuro",
-  }),
-  endDate: z.coerce.date().optional(),
+  duration: z.number().optional(),
+  startDate: z.date(),
+  endDate: z.date(),
   metricspeso: z.boolean(),
   metricsdieta: z.boolean(),
   metricstreino: z.boolean(),
@@ -40,7 +32,7 @@ export interface programsFrontEndListType {
   id: string;
   name: string;
   start_date: Date;
-  duration: number;
+  duration?: number;
   end_date: Date;
   enabled_metrics: JsonValue;
   status: string;

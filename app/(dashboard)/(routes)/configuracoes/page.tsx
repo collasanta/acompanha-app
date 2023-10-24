@@ -7,11 +7,11 @@ const SettingsPage = async () => {
             Configurações
           </h2>
           <p className="text-muted-foreground font-light text-small md:text-lg text-center">
-            All your generations are saved here
+            Ajuste suas preferências
           </p>
         </div>
         <div className="px-4 md:px-20 lg:px-32 space-y-4">
-          Teste
+          
           {/* <ChapterCard genId="asdasds" />
           {chapters.map((chapter:IChapterList) => (
             <ChapterCard 

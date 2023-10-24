@@ -22,9 +22,9 @@ export function getLast30DaysStatsByIndex(indexInput: number, optimisticDays: Da
     if (isNaN(WeightVariation)) {
         WeightVariation = 0
     } else if(WeightVariation < 0){
-        WeightVariation = `⬇${(WeightVariation*-1).toFixed(1).toString()}`
+        WeightVariation = `${(WeightVariation).toFixed(1).toString()}`
     } else if (WeightVariation > 0) {
-        WeightVariation = `⬆${WeightVariation.toFixed(1)}`
+        WeightVariation = `${WeightVariation.toFixed(1)}`
     }
 
     for (const day of last30DaysData) {

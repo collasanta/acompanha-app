@@ -28,6 +28,9 @@ export const getUserPrograms = async () => {
           },
         },
       },
+      where: {
+        professionalId: userId
+      },
     });
     return { userPrograms: programs }
   } catch (error: any) {
