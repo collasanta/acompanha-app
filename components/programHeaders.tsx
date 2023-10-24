@@ -7,6 +7,7 @@ import Link from "next/link";
 import { checkpointType } from "@/types/checkpoints";
 import manifest from "../public/manifest.json";
 import { formatDateToDdMmYy } from "@/lib/utils";
+import Image from "next/image";
 
 export const ProgramHeader = (
     { program, collapsed = false, programPage = false, checkpoints }: { program: programsFrontEndListType, collapsed?: boolean, programPage?: boolean, checkpoints: Array<checkpointType> }
@@ -32,20 +33,23 @@ export const ProgramHeader = (
     }
 
     return (
-        <div className="bg-white w-full flex justify-center mt-[5px] ">
-            <div className=" flex flex-col shadow-md w-full max-w-[550px] rounded-tr-[50px] w-full bg-transparent border border-[3px] border-b-1 text-card-foreground text-[13px]">
+        <div className="bg-secondary w-full flex justify-center ">
+            <div className=" flex flex-col shadow-md w-full max-w-[550px] rounded-tr-[50px] w-full bg-transparent border border-[3px] text-card-foreground text-[13px]">
                 <div onClick={handleClick} className="flex items-center justify-center cursor-pointer ">
-                    <div className="flex justify-center  min-w-[78px]">
-                        {
-                            isOpen ? <MinusCircleIcon className="w-5 h-5 transform rotate-180 align-middle" color="#999999" /> : <PlusCircleIcon className="w-5 h-5" color="#999999" />
-                        }
+                    <div className="flex justify-center  min-w-[78px] h-full bg-white">
+                        <Image  width={70} height={70} alt="logo" src="/logo-vazado.png"/>
                     </div>
                     <div className="flex flex-col border-l-2 border-dashed w-full py-2 bg-[#fcfdff] rounded-tr-[50px]">
-                        <div className="flex flex-row h-[25px]">
+                        <div className="flex flex-row justify-between  h-[25px]">
                             <p className="pl-4 sm:pl-6 align-text-bottom font-semibold max-w-[220px]  text-muted-foreground text-sm text-start whitespace-break-spaces"
                             >
                                 {program.client.name}
                             </p>
+                            <div className="mr-8">
+                                {
+                                    isOpen ? <MinusCircleIcon className="w-5 h-5 transform rotate-180 align-bottom" color="#999999" /> : <PlusCircleIcon className="w-5 h-5" color="#999999" />
+                                }
+                            </div>
 
                         </div>
                         <div className=" flex flex-row h-[25px] border-t-2 border-dashed">
@@ -54,6 +58,7 @@ export const ProgramHeader = (
                                 {program.name}
                                 {/* {program.client.name.length > 22 ? program.client.name.substring(0, 22) + "..." : program.client.name} */}
                             </p>
+
                         </div>
                     </div>
 
@@ -67,28 +72,28 @@ export const ProgramHeader = (
                             {/* INICIO / FIM / DURACAO */}
                             <div className="flex justify-center border-t-4 py-2 ">
                                 <div className="flex flex-row justify-center text-start">
-                                    <div className="flex bg-white rounded-lg">
+                                    <div className="mr-2 flex bg-white rounded-lg">
                                         <div className="w-[40px] ml-2">
                                             <a className="font-[500] text-muted-foreground">Início: </a>
                                         </div>
-                                        <div className="text-muted-foreground">
+                                        <div className="text-muted-foreground mr-2">
                                             <a>{formatDateToDdMmYy(program.start_date)}</a>
                                         </div>
                                     </div>
-                                    <div className="flex  bg-white rounded-lg text-muted-foreground">
+                                    <div className="mr-2 flex  bg-white rounded-lg text-muted-foreground">
                                         <div className="w-[30px] ml-2">
                                             <a className="font-[500]">Fim: </a>
                                         </div>
-                                        <div className="text-muted-foreground">
+                                        <div className="text-muted-foreground mr-2">
                                             <a>{formatDateToDdMmYy(program.end_date)}</a>
                                         </div>
 
                                     </div>
-                                    <div className="flex  bg-white rounded-lg">
+                                    <div className="mr-2 flex  bg-white rounded-lg">
                                         <div className="w-[60px] ml-2">
                                             <a className="font-[500] text-muted-foreground">Duração: </a>
                                         </div>
-                                        <div className=" text-muted-foreground">
+                                        <div className=" text-muted-foreground mr-2">
                                             <a>{program.duration} Dias</a>
                                         </div>
                                     </div>

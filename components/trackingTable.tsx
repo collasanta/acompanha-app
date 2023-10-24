@@ -9,7 +9,6 @@ import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "./ui/popo
 import { Textarea } from "@/components/ui/textarea"
 import { checkpointType } from "@/types/checkpoints";
 import { experimental_useOptimistic as useOptimistic, useState } from "react";
-import AddToHomeScreen from "./PWA/AddToHomeScreen/AddToHomeScreen";
 import Notifications from "./PWA/WebPush/WebPushNotifications";
 import { getLast30DaysStatsByIndex } from "@/lib/stats";
 import { useTransition } from "react";
@@ -48,8 +47,6 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
     return (
         <>
             <Notifications programId={Days[0].programId} />
-
-            <AddToHomeScreen />
             <div className="flex justify-center">
                 <div className="max-w-[550px] w-full mb-[100px] shadow-lg border-r-2 border-l-2 border-b-2 ">
                     <div className="flex flex-col w-full">
@@ -76,7 +73,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                         {
                                             day.checkpointId && index === 0 && (
                                                 <>
-                                                    <div className={`pb-1 bg-white border-[1.5px] w-full z-[8000] sticky top-[0px] h-[50px] items-center font-semibold flex  text-muted-foreground  justify-between text-center`}>
+                                                    <div className={`pb-1 bg-white border-[1.5px] w-full z-30 sticky top-[0px] h-[50px] items-center font-semibold flex  text-muted-foreground  justify-between text-center`}>
                                                         <div className=" border-r-2 text-center w-[80px] bg-white p-1">
                                                             📆
                                                         </div>

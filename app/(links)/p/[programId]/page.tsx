@@ -36,7 +36,7 @@ export default async function ProgramPage({ params }: { params: { programId: str
 
   return (
     <div className="">
-      <AddToHomeScreen />
+      {/* <AddToHomeScreen /> */}
       <div className="w-full flex justify-center">
         <ProgramHeader program={program!} checkpoints={checkPoints.checkpoints} />
       </div>
