@@ -68,7 +68,7 @@ export const NewUserModal = () => {
                                             <FormLabel>Nome Completo</FormLabel>
                                         </div>
                                         <FormControl>
-                                            <Input placeholder="Giovanni Correa" {...field} />
+                                            <Input placeholder="João Pedro" {...field} />
                                         </FormControl>
 
                                         <FormMessage />
