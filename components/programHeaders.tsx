@@ -42,14 +42,14 @@ export const ProgramHeader = (
                     </div>
                     <div className="flex flex-col border-l-2 border-dashed w-full py-2 bg-[#fcfdff] rounded-tr-[50px]">
                         <div className="flex flex-row h-[25px]">
-                            <p className="pl-2 sm:pl-6 align-text-bottom font-semibold  text-muted-foreground text-sm text-start whitespace-break-spaces"
+                            <p className="pl-4 sm:pl-6 align-text-bottom font-semibold max-w-[220px]  text-muted-foreground text-sm text-start whitespace-break-spaces"
                             >
                                 {program.client.name}
                             </p>
 
                         </div>
                         <div className=" flex flex-row h-[25px] border-t-2 border-dashed">
-                            <p className="pt-1 pl-2 sm:pl-6  text-muted-foreground text-sm text-start max-w-[180px] sm:max-w-[500px] truncate"
+                            <p className="pt-1 pl-4 sm:pl-6  text-muted-foreground text-sm text-start max-w-[220px] sm:max-w-[500px] truncate"
                             >
                                 {program.name}
                                 {/* {program.client.name.length > 22 ? program.client.name.substring(0, 22) + "..." : program.client.name} */}

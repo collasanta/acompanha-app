@@ -191,7 +191,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                     <>
                                                         <input
                                                             type="string"
-                                                            disabled={isLoading}
+                                                            disabled={isLoading}                                                            
                                                             defaultValue={day.weight ? parseFloat(day.weight).toFixed(1) + " kg" : ""}
                                                             onBlur={async (e) => {
                                                                 if (await isOffline() === true) {
@@ -205,7 +205,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                                 setIsLoading(false)
                                                             }}
                                                             onChange={(e) => e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1')}
-                                                            className={`w-[55px] h-[40px] border border-[1px] text-muted-foreground text-[13px] rounded-md align-middle cursor-pointer text-center
+                                                            className={`w-[55px] h-[40px] border border-[1px] text-muted-foreground text-[13px] rounded-md align-middle cursor-pointer text-center disabled:text-muted-foreground disabled:opacity-100 
                                                 ${day.weight ? "bg-[#e2fff5] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border-black/1 border" : "bg-muted border" : "bg-[#ff6870] border"}`}>
                                                         </input>
                                                     </>
