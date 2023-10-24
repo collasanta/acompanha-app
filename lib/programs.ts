@@ -102,7 +102,7 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
         name: finalForm.programName,
         professionalId: userId,
         start_date: finalForm.startDate,
-        duration: finalForm.duration,
+        duration: finalForm.duration!,
         end_date: finalForm.endDate!,
         enabled_metrics: enabled_metrics,
         status: "created",
@@ -112,7 +112,7 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
       }
     })
 
-    const newDays = createProgramDays(newProgram.id, finalForm.startDate, finalForm.duration)
+    const newDays = createProgramDays(newProgram.id, finalForm.startDate, finalForm.duration!)
     if (typeof newDays === 'object' && 'erro' in newDays) {
       console.log("Erro ao criar dias: ", newDays.erro)
       return { erro: newDays.erro };
