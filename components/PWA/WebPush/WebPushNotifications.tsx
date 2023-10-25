@@ -5,6 +5,7 @@ import {
   saveWebPushSubscription
 } from "@/lib/pwa"
 import { MouseEventHandler, useEffect, useState } from "react"
+import { FaWindows } from "react-icons/fa";
 
 const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -54,11 +55,10 @@ export default function Notifications({ programId }: { programId: string }) {
   const subscribeButtonOnClick: MouseEventHandler<HTMLButtonElement> = async (
     event
   ) => {
-    if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
-      throw new Error("Environment variables supplied not sufficient.");
-    }
     if (!registration) {
       console.error("No SW registration available.");
+      window.alert("no registration found")
+      setOpen(false)
       return;
     }
     event.preventDefault();
@@ -72,6 +72,7 @@ export default function Notifications({ programId }: { programId: string }) {
       saveWebPushSubscription(JSON.stringify(sub), programId, window.navigator.userAgent!)
       setOpen(false)
     } catch (error) {
+      window.alert("Erro ao ativar notificações" + "\n" + error)
       setOpen(false)      
     }
   };
