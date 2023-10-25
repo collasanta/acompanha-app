@@ -61,7 +61,6 @@ export default function Notifications({ programId }: { programId: string }) {
       setOpen(false)
       return;
     }
-    event.preventDefault();
     try {
       const sub = await registration.pushManager.subscribe({
         userVisibleOnly: true,
