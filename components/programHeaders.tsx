@@ -34,7 +34,7 @@ export const ProgramHeader = (
     }
 
     return (
-        <div className="bg-secondary w-full flex justify-center ">
+        <div className="bg-white w-full flex justify-center ">
             <div className=" flex flex-col shadow-md w-full max-w-[550px] rounded-tr-[50px] w-full bg-transparent border border-[3px] text-card-foreground text-[13px]">
                 <div onClick={handleClick} className="flex items-center justify-center cursor-pointer ">
                     <div className="flex justify-center  min-w-[78px] h-full bg-white">
