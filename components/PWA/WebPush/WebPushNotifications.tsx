@@ -1,11 +1,13 @@
 'use client'
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button";
 import {
   saveWebPushSubscription
 } from "@/lib/pwa"
 import { MouseEventHandler, useEffect, useState } from "react"
 import { FaWindows } from "react-icons/fa";
+import { MdNotificationAdd, MdOutlineNotificationAdd } from "react-icons/md";
 
 const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -25,7 +27,7 @@ export default function Notifications({ programId }: { programId: string }) {
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
 
   useEffect(() => {
-
+    console.log("Oi")
   }, [])
 
   useEffect(() => {
@@ -57,7 +59,6 @@ export default function Notifications({ programId }: { programId: string }) {
   ) => {
     if (!registration) {
       console.error("No SW registration available.");
-      window.alert("no registration found")
       setOpen(false)
       return;
     }
@@ -71,14 +72,19 @@ export default function Notifications({ programId }: { programId: string }) {
       saveWebPushSubscription(JSON.stringify(sub), programId, window.navigator.userAgent!)
       setOpen(false)
     } catch (error) {
-      window.alert("Erro ao ativar notificações" + "\n" + error)
       setOpen(false)      
     }
   };
 
   return (
     <>
-      <AlertDialog open={open}>
+    {
+    open &&
+    <button onClick={subscribeButtonOnClick}>
+      <MdOutlineNotificationAdd className="w-5 h-5 align-bottom mt-1" color="#999999" />
+    </button>
+    }
+      {/* <AlertDialog open={open}>
         <AlertDialogContent className="rounded-lg">
           <AlertDialogHeader>
             <AlertDialogTitle>Bem vindo ao seu Diário.Fit 🎉</AlertDialogTitle>
@@ -86,15 +92,15 @@ export default function Notifications({ programId }: { programId: string }) {
               Para prosseguir, ative as notificações clicando no botão abaixo👇
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter> */}
             {/* <AlertDialogAction className="mx-20"> */}
-            <button className='w-[150px] h-[50px] mx-auto hinline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-[#059669] ' onClick={subscribeButtonOnClick}>
+            {/* <button className='w-[150px] h-[50px] mx-auto hinline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-[#059669] ' onClick={subscribeButtonOnClick}>
               Ativar Notificações
-            </button>
+            </button> */}
             {/* </AlertDialogAction> */}
-          </AlertDialogFooter>
+          {/* </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog> */}
     </>
   )
 }

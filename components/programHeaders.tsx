@@ -8,6 +8,7 @@ import { checkpointType } from "@/types/checkpoints";
 import manifest from "../public/manifest.json";
 import { formatDateToDdMmYy } from "@/lib/utils";
 import Image from "next/image";
+import Notifications from "./PWA/WebPush/WebPushNotifications";
 
 export const ProgramHeader = (
     { program, collapsed = false, programPage = false, checkpoints }: { program: programsFrontEndListType, collapsed?: boolean, programPage?: boolean, checkpoints: Array<checkpointType> }
@@ -52,13 +53,15 @@ export const ProgramHeader = (
                             </div>
 
                         </div>
-                        <div className=" flex flex-row h-[25px] border-t-2 border-dashed">
+                        <div className=" flex flex-row h-[25px] border-t-2 border-dashed justify-between">
                             <p className="pt-1 pl-4 sm:pl-6  text-muted-foreground text-sm text-start max-w-[220px] sm:max-w-[500px] truncate"
                             >
                                 {program.name}
                                 {/* {program.client.name.length > 22 ? program.client.name.substring(0, 22) + "..." : program.client.name} */}
                             </p>
-
+                            <div className="mr-8">
+                            <Notifications programId={program.id}/>
+                            </div>
                         </div>
                     </div>
 

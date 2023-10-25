@@ -46,7 +46,6 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
     return (
         <>
-            <Notifications programId={Days[0].programId} />
             <div className="flex justify-center bg-secondary">
                 <div className="max-w-[550px] w-full mb-[100px] shadow-lg border-r-2 border-l-2 border-b-2 ">
                     <div className="flex flex-col w-full">
