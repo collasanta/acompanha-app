@@ -13,6 +13,7 @@ import Notifications from "./PWA/WebPush/WebPushNotifications";
 import { getLast30DaysStatsByIndex } from "@/lib/stats";
 import { useTransition } from "react";
 import { revalidatePath } from "next/cache";
+import { AlertDialog } from "@radix-ui/react-alert-dialog";
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
     console.log("render trackingTable.tsx")
@@ -86,12 +87,12 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                             Treino 💪
                                                             {/* </div> */}
                                                         </div>}
-                                                        {EnabledMetrics.peso && <div className="w-[55px] text-[14px] bg-white">
+                                                        {EnabledMetrics.peso && <div className="w-[55px] text-[14px] bg-white flex flex-col">
                                                             {/* <div className="border-r-2 border-l-2"> */}
-                                                            Peso 📊
+                                                            Peso <a>📊</a>
                                                             {/* </div> */}
                                                         </div>}
-                                                        <div className="w-[70px] bg-white p-1 border-l-2 text-[14px] ">📝 </div>
+                                                        <div className="w-[70px] bg-white  border-l-2 text-[14px] flex flex-col ">Notas <a>✍</a> </div>
                                                     </div>
                                                 </>
                                             )
@@ -202,7 +203,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                             }}
                                                             onChange={(e) => e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(/(\..*?)\..*/g, '$1')}
                                                             className={`w-[55px] h-[40px] border border-[1px] text-muted-foreground text-[13px] rounded-md align-middle cursor-pointer text-center disabled:text-muted-foreground disabled:opacity-100 
-                                                ${day.weight ? "bg-[#e2fff5] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border-black/1 border" : "bg-muted border" : "bg-[#ff6870] border"}`}>
+                                                ${day.weight ? "bg-[#e2fff5] bg-[#e2fff5] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border-black/1 border" : "bg-muted border" : "bg-[#ff6870] border"}`}>
                                                         </input>
                                                     </>
                                                 :
@@ -212,6 +213,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
 
                                             <div className="w-[70px] max-h-[40px]">
                                                 {notFuture &&
+                                                
                                                     <Popover modal={true}>
                                                         <PopoverTrigger disabled={isLoading} type="button" className="w-[70px] align-middle flex justify-center items-center">
                                                             {
@@ -233,12 +235,13 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                                             }
                                                                         }}
                                                                         className={`bg-white shadow-md rounded-full w-[40px] border border-[0.5px] text-[11px] cursor-pointer text-center
-                                                        ${day.notes ? "bg-[#fffee2] text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted shadow-none border" : "bg-muted shadow-none border"}`}>
+                                                        ${day.notes ? "bg-[#fffee2] muted text-muted-foreground font-normal" : day.weight === null ? day.date.getTime() === currentDate.getTime() ? "bg-muted shadow-lg animate-pulse border  border-black/1" : "bg-muted shadow-none border" : "bg-muted shadow-none border"}`}>
                                                                         {day.notes ? "📝" : day.date.getTime() === currentDate.getTime() ? "✍" : ""}
 
                                                                     </Button>
                                                             }
                                                         </PopoverTrigger>
+                
                                                         <PopoverContent side="top" className="w-screen max-w-[450px] bg-card sticky top-[0px] " onOpenAutoFocus={(e) => e.preventDefault()}>
                                                             <div className="flex flex-col items-center">
                                                                 <Textarea
@@ -254,9 +257,9 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                                         await setNotes(day.date, day.programId, e.target.value, day.notes!)
                                                                         setIsLoading(false)
                                                                     }}
-                                                                    placeholder="digite aqui como foi seu dia 👇"
+                                                                    placeholder="digite aqui como foi seu dia..."
                                                                     defaultValue={day.notes!}
-                                                                    className="min-h-[120px] bg-[#fffee2] text-muted-foreground bg-[#fffee2] bg-opacity-50"
+                                                                    className="min-h-[120px] text-muted-foreground placeholder:text-gray-300 bg-[#fffee2] bg-gray-100 bg-opacity-25"
 
                                                                 >
                                                                 </Textarea>
@@ -284,9 +287,9 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                         {
                                             // ( ((index + 1) !== 0 && (index + 1) % 30 === 0)) || (Days.length <= 30 && (index + 1) === Days.length  ) &&
                                             (((index + 1) !== 0 && (index + 1) % 30 === 0) || (Days.length <= 30 && (index + 1) === Days.length)) &&
-                                            <div key={day.date.toDateString() + "stat"} className={`flex flex-row bg-white border-b border-t border-black/1 align-middle h-[50px] items-center  justify-between text-center font-bold"}`}>
+                                            <div key={day.date.toDateString() + "stat"} className={`flex font-semibold flex-row bg-white border-b border-t border-black/1 align-middle h-[50px] items-center  justify-between text-center font-bold"}`}>
 
-                                                <div className={`  bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
+                                                <div className={`  bg-[white] border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
                                                     <div className="min-w-[30px] flex justify-center">
                                                         <a className="text-center">
                                                             📈
