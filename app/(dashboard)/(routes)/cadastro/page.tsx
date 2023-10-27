@@ -28,7 +28,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { programsFormSchema, programsFormSchemaType } from "@/types/programs"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CalendarIcon, InfoIcon } from "lucide-react"
@@ -43,7 +43,12 @@ export default function Home() {
   const [finalForm, setFinalForm] = useState<programsFormSchemaType>()
   const [validForm, setValidForm] = useState(false)
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isCalendarOpen2, setIsCalendarOpen2] = useState(false);
+  const [dateDiff, setDateDiff] = useState(0);
   const [isLoading, setLoading] = useState(false);
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+
   const router = useRouter()
 
   async function registerProgram() {
@@ -59,10 +64,21 @@ export default function Home() {
     setLoading(false)
   }
 
+  useEffect(() => {
+    if (startDate && endDate) {
+      const diff = Math.abs(startDate.getTime()! - endDate.getTime()!);
+      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+      console.log("dateDiff:", days)
+      setDateDiff(days)
+    }
+  }, [startDate, endDate])
+  
+
   function onSubmit(values: programsFormSchemaType) {
-    const startDate = new Date(values.startDate);
-    const endDate = new Date(startDate.getTime() + values.duration * 24 * 60 * 60 * 1000); // Add days in milliseconds
-    const finalForm = { ...values, endDate: endDate };
+    const finalForm = {
+      ...values,
+      duration: dateDiff,
+    }
     setFinalForm(finalForm)
     setValidForm(true)
   }
@@ -75,6 +91,7 @@ export default function Home() {
       programName: "",
       duration: undefined,
       startDate: undefined,
+      endDate: undefined,
       metricspeso: true,
       metricsdieta: true,
       metricstreino: true,
@@ -89,12 +106,12 @@ export default function Home() {
           Cadastro
         </h2>
         <p className="text-muted-foreground font-light text-small md:text-lg text-center">
-          Cadastre novos programas para seus clientes
+          Cadastre novos diários para seus clientes
         </p>
       </div>
-      <div className=" px-4 md:px-20 lg:px-32 space-y-4  md:max-w-[800px] mx-auto">
+      <div className=" px-4 md:px-20 lg:px-32 md:max-w-[800px] mx-auto">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="clientName"
@@ -141,7 +158,7 @@ export default function Home() {
               render={({ field }) => (
                 <FormItem>
                   <div className="flex flex-row space-x-4">
-                    <FormLabel>Nome do Programa</FormLabel>
+                    <FormLabel>Descrição do Acompanhamento</FormLabel>
                     <Popover>
                       <PopoverTrigger type="button">
                         <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -164,7 +181,7 @@ export default function Home() {
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <div className="flex flex-row space-x-4">
-                    <FormLabel>Data de início do Programa</FormLabel>
+                    <FormLabel>Data de início do Diário</FormLabel>
                     <Popover>
                       <PopoverTrigger type="button">
                         <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -199,7 +216,62 @@ export default function Home() {
                         <Calendar
                           mode="single"
                           selected={field.value}
-                          onSelect={(e) => { field.onChange(e); setIsCalendarOpen(false); }}
+                          onSelect={(e) => { field.onChange(e); setIsCalendarOpen(false); setStartDate(e) }}
+                          // disabled={(date) =>
+                          //   date < new Date() || date < new Date("1900-01-01")
+                          // }
+                          initialFocus
+                          locale={ptBR}
+                        />
+                        {/* </PopoverClose> */}
+                      </PopoverContent>
+                    </Popover>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+                        <FormField
+              control={form.control}
+              name="endDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <div className="flex flex-row space-x-4">
+                    <FormLabel>Data Fim</FormLabel>
+                    <Popover>
+                      <PopoverTrigger type="button">
+                        <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <p className="text-[12px] pl-1">Data do último dia contabilizado no diário</p>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                  <FormControl>
+                    <Popover open={isCalendarOpen2} onOpenChange={setIsCalendarOpen2} >
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP", { locale: ptBR })
+                            ) : (
+                              <span>👉 Escolher Data</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        {/* <PopoverClose> */}
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={(e) => { field.onChange(e); setIsCalendarOpen2(false); setEndDate(e) }}
                           // disabled={(date) =>
                           //   date < new Date() || date < new Date("1900-01-01")
                           // }
@@ -230,7 +302,7 @@ export default function Home() {
                     </Popover>
                   </div>
                   <FormControl>
-                    <Input placeholder="21 dias" {...field} />
+                    <Input placeholder="21 dias" value={dateDiff + " Dias"} readOnly={true} className="text-muted-foreground"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -356,7 +428,7 @@ export default function Home() {
                         <AlertDialogCancel onClick={() => setValidForm(false)}>
                           Voltar
                         </AlertDialogCancel>
-                        { 
+                        {
                           isLoading ? (
                             <AlertDialogAction className="mx-auto min-w-[90px]">
                               <svg aria-hidden="true" className="w-5 h-5 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

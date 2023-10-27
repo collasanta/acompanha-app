@@ -20,9 +20,9 @@ export const LandingNavbar = () => {
     <nav className="p-4 bg-white flex items-center justify-between">
       <Link href="/" className="flex items-center">
         <div className="relative w-16 h-16">
-          <Image fill alt="Logo" src="/logo.png" />
+          <Image fill alt="Logo" src="/logo.png" className="rounded-lg" />
         </div>
-        <h1 className={cn("font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-yellow-600 to-yellow-100", font.className)}>
+        <h1 className={cn("pl-4 font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-400", font.className)}>
           Diário.Fit
         </h1>
       </Link>

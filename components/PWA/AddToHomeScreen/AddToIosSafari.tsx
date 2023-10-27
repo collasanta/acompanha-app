@@ -21,12 +21,13 @@ export default function AddToIosSafari(props: Props) {
                 </button>
                 <p className="text-lg">Para Instalar o App:  </p>
                 <div className="flex gap-2 items-center text-lg">
-                    <p>Clique no botão</p>
+                    <p>Procure o botão do iPhone</p>
                     <TbShare2 className="text-4xl" />
+                    <p>embaixo da busca do navegador</p>
                     {/* <p>icon</p> */}
                 </div>
                 <div className="flex flex-col gap-2 items-center text-lg w-full px-4">
-                    <p>Deslize para baixo e clique em:</p>
+                    <p>Após clicar nele, deslize para baixo nas configuraçõese procure por:</p>
                     <div className="bg-zinc-800 flex justify-between items-center w-full px-4 py-2 rounded-lg">
                         <p>Adicionar à Tela de Início</p>
                         <AiOutlinePlusSquare className="text-2xl" />
