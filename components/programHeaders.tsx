@@ -37,10 +37,10 @@ export const ProgramHeader = (
         <div className="bg-white w-full flex justify-center ">
             <div className=" flex flex-col shadow-md w-full max-w-[550px] rounded-tr-[50px] w-full bg-transparent border border-[3px] text-card-foreground text-[13px]">
                 <div onClick={handleClick} className="flex items-center justify-center cursor-pointer ">
-                    <div className="flex justify-center  min-w-[78px] h-full bg-white">
+                    <div className="flex justify-center  min-w-[80px] h-full bg-white border-r-2 ">
                         <Image  width={70} height={70} alt="logo" src="/logo-vazado.png"/>
                     </div>
-                    <div className="flex flex-col border-l-2 border-dashed w-full py-2 bg-[#fcfdff] rounded-tr-[50px]">
+                    <div className="flex flex-col w-full py-2 bg-[#fcfdff] rounded-tr-[50px]">
                         <div className="flex flex-row justify-between  h-[25px]">
                             <p className="pl-4 sm:pl-6 align-text-bottom font-semibold max-w-[220px]  text-muted-foreground text-sm text-start whitespace-break-spaces"
                             >
@@ -53,7 +53,7 @@ export const ProgramHeader = (
                             </div>
 
                         </div>
-                        <div className=" flex flex-row h-[25px] border-t-2 border-dashed justify-between">
+                        <div className=" flex flex-row h-[25px] border-t-2  justify-between">
                             <p className="pt-1 pl-4 sm:pl-6  text-muted-foreground text-sm text-start max-w-[220px] sm:max-w-[500px] truncate"
                             >
                                 {program.name}
@@ -96,7 +96,7 @@ export const ProgramHeader = (
                                         <div className="w-[60px] ml-2">
                                             <a className="font-[500] text-muted-foreground">Duração: </a>
                                         </div>
-                                        <div className=" text-muted-foreground mr-2">
+                                        <div className=" text-muted-foreground">
                                             <a>{program.duration} Dias</a>
                                         </div>
                                     </div>

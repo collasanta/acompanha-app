@@ -73,8 +73,8 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                         {
                                             day.checkpointId && index === 0 && (
                                                 <>
-                                                    <div className={`pb-1 bg-white border-[1.5px] w-full z-30 sticky top-[0px] h-[50px] items-center font-semibold flex  text-muted-foreground  justify-between text-center`}>
-                                                        <div className=" border-r-2 text-center w-[80px] bg-white p-1">
+                                                    <div className={` bg-white border-[1.5px] w-full z-30 sticky top-[0px] h-[50px] items-center font-semibold flex  text-muted-foreground  justify-between text-center`}>
+                                                        <div className="border-r-2 text-center w-[80px] bg-white py-2 ">
                                                             📆
                                                         </div>
                                                         {EnabledMetrics.dieta && <div className="w-[50px] text-[14px] bg-white">
