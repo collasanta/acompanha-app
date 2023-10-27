@@ -336,11 +336,11 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                 }
 
 
-                                            //     <div className="w-[70px] max-h-[40px]">
+                                                 <div className="w-[70px] max-h-[40px]">
 
-                                            //     </div>
+                                                 </div>
 
-                                            // </div>
+                                             </div>
 
                                         }
 
