@@ -37,7 +37,7 @@ export const ProgramHeader = (
         <div className="bg-white w-full flex justify-center ">
             <div className=" flex flex-col shadow-md w-full max-w-[550px] rounded-tr-[50px] w-full bg-transparent border border-[3px] text-card-foreground text-[13px]">
                 <div onClick={handleClick} className="flex items-center justify-center cursor-pointer ">
-                    <div className="flex justify-center  min-w-[80px] h-full bg-white border-r-2 ">
+                    <div className="flex justify-center  min-w-[80px] h-full bg-white border-r-2 border-dashed">
                         <Image  width={70} height={70} alt="logo" src="/logo-vazado.png"/>
                     </div>
                     <div className="flex flex-col w-full py-2 bg-[#fcfdff] rounded-tr-[50px]">
@@ -53,7 +53,7 @@ export const ProgramHeader = (
                             </div>
 
                         </div>
-                        <div className=" flex flex-row h-[25px] border-t-2  justify-between">
+                        <div className=" flex flex-row h-[25px] border-t-2 border-dashed  justify-between">
                             <p className="pt-1 pl-4 sm:pl-6  text-muted-foreground text-sm text-start max-w-[220px] sm:max-w-[500px] truncate"
                             >
                                 {program.name}
