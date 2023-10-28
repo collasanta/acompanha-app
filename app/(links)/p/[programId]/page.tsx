@@ -1,5 +1,5 @@
 import { ProgramHeader } from "@/components/programHeaders";
-import { TrackingTable } from "@/components/trackingTable";
+import { TrackingTable } from "@/components/tracking-table";
 import { checkIfProfessionalOwnsProgram } from "@/lib/professional";
 import { getCheckpointsByProgramId, getProgramDays, getUserProgram } from "@/lib/programs";
 
