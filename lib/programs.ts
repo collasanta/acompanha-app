@@ -144,9 +144,9 @@ export const getProgramDays = async (programId: string) => {
       },
       select: {
         date: true,
-        diet: await getActiveMetricsDB(enabledMetrics, "dieta"),
-        exercise: await getActiveMetricsDB(enabledMetrics, "treino"),
-        weight: await getActiveMetricsDB(enabledMetrics, "peso"),
+        diet: await getActiveMetricsDB(enabledMetrics?.enabled_metrics, "dieta"),
+        exercise: await getActiveMetricsDB(enabledMetrics?.enabled_metrics, "treino"),
+        weight: await getActiveMetricsDB(enabledMetrics?.enabled_metrics, "peso"),
         notes: true,
         checkpointId: true,
         programId: true

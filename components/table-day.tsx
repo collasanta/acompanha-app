@@ -17,7 +17,6 @@ export function TableDay({ EnabledMetrics, day, currentDate, index, currentIndex
     const notFuture = day.date.getTime() < Date.now()
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-
     return (
         <>
             <div key={day.date.toDateString()} className={`flex flex-row border-b border-t border border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted " : "bg-[white] font-bold"}`}>

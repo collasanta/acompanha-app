@@ -13,8 +13,6 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }:
     // console.log("render trackingTable.tsx - useClient")
     const [currentIndex, setCurrentIndex] = useState<number>(0)
     const [currentType, setCurrentType] = useState<string>("")
-    const [currentDate, setCurrentDate] = useState<Date>(new Date())
-
     const [optimisticDays, setOptimisticDays] = useOptimistic(
         Days,
         (state, updatedDay: DailyDataType) => {
@@ -28,10 +26,8 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }:
         }
     )
     
-    useEffect(() => {
-        currentDate.setHours(0, 0, 0, 0);
-    }, [])
-
+    let currentDate = new Date()
+    currentDate.setHours(0, 0, 0, 0);
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
     return (
         <>
