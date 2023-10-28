@@ -126,7 +126,16 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
   }
 }
 
-export const getProgramDays = async (programId: string, enabledMetrics: any) => {
+export const getProgramDays = async (programId: string) => {
+
+  const enabledMetrics = await prismadb.program.findUnique({
+    where: {
+      id: programId
+    },
+    select: {
+      enabled_metrics: true
+    }
+  })
 
   try {
     const days = await prismadb.dailyData.findMany({

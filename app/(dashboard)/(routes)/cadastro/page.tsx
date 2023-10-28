@@ -310,9 +310,9 @@ export default function Home() {
             />
             <div className="mx-auto pt-1">
               <div className="flex flex-col">
-                <a className="text-md pb-4 mx-auto font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                <div className="text-md pb-4 mx-auto font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Métricas para Acompanhar
-                </a>
+                </div>
               </div>
               <div className="flex flex-col mx-auto text-center">
                 <div className="flex space-x-10 justify-center text-center">
@@ -369,9 +369,9 @@ export default function Home() {
                     )}
                   />
                 </div>
-                <a className="pt-4 text-sm  text-muted-foreground">
+                <div className="pt-4 text-sm  text-muted-foreground">
                   Selecione Clicando 👆
-                </a>
+                </div>
 
               </div>
             </div>

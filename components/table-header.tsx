@@ -20,11 +20,11 @@ export function TableHeader({EnabledMetrics}
                     </div>}
                 {EnabledMetrics.peso &&
                     <div className="w-[55px] text-[14px] bg-white flex flex-col">
-                        Peso <a>📊</a>
+                        Peso <div>📊</div>
                     </div>}
                 <div className="w-[70px] bg-white  border-l-2 text-[14px] flex flex-col ">
                     Notas
-                    <a>✍</a>
+                    <div>✍</div>
                 </div>
             </div>
         </>

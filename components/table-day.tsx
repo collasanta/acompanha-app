@@ -24,11 +24,11 @@ export function TableDay({ EnabledMetrics, day, currentDate, index, currentIndex
 
                 <div className={`border-r bg-white border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
                     <div className="min-w-[30px] flex justify-center">
-                        <a className="text-center">{formatDateToDdMmWeek(day.date).split(" ")[0]}</a>
+                        <div className="text-center">{formatDateToDdMmWeek(day.date).split(" ")[0]}</div>
                     </div>
 
                     <div className="min-w-[30px] flex justify-center">
-                        <a className="italic text-[12px] text-gray-400 pl-1">{formatDateToDdMmWeek(day.date).split(" ")[1]}</a>
+                        <div className="italic text-[12px] text-gray-400 pl-1">{formatDateToDdMmWeek(day.date).split(" ")[1]}</div>
                     </div>
                 </div>
 
@@ -144,7 +144,7 @@ export function TableDay({ EnabledMetrics, day, currentDate, index, currentIndex
                     {notFuture &&
 
                         <Popover modal={true}>
-                            <PopoverTrigger disabled={isLoading} type="button" className="w-[70px] align-middle flex justify-center items-center">
+                            <PopoverTrigger disabled={isLoading} className="w-[70px] align-middle flex justify-center items-center">
                                 {
                                     isLoading && index === currentIndex && currentType === 'notes' ?
                                         <>

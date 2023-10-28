@@ -11,7 +11,7 @@ export const ProgramHeader = (
     { program, collapsed = false, programPage = false, checkpoints }: { program: programsFrontEndListType, collapsed?: boolean, programPage?: boolean, checkpoints: Array<checkpointType> }
 ) => {
     const [isOpen, setIsOpen] = useState(collapsed);
-    console.log("programHeader render - useClient ")
+    // console.log("programHeader render - useClient ")
     function handleClick() {
         setIsOpen(!isOpen);
     }
@@ -39,10 +39,10 @@ export const ProgramHeader = (
                     </div>
                     <div className="flex flex-col w-full py-2 bg-[#fcfdff] rounded-tr-[50px]">
                         <div className="flex flex-row justify-between  h-[25px]">
-                            <p className="pl-4 sm:pl-6 align-text-bottom font-semibold max-w-[220px] truncate  text-muted-foreground text-sm text-start whitespace-break-spaces"
+                            <div className="pl-4 sm:pl-6 align-text-bottom font-semibold max-w-[220px] truncate  text-muted-foreground text-sm text-start whitespace-break-spaces"
                             >
                                 {program.client.name}
-                            </p>
+                            </div>
                             <div className="mr-8">
                                 {
                                     isOpen ? <MinusCircleIcon className="w-5 h-5 transform rotate-180 align-bottom" color="#999999" /> : <PlusCircleIcon className="w-5 h-5" color="#999999" />
@@ -51,10 +51,10 @@ export const ProgramHeader = (
 
                         </div>
                         <div className=" flex flex-row h-[25px] border-t-2 border-dashed  justify-between">
-                            <p className="pt-1 pl-4 sm:pl-6  text-muted-foreground text-sm text-start max-w-[220px] sm:max-w-[500px] truncate"
+                            <div className="pt-1 pl-4 sm:pl-6  text-muted-foreground text-sm text-start max-w-[220px] sm:max-w-[500px] truncate"
                             >
                                 {program.name}
-                            </p>
+                            </div>
                             <div className="mr-8">
                             <Notifications programId={program.id}/>
                             </div>
@@ -73,27 +73,27 @@ export const ProgramHeader = (
                                 <div className="flex flex-row justify-center text-start">
                                     <div className="mr-2 flex bg-white rounded-lg">
                                         <div className="w-[40px] ml-2">
-                                            <a className="font-[500] text-muted-foreground">Início: </a>
+                                            <div className="font-[500] text-muted-foreground">Início: </div>
                                         </div>
                                         <div className="text-muted-foreground mr-2">
-                                            <a>{formatDateToDdMmYy(program.start_date)}</a>
+                                            <div>{formatDateToDdMmYy(program.start_date)}</div>
                                         </div>
                                     </div>
                                     <div className="mr-2 flex  bg-white rounded-lg text-muted-foreground">
                                         <div className="w-[30px] ml-2">
-                                            <a className="font-[500]">Fim: </a>
+                                            <div className="font-[500]">Fim: </div>
                                         </div>
                                         <div className="text-muted-foreground mr-2">
-                                            <a>{formatDateToDdMmYy(program.end_date)}</a>
+                                            <div>{formatDateToDdMmYy(program.end_date)}</div>
                                         </div>
 
                                     </div>
                                     <div className="mr-2 flex  bg-white rounded-lg">
                                         <div className="w-[60px] ml-2">
-                                            <a className="font-[500] text-muted-foreground">Duração: </a>
+                                            <div className="font-[500] text-muted-foreground">Duração: </div>
                                         </div>
                                         <div className=" text-muted-foreground">
-                                            <a>{program.duration} Dias</a>
+                                            <div>{program.duration} Dias</div>
                                         </div>
                                     </div>
                                 </div>

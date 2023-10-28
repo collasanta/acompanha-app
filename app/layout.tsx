@@ -44,10 +44,10 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider localization={ptBR}>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning={true} >
         <GoogleAnalytics GA_MEASUREMENT_ID={process.env.GA_MEASUREMENT_ID!} />
         {/* <CrispProvider /> */}
-        <body className={inter.className}>
+        <body className={inter.className} suppressHydrationWarning={true}>
           <Suspense fallback={<Loading />}>
             <ModalProvider />
             <ToasterProvider />

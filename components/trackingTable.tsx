@@ -3,21 +3,22 @@
 import { DailyDataType, DailyDataTypeArr, enabledMetricsType } from "@/types/programs";
 import { checkpointType } from "@/types/checkpoints";
 import { JsonValue } from "@prisma/client/runtime/library";
-import { experimental_useOptimistic as useOptimistic, useState } from "react";
+import { use, useEffect, experimental_useOptimistic as useOptimistic, useState } from "react";
 import { TableDay } from "./table-day";
 import { TableHeader } from "./table-header";
 import { TableMonth } from "./table-month";
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: 
     { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
-    console.log("render trackingTable.tsx - useClient")
+    // console.log("render trackingTable.tsx - useClient")
     const [currentIndex, setCurrentIndex] = useState<number>(0)
     const [currentType, setCurrentType] = useState<string>("")
+    const [currentDate, setCurrentDate] = useState<Date>(new Date())
 
     const [optimisticDays, setOptimisticDays] = useOptimistic(
         Days,
         (state, updatedDay: DailyDataType) => {
-            const dayIndex = state.findIndex((day: DailyDataType) => day.date.getTime() === updatedDay.date.getTime())
+            const dayIndex = state.findIndex((day: DailyDataType, index) => day.date.getTime() === updatedDay.date.getTime())
             if (dayIndex === -1) {
                 return state
             } else {
@@ -26,9 +27,11 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }:
             }
         }
     )
+    
+    useEffect(() => {
+        currentDate.setHours(0, 0, 0, 0);
+    }, [])
 
-    let currentDate = new Date()
-    currentDate.setHours(0, 0, 0, 0);
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
     return (
         <>
@@ -39,7 +42,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }:
                             optimisticDays.map((day: DailyDataType, index) => {
                                 const programLength = Days.length
                                 return (
-                                    <>
+                                    <div key={index}>
                                         {/* AVALIAÇÃO INICIAL */}
                                         {
                                             // day.checkpointId && index === 0 && (
@@ -66,7 +69,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }:
                                             //     </>
                                             // )
                                         }
-                                    </>
+                                    </div>
                                 )
                             })
                         }

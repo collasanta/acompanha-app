@@ -1,13 +1,10 @@
 'use client'
 
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button";
 import {
   saveWebPushSubscription
 } from "@/lib/pwa"
 import { MouseEventHandler, useEffect, useState } from "react"
-import { FaWindows } from "react-icons/fa";
-import { MdNotificationAdd, MdOutlineNotificationAdd } from "react-icons/md";
+import { MdOutlineNotificationAdd } from "react-icons/md";
 
 const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -25,10 +22,6 @@ const base64ToUint8Array = (base64: string) => {
 export default function Notifications({ programId }: { programId: string }) {
   const [open, setOpen] = useState<boolean>(false)
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
-
-  useEffect(() => {
-    console.log("Oi")
-  }, [])
 
   useEffect(() => {
     if (

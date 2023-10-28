@@ -1,5 +1,5 @@
 'use client'
-import { ArrowDown, MinusCircleIcon, PlusCircleIcon, Pointer } from "lucide-react"
+import { MinusCircleIcon, PlusCircleIcon } from "lucide-react"
 import { useState } from "react"
 import { programsFrontEndListType } from "@/types/programs";
 import Link from "next/link";
@@ -41,27 +41,27 @@ export const ProgramCard = (
                         <div className="flex flex-row items-center text-center space-x-6">
                             <div>
                                 <div className="">
-                                    <a className="font-[500] ">Data Início: </a>
+                                    <div className="font-[500] ">Data Início: </div>
                                 </div>
                                 <div className="text-muted-foreground">
-                                    <a>{program.start_date.toISOString().split("T")[0]}</a>
+                                    <div>{program.start_date.toISOString().split("T")[0]}</div>
                                 </div>
                             </div>
                             <div>
                                 <div className="">
-                                    <a className="font-[500] ">Data Fim: </a>
+                                    <div className="font-[500] ">Data Fim: </div>
                                 </div>
                                 <div className="text-muted-foreground">
-                                    <a>{program.end_date.toISOString().split("T")[0]}</a>
+                                    <div>{program.end_date.toISOString().split("T")[0]}</div>
                                 </div>
 
                             </div>
                             <div>
                                 <div className="col-span-1">
-                                    <a className="font-[500] ">Duração: </a>
+                                    <div className="font-[500] ">Duração: </div>
                                 </div>
                                 <div className="col-span-1 text-muted-foreground">
-                                    <a>{program.duration} Dias</a>
+                                    <div>{program.duration} Dias</div>
                                 </div>
                             </div>
                         </div>
@@ -71,13 +71,13 @@ export const ProgramCard = (
                         !programPage && (
                             <div>
                                 <div className="mt-2 text-center flex flex-col  justify-center border bg-card border-black/5 rounded-lg p-2">
-                                    <a className="font-[500]">Métricas Acompanhadas</a>
+                                    <div className="font-[500]">Métricas Acompanhadas</div>
                                     <div className="flex text-center">
                                         {Object.entries(program?.enabled_metrics!).map(([metricName, metricValue], index) => {
                                             if (metricValue === true) {
                                                 return (
                                                     <div className="text-center text-muted-foreground mx-auto mt-1">
-                                                        <a className="font-[500] capitalize">{metricName} </a>
+                                                        <div className="font-[500] capitalize">{metricName} </div>
                                                     </div>
 
                                                 );
@@ -95,9 +95,9 @@ export const ProgramCard = (
                     {
                         !programPage && (
                             <div className="mt-2 text-center flex flex-col  justify-center border bg-card border-black/5 rounded-lg p-2">
-                                <a className="font-[500]">Link de Acompanhamento</a>
+                                <div className="font-[500]">Link de Acompanhamento</div>
                                 <div className="flex text-center text-center mx-auto text-cyan-600">
-                                    <Link href={window.location.origin + "/p/" + program.id}>
+                                    <Link href={"/p/" + program.id}>
                                         {window.location.origin + "/p/" + program.id}
                                     </Link>
                                 </div>

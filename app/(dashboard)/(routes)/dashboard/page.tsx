@@ -4,6 +4,7 @@ import { PlusIcon } from "lucide-react";
 import { ProgramCard } from "@/components/programCard";
 import { getUserPrograms } from "@/lib/programs";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const DashboardPage = async () => {
 
@@ -28,14 +29,14 @@ const DashboardPage = async () => {
         </p>
       </div>
       <div className="px-4 flex justify-center md:px-20 lg:px-32 space-y-4 items-center">
-        <a href="/cadastro">
+        <Link href="/cadastro">
           <Button
             className="p-4 flex shadow-md"
           >
             <PlusIcon className="w-6 h-6 pr-2" />
             Criar Novo Diário
           </Button>
-        </a>
+        </Link>
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4 pt-8 mx-auto flex flex-col justify-center md:min-w-[400px]">
         {programs && programs?.map((program: programsFrontEndListType) => (
