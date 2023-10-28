@@ -9,14 +9,18 @@ import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "./ui/popo
 import { Textarea } from "./ui/textarea"
 
 
-export function TableDay({ EnabledMetrics, day, currentDate, index, currentIndex, currentType, setOptimisticDays, setCurrentIndex, setCurrentType }
+export function TableDay({ EnabledMetrics, day, index, setOptimisticDays }
     : {
-        EnabledMetrics: enabledMetricsType, day: DailyDataType, index: number, currentIndex: number,
-        currentType: string, currentDate: Date, setOptimisticDays: Function, setCurrentIndex: Function, setCurrentType: Function
+        EnabledMetrics: enabledMetricsType, day: DailyDataType, index: number, setOptimisticDays: Function
     }) {
-    const notFuture = day.date.getTime() < Date.now()
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-
+        const [isLoading, setIsLoading] = useState<boolean>(false)
+        const [currentIndex, setCurrentIndex] = useState<number>(0)
+        const [currentType, setCurrentType] = useState<string>("")
+        const notFuture = day.date.getTime() < Date.now()
+        
+        let currentDate = new Date()
+        currentDate.setHours(0, 0, 0, 0);
+        
     return (
         <>
             <div key={day.date.toDateString()} className={`flex flex-row border-b border-t border border-black/1 align-middle max-h-[42px] items-center  justify-between text-center ${day.date > currentDate || day.date < currentDate ? "bg-muted " : "bg-[white] font-bold"}`}>

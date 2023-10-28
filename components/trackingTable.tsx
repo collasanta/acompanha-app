@@ -10,9 +10,7 @@ import { TableMonth } from "./table-month";
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: 
     { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
-    // console.log("render trackingTable.tsx - useClient")
-    const [currentIndex, setCurrentIndex] = useState<number>(0)
-    const [currentType, setCurrentType] = useState<string>("")
+    console.log("render trackingTable.tsx - useClient")
     const [optimisticDays, setOptimisticDays] = useOptimistic(
         Days,
         (state, updatedDay: DailyDataType) => {
@@ -26,8 +24,8 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }:
         }
     )
     
-    let currentDate = new Date()
-    currentDate.setHours(0, 0, 0, 0);
+    // let currentDate = new Date()
+    // currentDate.setHours(0, 0, 0, 0);
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
     return (
         <>
@@ -52,7 +50,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }:
                                                 <TableHeader EnabledMetrics={EnabledMetrics} />
                                             )
                                         }
-                                        <TableDay EnabledMetrics={EnabledMetrics} day={day} setCurrentIndex={setCurrentIndex} setCurrentType={setCurrentType} currentDate={currentDate} index={index} currentIndex={currentIndex} currentType={currentType} setOptimisticDays={setOptimisticDays} />
+                                        <TableDay EnabledMetrics={EnabledMetrics} day={day} index={index} setOptimisticDays={setOptimisticDays} />
                                         {
                                             (((index + 1) !== 0 && (index + 1) % 30 === 0) || (programLength <= 30 && (index + 1) === programLength)) &&
                                                 <TableMonth EnabledMetrics={EnabledMetrics} day={day} programLength={programLength} index={index} optimisticDays={optimisticDays} />

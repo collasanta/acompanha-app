@@ -11,7 +11,7 @@ export const ProgramHeader = (
     { program, collapsed = false, programPage = false, checkpoints }: { program: programsFrontEndListType, collapsed?: boolean, programPage?: boolean, checkpoints: Array<checkpointType> }
 ) => {
     const [isOpen, setIsOpen] = useState(collapsed);
-    // console.log("programHeader render - useClient ")
+    console.log("programHeader render - useClient ")
     function handleClick() {
         setIsOpen(!isOpen);
     }
@@ -33,7 +33,7 @@ export const ProgramHeader = (
     return (
         <div className="bg-white w-full flex justify-center ">
             <div className=" flex flex-col shadow-md w-full max-w-[550px] rounded-tr-[50px] w-full bg-transparent border border-[3px] text-card-foreground text-[13px]">
-                <div onClick={handleClick} className="flex items-center justify-center cursor-pointer ">
+                <div className="flex items-center justify-center ">
                     <div className="flex justify-center  min-w-[80px] h-full bg-white border-r-2 border-dashed">
                         <Image  width={70} height={70} alt="logo" src="/logo-vazado.png"/>
                     </div>
@@ -43,7 +43,7 @@ export const ProgramHeader = (
                             >
                                 {program.client.name}
                             </div>
-                            <div className="mr-8">
+                            <div className="mr-8 cursor-pointer" onClick={handleClick}>
                                 {
                                     isOpen ? <MinusCircleIcon className="w-5 h-5 transform rotate-180 align-bottom" color="#999999" /> : <PlusCircleIcon className="w-5 h-5" color="#999999" />
                                 }
