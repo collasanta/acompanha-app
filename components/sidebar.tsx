@@ -9,7 +9,7 @@ const font = Montserrat({ weight: '600', subsets: ['latin'] });
 
 const routes = [
     {
-        label: "Dashboard",
+        label: "Diários",
         icon: LayoutDashboard,
         href: "/dashboard",
         color: "text-emerald-500"

@@ -118,6 +118,7 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
       return { erro: newDays.erro };
     }
 
+    revalidatePath(`/p/${newProgram.id}`)
     return { programId: newProgram.id }
 
   } catch (error: any) {

@@ -42,7 +42,7 @@ export const ProgramHeader = (
                     </div>
                     <div className="flex flex-col w-full py-2 bg-[#fcfdff] rounded-tr-[50px]">
                         <div className="flex flex-row justify-between  h-[25px]">
-                            <p className="pl-4 sm:pl-6 align-text-bottom font-semibold max-w-[220px]  text-muted-foreground text-sm text-start whitespace-break-spaces"
+                            <p className="pl-4 sm:pl-6 align-text-bottom font-semibold max-w-[220px] truncate  text-muted-foreground text-sm text-start whitespace-break-spaces"
                             >
                                 {program.client.name}
                             </p>

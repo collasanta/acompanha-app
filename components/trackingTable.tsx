@@ -92,7 +92,7 @@ export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: { 
                                                             Peso <a>📊</a>
                                                             {/* </div> */}
                                                         </div>}
-                                                        <div className="w-[70px] bg-white  border-l-2 text-[14px] flex flex-cold ">Notas <a>✍</a> </div>
+                                                        <div className="w-[70px] bg-white  border-l-2 text-[14px] flex flex-col ">Notas <a>✍</a> </div>
                                                     </div>
                                                 </>
                                             )
