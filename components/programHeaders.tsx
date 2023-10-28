@@ -8,7 +8,7 @@ import Image from "next/image";
 import Notifications from "./PWA/WebPush/WebPushNotifications";
 
 export const ProgramHeader = (
-    { program, collapsed = false, programPage = false, checkpoints }: { program: programsFrontEndListType, collapsed?: boolean, programPage?: boolean, checkpoints: Array<checkpointType> }
+    { program, collapsed = false, programPage = false, checkpoints }: { program: programsFrontEndListType, collapsed?: boolean, programPage?: boolean, checkpoints?: Array<checkpointType> }
 ) => {
     const [isOpen, setIsOpen] = useState(collapsed);
     console.log("programHeader render - useClient ")
@@ -16,19 +16,19 @@ export const ProgramHeader = (
         setIsOpen(!isOpen);
     }
 
-    let lastDietPlanUrl = null;
-    let lastTrainingPlanUrl = null;
-    getPlansUrl()
-    function getPlansUrl() {
-        checkpoints.forEach(checkpoint => {
-            if (checkpoint.dietPlanUrl !== null && checkpoint.dietPlanUrl !== "") {
-                lastDietPlanUrl = checkpoint.dietPlanUrl;
-            }
-            if (checkpoint.trainingPlanUrl !== null && checkpoint.trainingPlanUrl !== "") {
-                lastTrainingPlanUrl = checkpoint.trainingPlanUrl;
-            }
-        });
-    }
+    // let lastDietPlanUrl = null;
+    // let lastTrainingPlanUrl = null;
+    // getPlansUrl()
+    // function getPlansUrl() {
+    //     checkpoints.forEach(checkpoint => {
+    //         if (checkpoint.dietPlanUrl !== null && checkpoint.dietPlanUrl !== "") {
+    //             lastDietPlanUrl = checkpoint.dietPlanUrl;
+    //         }
+    //         if (checkpoint.trainingPlanUrl !== null && checkpoint.trainingPlanUrl !== "") {
+    //             lastTrainingPlanUrl = checkpoint.trainingPlanUrl;
+    //         }
+    //     });
+    // }
 
     return (
         <div className="bg-white w-full flex justify-center ">

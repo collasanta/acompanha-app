@@ -7,11 +7,12 @@ export default async function ProgramPage({ params }: { params: { programId: str
   console.log("ProgramPage render - useServer ")
   const { programId } = params
 
-  const [userProgram, programDays, checkPoints, isAdmin] = await Promise.all([
+  const [userProgram, programDays] = await Promise.all([
+  // const [userProgram, programDays, checkPoints, isAdmin] = await Promise.all([
     getUserProgram(programId),
     getProgramDays(programId),
-    getCheckpointsByProgramId(programId),
-    checkIfProfessionalOwnsProgram(programId)
+    // getCheckpointsByProgramId(programId),
+    // checkIfProfessionalOwnsProgram(programId)
   ]);
   
   if (typeof userProgram === 'object' && userProgram.erro) {
@@ -23,13 +24,15 @@ export default async function ProgramPage({ params }: { params: { programId: str
   }
 
   return (
-    <div className="">
+    <div>
       {/* <AddToHomeScreen /> */}
       <div className="w-full flex justify-center">
-        <ProgramHeader program={userProgram.userProgram!} checkpoints={checkPoints.checkpoints} />
+        <ProgramHeader program={userProgram.userProgram!} />
+        {/* <ProgramHeader program={userProgram.userProgram!} checkpoints={checkPoints.checkpoints} /> */}
       </div>
       <div className="w-full mx-auto">
-        <TrackingTable isAdmin={isAdmin} Days={programDays?.days!} enabledMetrics={userProgram?.userProgram?.enabled_metrics!} checkPoints={checkPoints.checkpoints} />
+        <TrackingTable  Days={programDays?.days!} enabledMetrics={userProgram?.userProgram?.enabled_metrics!} />
+        {/* <TrackingTable isAdmin={isAdmin} Days={programDays?.days!} enabledMetrics={userProgram?.userProgram?.enabled_metrics!} checkPoints={checkPoints.checkpoints} /> */}
       </div>
     </div>
   )

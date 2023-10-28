@@ -7,6 +7,7 @@ export function TableMonth({ EnabledMetrics, day, programLength, index, optimist
     : { 
         EnabledMetrics: enabledMetricsType, day: DailyDataType, programLength: number, index:number, optimisticDays:DailyDataType[]
     }) {
+        console.log("render month")
     return (
         <>
             <div key={day.date.toDateString() + "stat"} className={`flex font-semibold flex-row bg-white border-b border-t border-black/1 align-middle h-[50px] items-center  justify-between text-center font-bold"}`}>

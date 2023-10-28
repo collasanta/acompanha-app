@@ -4,6 +4,7 @@ import { enabledMetricsType } from "@/types/programs"
 
 export function TableHeader({EnabledMetrics} 
     : {EnabledMetrics:enabledMetricsType}) {
+        console.log("render header")
     return (
         <>
             <div className={` bg-white border-[1.5px] w-full z-30 sticky top-[0px] h-[50px] items-center font-semibold flex  text-muted-foreground  justify-between text-center`}>

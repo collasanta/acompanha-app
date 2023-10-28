@@ -9,7 +9,7 @@ import { TableHeader } from "./table-header";
 import { TableMonth } from "./table-month";
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }: 
-    { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints: Array<checkpointType>, isAdmin: boolean }) => {
+    { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints?: Array<checkpointType>, isAdmin?: boolean }) => {
     console.log("render trackingTable.tsx - useClient")
     const [optimisticDays, setOptimisticDays] = useOptimistic(
         Days,
