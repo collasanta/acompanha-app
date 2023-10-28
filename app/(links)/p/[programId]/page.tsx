@@ -8,7 +8,7 @@ import { DailyDataType, UserProgramResponse } from "@/types/programs";
 import { Metadata, ResolvingMetadata } from "next";
 
 export default async function ProgramPage({ params }: { params: { programId: string } }) {
-  
+  console.log("ProgramPage render - useServer ")
   const { programId } = params
   const userProgram: UserProgramResponse = await getUserProgram(programId);
 

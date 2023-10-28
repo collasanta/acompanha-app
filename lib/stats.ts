@@ -2,10 +2,6 @@ import { DailyDataTypeArr, enabledMetricsType } from "@/types/programs";
 
 export function getLast30DaysStatsByIndex(indexInput: number, optimisticDays: DailyDataTypeArr, enabledMetrics: enabledMetricsType) {
     console.log("func called")
-    // const selectedDate = optimisticDays[index].date;
-    // const startDate = new Date(selectedDate);
-    // startDate.setDate(selectedDate.getDate() - 30);
-
     const last30DaysData = optimisticDays.filter((day, index) => index >= indexInput - 29 && index <= indexInput);
 
     //first non null value for weight

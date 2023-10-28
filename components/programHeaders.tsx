@@ -2,10 +2,7 @@
 import { MinusCircleIcon, PlusCircleIcon } from "lucide-react"
 import { useState } from "react"
 import { programsFrontEndListType } from "@/types/programs";
-import { Button } from "./ui/button";
-import Link from "next/link";
 import { checkpointType } from "@/types/checkpoints";
-import manifest from "../public/manifest.json";
 import { formatDateToDdMmYy } from "@/lib/utils";
 import Image from "next/image";
 import Notifications from "./PWA/WebPush/WebPushNotifications";
@@ -14,7 +11,7 @@ export const ProgramHeader = (
     { program, collapsed = false, programPage = false, checkpoints }: { program: programsFrontEndListType, collapsed?: boolean, programPage?: boolean, checkpoints: Array<checkpointType> }
 ) => {
     const [isOpen, setIsOpen] = useState(collapsed);
-
+    console.log("programHeader render - useClient ")
     function handleClick() {
         setIsOpen(!isOpen);
     }
@@ -57,7 +54,6 @@ export const ProgramHeader = (
                             <p className="pt-1 pl-4 sm:pl-6  text-muted-foreground text-sm text-start max-w-[220px] sm:max-w-[500px] truncate"
                             >
                                 {program.name}
-                                {/* {program.client.name.length > 22 ? program.client.name.substring(0, 22) + "..." : program.client.name} */}
                             </p>
                             <div className="mr-8">
                             <Notifications programId={program.id}/>

@@ -37,3 +37,12 @@ export function formatDateToDdMmYy(date:Date) {
   // return `${day}/${month}/${year}`;
   return `${day}/${month}/${year.padEnd(2, '0')}`;
 }
+
+export const isOffline = async () => {
+  'use client'
+  if (!navigator.onLine) {
+      window.alert("Você está offline, conecte a internet e tente novamente")
+      return true
+  }
+  return false
+}
