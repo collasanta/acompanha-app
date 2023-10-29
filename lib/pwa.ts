@@ -48,12 +48,54 @@ export async function getAllWebPushSubscriptions() {
     }
   });
 
-
+  console.log("subscriptions", subscriptions)
   const stringSubs = JSON.stringify(subscriptions)
 
   return stringSubs
 }
 
 
+export async function trackNotificationOpen(subscriptionId:string) {
+  try {
+    const subscription = await prismadb.webPushSubscriptions.update({
+      where: {
+        id: subscriptionId
+      },
+      data: {
+        openedNotifications: {
+          increment: 1
+        }
+      },
+      select: {
+        openedNotifications: true
+      }
+    });
+  
+    return { openedNotifications: subscription.openedNotifications}
+  } catch (error:any) {
+    return { error: error.message}
+  }
+}
 
+export async function trackNotificationSent(subscriptionId:string) {
+  try {
+    const subscription = await prismadb.webPushSubscriptions.update({
+      where: {
+        id: subscriptionId
+      },
+      data: {
+        notificationsSent: {
+          increment: 1
+        }
+      },
+      select: {
+        notificationsSent: true
+      }
+    });
+  
+    return { sentNotifications: subscription.notificationsSent}
+  } catch (error:any) {
+    return { error: error.message}
+  }
+}
 

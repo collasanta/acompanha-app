@@ -78,6 +78,8 @@ model WebPushSubscriptions {
   clientId      String
   programId     String
   device        String @default("")
+  notificationsSent Int @default(0)
+  openedNotifications Int @default(0)
   client        Client @relation(fields: [clientId], references: [id]) 
   program       Program @relation(fields: [programId], references: [id])
   createdAt     DateTime @default(now())
