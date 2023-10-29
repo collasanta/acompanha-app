@@ -51,7 +51,7 @@ export const NewUserModal = () => {
             <AlertDialog open={open}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Bem Vindo ao Acompanha.App</AlertDialogTitle>
+                        <AlertDialogTitle>Bem Vindo ao Diário.Fit</AlertDialogTitle>
                         <AlertDialogDescription className="py-2">
                             Para começar, precisamos de algumas informações suas:
                         </AlertDialogDescription>
