@@ -6,7 +6,7 @@ import webpush from 'web-push'
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
-  const authHeader = request.headers.get('authorization');
+  const authHeader = request.headers.get('Authorization');
   console.log("headers",  request.headers)
   console.log("authHeader", authHeader)
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
