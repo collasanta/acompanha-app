@@ -7,6 +7,7 @@ export function TableMonth({ EnabledMetrics, day, programLength, index, optimist
     : { 
         EnabledMetrics: enabledMetricsType, day: DailyDataType, programLength: number, index:number, optimisticDays:DailyDataType[]
     }) {
+        const stats = getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics)
         console.log("render month")
     return (
         <>
@@ -31,8 +32,8 @@ export function TableMonth({ EnabledMetrics, day, programLength, index, optimist
                 {EnabledMetrics.dieta ?
                     <div
                         className={`border-r-2 border-l-2 -md w-[50px] bg-white  bg-secondary my-auto cursor-pointer text-center  text-muted-foreground text-[12.5px] text-center  flex flex-col`}>
-                        <div>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).diet?.total + " 🥦"}  </div>
-                        <div>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).diet?.percentage! + "%"}</div>
+                        <div>{stats.diet?.total + " 🥦"}  </div>
+                        <div>{stats.diet?.percentage! + "%"}</div>
                     </div>
                     :
                     EnabledMetrics.dieta && <div className="w-[50px]" />
@@ -41,8 +42,8 @@ export function TableMonth({ EnabledMetrics, day, programLength, index, optimist
                 {EnabledMetrics.treino ?
                     <div
                         className={` w-[50px] border-r-2 border-l-2 bg-white   bg-secondary my-auto cursor-pointer text-center  text-muted-foreground text-[12.5px] text-center  flex flex-col`}>
-                        <div>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).exercise?.total + " 💪"}  </div>
-                        <div>{getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).exercise?.percentage! + "%"}</div>
+                        <div>{stats.exercise?.total + " 💪"}  </div>
+                        <div>{stats.exercise?.percentage! + "%"}</div>
                     </div>
                     :
                     EnabledMetrics.treino && <div className="w-[50px]" />
@@ -53,7 +54,7 @@ export function TableMonth({ EnabledMetrics, day, programLength, index, optimist
                     <div
                         className={`text-center border-r-2 border-l-2 text-[11px] justify-center bg-white text-sm  w-[55px] h-[40px] text-muted-foreground align-middle items-center flex`}>
                         <div className="align-middle">
-                            {getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics).weight?.total + " kg"}
+                            {stats.weight?.total + " kg"}
                         </div>
                     </div>
                     :
