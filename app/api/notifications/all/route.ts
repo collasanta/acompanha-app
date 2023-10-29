@@ -25,7 +25,6 @@ export async function GET() {
     const Subs = JSON.parse(subscriptions)
     
     Subs.map(async (s:WebPushNotificationDataType) => {
-        if (s.id === "3733f2ba-d2f2-4c31-b646-c782b583f742"){
           const payload = JSON.stringify({
             title: `Preencheu o diário hoje ${s.client.name.split(" ")[0].toLocaleLowerCase()}? 👀`,
             body:`${s.program.professional.name.split(" ")[0]} quer saber como está indo a dieta! 🗓🥦💪`,
@@ -42,7 +41,6 @@ export async function GET() {
           } catch (error) {
               console.log("error: ", error)
           }
-        }
       })
     
       return NextResponse.json(
