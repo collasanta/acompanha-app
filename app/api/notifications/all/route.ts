@@ -45,8 +45,12 @@ export async function GET(req: Request, res: Response) {
           messagesSent++
           await trackNotificationSent(s.id)
         }
-      } catch (error) {
+      } catch (error:any) {
         console.log("error: ", error)
+        return NextResponse.json(
+          { error: error.message},
+          { status: 500 },
+        );
       }
     })
 
@@ -55,10 +59,10 @@ export async function GET(req: Request, res: Response) {
       { status: 200 },
     );
   }
-  catch (error) {
+  catch (error:any) {
     console.error('Error sending messages:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch' },
+      { error: error.message},
       { status: 500 },
     );
   }
