@@ -126,6 +126,39 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
   }
 }
 
+export const deleteProgram = async (programId: string) => {
+  try {
+    const deleteWebPushSubscriptions = await prismadb.webPushSubscriptions.deleteMany({
+      where: {
+        programId: programId
+      }
+    })
+
+    const deleteDays = await prismadb.dailyData.deleteMany({
+      where: {
+        programId: programId
+      }
+    })
+
+    const deleteCheckpoints = await prismadb.checkpoint.deleteMany({
+      where: {
+        programId: programId
+      }
+    })
+
+    const deleteProgram = await prismadb.program.delete({
+      where: {
+        id: programId
+      }
+    })
+
+    revalidatePath(`/dashboard`)
+    return { status: "deleted" }
+  } catch (error: any) {
+    return { erro: error.message }
+  }
+}
+
 export const getProgramDays = async (programId: string) => {
 
   const enabledMetrics = await prismadb.program.findUnique({
