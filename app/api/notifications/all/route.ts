@@ -35,6 +35,7 @@ export async function GET(request: NextRequest) {
         const send = await webpush.sendNotification(s?.subscription!, payload)
         console.log("send: ", send.statusCode)
         if (send.statusCode === 201 || send.statusCode === 200) {
+          console.log("dentro")
           messagesSent++
           await trackNotificationSent(s.id)
         }

@@ -1,0 +1,41 @@
+app: serverless-diariofit
+service: serverless-diariofit
+frameworkVersion: "3"
+
+provider:
+  name: aws
+#   apiGateway:
+#     apiKeys:
+#       - name: apiKey
+#         value: ${env:MY_API_KEY}
+#   runtime: nodejs16.x
+#   timeout: 900
+#   environment:
+#     DATABASE_URL: ${env:DATABASE_URL}
+
+functions:
+  bot-cron:
+    handler: src/bot-cron.cron
+    memorySize: 400
+    environment:
+      MY_API_KEY: ${env:MY_API_KEY}
+      DATABASE_URL: ${env:DATABASE_URL}
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${env:NEXT_PUBLIC_VAPID_PUBLIC_KEY}
+      VAPID_PRIVATE_KEY: ${env:VAPID_PRIVATE_KEY}
+    events:
+      - schedule: cron(0 23 * * ? *)
+
+
+package:
+  patterns:
+    - '!node_modules/@prisma/engines'
+    - '!node_modules/prisma'
+    - '!node_modules/.prisma/**/libquery_engine-*'
+    - 'node_modules/.prisma/**/libquery_engine-rhel-openssl-1.0.x.so.node'
+
+useDotenv: true
+
+plugins:
+  # - serverless-plugin-typescript
+  # - serverless-esbuild
+  - serverless-offline
