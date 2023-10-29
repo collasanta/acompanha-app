@@ -28,9 +28,9 @@ export async function GET(req: Request, res: Response) {
       );
     }
 
-    const Subs = JSON.parse(subscriptions)
+    const Subs = await JSON.parse(subscriptions)
     let messagesSent = 0
-    Subs.map(async (s: WebPushNotificationDataType) => {
+    await Subs.map(async (s: WebPushNotificationDataType) => {
       const payload = JSON.stringify({
         title: `Preencheu o diário hoje ${s.client.name.split(" ")[0].toLocaleLowerCase()}? 👀`,
         body: `${s.program.professional.name.split(" ")[0]} quer saber como está indo a dieta! 🗓🥦💪`,
