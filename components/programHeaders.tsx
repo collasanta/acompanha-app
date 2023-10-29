@@ -11,7 +11,6 @@ export const ProgramHeader = (
     { program, collapsed = false, programPage = false, checkpoints }: { program: programsFrontEndListType, collapsed?: boolean, programPage?: boolean, checkpoints?: Array<checkpointType> }
 ) => {
     const [isOpen, setIsOpen] = useState(collapsed);
-    console.log("programHeader render - useClient ")
     function handleClick() {
         setIsOpen(!isOpen);
     }

@@ -25,16 +25,17 @@ export async function GET() {
     const Subs = JSON.parse(subscriptions)
     
     Subs.map(async (s:WebPushNotificationDataType) => {
-        if (s.id === "68f23b2e-b135-4268-b400-c970f119fab8"){
+        if (s.id === "0b8f8293-75a6-4bc2-bd86-b0996be42221"){
           const payload = JSON.stringify({
-            title: `${s.client.name.split(" ")[0]}, já preencheu hoje? 👀`,
-            body:`Nutricionista ${s.program.professional.name.split(" ")[0]} quer saber como está indo o programa!`,
+            title: `Preencheu o diário hoje ${s.client.name.split(" ")[0].toLocaleLowerCase()}? 👀`,
+            body:`${s.program.professional.name.split(" ")[0]} quer saber como está indo a dieta! 🗓🥦💪`,
             icon: '/nutricionista.png',
-            data: {subscriptionId:"68f23b2e-b135-4268-b400-c970f119fab8"}
+            data: {subscriptionId: s.id}
           })
           //@ts-ignore
           try {
               const send = await webpush.sendNotification(s?.subscription!, payload)
+              console.log("send: ", send)
               if (send.statusCode === 201 || send.statusCode === 200){
                 await trackNotificationSent(s.id)
               }

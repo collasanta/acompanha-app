@@ -17,7 +17,6 @@ export function TableDay({ EnabledMetrics, day, index, setOptimisticDays }
         const [currentIndex, setCurrentIndex] = useState<number>(0)
         const [currentType, setCurrentType] = useState<string>("")
         const notFuture = day.date.getTime() < Date.now()
-        console.log("render day")
         let currentDate = new Date()
         currentDate.setHours(0, 0, 0, 0);
         

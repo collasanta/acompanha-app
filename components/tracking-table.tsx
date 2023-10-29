@@ -10,7 +10,6 @@ import { TableBody } from "./table-body";
 
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }:
     { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints?: Array<checkpointType>, isAdmin?: boolean }) => {
-    console.log("render trackingTable.tsx - useClient")
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
     return (
         <>

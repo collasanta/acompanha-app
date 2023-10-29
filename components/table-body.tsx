@@ -19,7 +19,6 @@ export function TableBody({ EnabledMetrics, Days }
             }
         }
     )
-    console.log("render TableBody")
     return (
         <>
             {
