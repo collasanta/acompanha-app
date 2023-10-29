@@ -1,5 +1,3 @@
-'use client'
-
 import { DailyDataTypeArr, enabledMetricsType } from "@/types/programs";
 import { checkpointType } from "@/types/checkpoints";
 import { JsonValue } from "@prisma/client/runtime/library";
@@ -11,6 +9,7 @@ import { TableBody } from "./table-body";
 export const TrackingTable = ({ Days, enabledMetrics, checkPoints, isAdmin }:
     { Days: DailyDataTypeArr, enabledMetrics: JsonValue, checkPoints?: Array<checkpointType>, isAdmin?: boolean }) => {
     const EnabledMetrics = enabledMetrics as unknown as enabledMetricsType
+    console.log("render trackingtable")
     return (
         <>
             <div className="flex justify-center bg-white">

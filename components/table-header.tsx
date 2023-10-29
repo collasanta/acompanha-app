@@ -1,10 +1,9 @@
-"use client"
-
 import { enabledMetricsType } from "@/types/programs"
 
 export function TableHeader({EnabledMetrics} 
     : {EnabledMetrics:enabledMetricsType}) {
-    return (
+    console.log("table header")
+        return (
         <>
             <div className={` bg-white border-[1.5px] w-full z-30 sticky top-[0px] h-[50px] items-center font-semibold flex  text-muted-foreground  justify-between text-center`}>
                 <div className="border-r-2 text-center w-[80px] bg-white py-2 ">

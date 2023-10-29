@@ -1,5 +1,3 @@
-"use client"
-
 import { getLast30DaysStatsByIndex } from "@/lib/stats"
 import { DailyDataType, enabledMetricsType } from "@/types/programs"
 

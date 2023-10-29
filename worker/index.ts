@@ -1,6 +1,9 @@
 declare const self: ServiceWorkerGlobalScope;
 
 self.addEventListener("push", function (event) {
+  if (navigator.setAppBadge) {
+    navigator.setAppBadge(1);
+  }
   const data = event?.data!.json();
   const options = {
     body: data.body,
@@ -13,14 +16,6 @@ self.addEventListener("push", function (event) {
   event.waitUntil(
     self.registration.showNotification(data.title, options)
   );
-  if (navigator.setAppBadge) {
-    navigator.setAppBadge(1);
-    // if (unreadCount && unreadCount > 0) {
-    //   navigator.setAppBadge(unreadCount);
-    // } else {
-    //   navigator.clearAppBadge();
-    // }
-  }
 });
 
 self.addEventListener('notificationclick', function (event) {

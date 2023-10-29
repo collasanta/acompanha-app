@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { DailyDataType, enabledMetricsType } from "@/types/programs"
 import { experimental_useOptimistic } from "react"

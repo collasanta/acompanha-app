@@ -27,9 +27,7 @@ export async function GET() {
     Subs.map(async (s:WebPushNotificationDataType) => {
         if (s.id === "3733f2ba-d2f2-4c31-b646-c782b583f742"){
           const payload = JSON.stringify({
-            title: `Preencheu o diário hoje ${s.client.name.split(" ")[0].toLocaleLowerCase()}? 👀`,
-            body:`${s.program.professional.name.split(" ")[0]} quer saber como está indo a dieta! 🗓🥦💪`,
-            icon: '/nutricionista.png',
+            title: `badge`,
             data: {subscriptionId: s.id}
           })
           //@ts-ignore

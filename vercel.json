@@ -3,6 +3,10 @@
       {
         "path": "/api/notifications/all",
         "schedule": "0 23 * * *"
+      },
+      {
+        "path": "/api/notifications/add-badge",
+        "schedule": "0 19 * * *"
       }
     ]
 }
