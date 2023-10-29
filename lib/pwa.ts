@@ -48,7 +48,6 @@ export async function getAllWebPushSubscriptions() {
     }
   });
 
-  console.log("subscriptions", subscriptions)
   const stringSubs = JSON.stringify(subscriptions)
 
   return stringSubs
