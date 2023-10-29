@@ -1,24 +1,25 @@
 import { getAllWebPushSubscriptions, trackNotificationSent } from '@/lib/pwa';
 import { WebPushNotificationDataType } from '@/types/notifications';
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import webpush from 'web-push'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET(req: Request, res: Response) {
-  if (req.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get('authorization');
+  console.log("authHeader", authHeader)
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json(
       { error: 'Unauthorized' },
-      { status: 500 },
+      { status: 401 },
     );
   }
-  webpush.setVapidDetails(
-    'mailto:contato@diario.fit',
-    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-    process.env.VAPID_PRIVATE_KEY!
-  )
   try {
-
+    webpush.setVapidDetails(
+      'mailto:contato@diario.fit',
+      process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+      process.env.VAPID_PRIVATE_KEY!
+    )
     const subscriptions = await getAllWebPushSubscriptions()
 
     if (!subscriptions) {
@@ -40,7 +41,7 @@ export async function GET(req: Request, res: Response) {
       //@ts-ignore
       try {
         const send = await webpush.sendNotification(s?.subscription!, payload)
-        console.log("send: ", send)
+        console.log("send: ", send.statusCode)
         if (send.statusCode === 201 || send.statusCode === 200) {
           messagesSent++
           await trackNotificationSent(s.id)
@@ -48,7 +49,7 @@ export async function GET(req: Request, res: Response) {
       } catch (error:any) {
         console.log("error: ", error)
         return NextResponse.json(
-          { error: error.message},
+          { error: `1) ${error.message}`},
           { status: 500 },
         );
       }
@@ -62,7 +63,7 @@ export async function GET(req: Request, res: Response) {
   catch (error:any) {
     console.error('Error sending messages:', error);
     return NextResponse.json(
-      { error: error.message},
+      { error: `2) ${error.message}`},
       { status: 500 },
     );
   }
