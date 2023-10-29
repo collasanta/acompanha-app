@@ -6,23 +6,6 @@ import webpush from 'web-push'
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
-  const {headers} = request
-  const autha = headers.get('authorization')
-  const authA = headers.get('Authorization')
-  const authHeadera = request.headers.get('authorization');
-  const authHeaderA = request.headers.get('Authorization');
-  console.log("process.env.CRON_SECRET", process.env.CRON_SECRET)
-  console.log("headers",  headers)
-  console.log("autha",  autha)
-  console.log("authA",  authA)
-  console.log("authHeadera",  authHeadera)
-  console.log("authHeaderA",  authHeaderA)
-  if (authHeaderA !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 401 },
-    );
-  }
   try {
     webpush.setVapidDetails(
       'mailto:contato@diario.fit',
