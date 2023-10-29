@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
   const authA = headers.get('Authorization')
   const authHeadera = request.headers.get('authorization');
   const authHeaderA = request.headers.get('Authorization');
+  console.log("process.env.CRON_SECRET", process.env.CRON_SECRET)
   console.log("headers",  headers)
   console.log("autha",  autha)
   console.log("authA",  authA)
