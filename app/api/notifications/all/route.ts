@@ -29,7 +29,7 @@ export async function GET(req: Request, res: Response) {
     }
 
     const Subs = JSON.parse(subscriptions)
-
+    let messagesSent = 0
     Subs.map(async (s: WebPushNotificationDataType) => {
       const payload = JSON.stringify({
         title: `Preencheu o diário hoje ${s.client.name.split(" ")[0].toLocaleLowerCase()}? 👀`,
@@ -42,6 +42,7 @@ export async function GET(req: Request, res: Response) {
         const send = await webpush.sendNotification(s?.subscription!, payload)
         console.log("send: ", send)
         if (send.statusCode === 201 || send.statusCode === 200) {
+          messagesSent++
           await trackNotificationSent(s.id)
         }
       } catch (error) {
@@ -50,7 +51,7 @@ export async function GET(req: Request, res: Response) {
     })
 
     return NextResponse.json(
-      { message: `messages sent` },
+      { message: `${messagesSent} notifications sent` },
       { status: 200 },
     );
   }
