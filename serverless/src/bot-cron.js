@@ -36,8 +36,6 @@ export const cron = async () => {
 
     let messagesSent = 0
     subscriptions.map(async (s) => {
-      if(s.clientId === "c-z3o65scikf7"){
-
         const payload = JSON.stringify({
           title: `Preencheu o diário hoje ${s.client.name.split(" ")[0].toLocaleLowerCase()}? 👀`,
           body: `${s.program.professional.name.split(" ")[0]} quer saber como está indo a dieta! 🗓🥦💪`,
@@ -64,7 +62,6 @@ export const cron = async () => {
         } catch (error) {
           console.log("erro ao enviar notificação sub", s.id, " ", error.message)
         }
-      }
     })
 
     return
