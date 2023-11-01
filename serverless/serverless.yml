@@ -8,8 +8,8 @@ provider:
 #     apiKeys:
 #       - name: apiKey
 #         value: ${env:MY_API_KEY}
-#   runtime: nodejs16.x
-#   timeout: 900
+  runtime: nodejs18.x
+  timeout: 900
 #   environment:
 #     DATABASE_URL: ${env:DATABASE_URL}
 

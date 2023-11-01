@@ -4,6 +4,7 @@ import webpush from 'web-push'
 const prismadb = new PrismaClient()
 
 export const cron = async () => {
+  console.log("cron job started")
   try {
     webpush.setVapidDetails(
       'mailto:contato@diario.fit',
@@ -28,14 +29,16 @@ export const cron = async () => {
         }
       }
     });
-
+    
     if (!subscriptions) {
       console.log("no subscriptions found")
-      return
+      return `no subs found`
     }
 
     let messagesSent = 0
-    subscriptions.map(async (s) => {
+    const promises = [];
+    subscriptions.map((s) => {
+        console.log("entrou")
         const payload = JSON.stringify({
           title: `Preencheu o diário hoje ${s.client.name.split(" ")[0].toLocaleLowerCase()}? 👀`,
           body: `${s.program.professional.name.split(" ")[0]} quer saber como está indo a dieta! 🗓🥦💪`,
@@ -44,10 +47,14 @@ export const cron = async () => {
         })
         //@ts-ignore
         try {
-          const send = await webpush.sendNotification(s.subscription, payload)
+          console.log("antes do send")
+          const send = webpush.sendNotification(s.subscription, payload)
+          promises.push(send);
+          console.log("send", send)
           if (send.statusCode === 201 || send.statusCode === 200) {
+            console.log("entrou if send status")
             messagesSent++
-            const subscription = await prismadb.webPushSubscriptions.update({
+            const subscription = prismadb.webPushSubscriptions.update({
               where: {
                 id: s.id
               },
@@ -57,21 +64,26 @@ export const cron = async () => {
                 }
               },
             });
+            promises.push(subscription);
             console.log("subscription: ", subscription.id, " sent updated")
           }
         } catch (error) {
-          console.log("erro ao enviar notificação sub", s.id, " ", error.message)
+          console.log("erro ao enviar notificação sub", " ", error.message)
+          return `erro ao enviar notificação sub ${s.id} :  ${error.message}`
         }
     })
 
-    return
+    await Promise.all(promises);
+    console.log("promises", promises)
+
+    await prismadb.$disconnect()
+
+    return `${messagesSent} notifications sent.`
   }
   catch (error) {
-    console.error('Erro Geral', error.message);
+    console.error('Erro Geral: ', error.message );
+    return `Erro Geral ${error.message}`
   }
-
-
-  await prismadb.$disconnect()
 }
 
 
