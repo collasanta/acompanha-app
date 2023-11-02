@@ -67,5 +67,24 @@ export const checkIfProfessionalOwnsProgram = async (programId: string) => {
     }
 }
 
+export const getProfessionalInfos = async () => {
+    const { userId } = auth()
+    if (!userId) { return null }
+
+    try {
+        const professional = await prismadb.professional.findUnique({
+            where: { id: userId },
+        })
+
+        if (!professional) {
+            return null
+        } else {
+            return professional
+        }
+    } catch (error: any) {
+        return null
+    }
+}
+
 
 

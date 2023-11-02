@@ -38,7 +38,7 @@ const Sidebar = ({
                 <div className="px-3 py-2 flex-1">
                     <Link href="/dashboard" className="flex items-center mx-auto  mb-10">
                         <div className="relative w-[80px] h-[80px] bg-white rounded-full ">
-                            <Image src="/logo.png" fill alt="logo" className="rounded-lg" />
+                            <Image src="/logo.png" fill alt="logo" className="rounded-lg shadow-lg" />
 
                         </div>
                         <h1 className={cn("pl-4 font-extrabold text-transparent text-[23px] bg-clip-text  bg-gradient-to-r from-emerald-600 to-teal-400", font.className)}>

@@ -96,6 +96,16 @@ export const ProgramCard = (
                         </div>
                     </div>
 
+                    <div className="mt-2 text-center flex flex-col  justify-center border bg-card border-black/5 rounded-lg p-2">
+                        <div className="font-[500]">Link de Acompanhamento</div>
+                        <div className="flex text-center text-center mx-auto text-cyan-600">
+                            <Link href={"/p/" + program.id}>
+                                {window.location.origin + "/p/" + program.id}
+                            </Link>
+                        </div>
+                    </div>
+
+
                     <div>
                         <div className="mt-2 text-center flex flex-col  justify-center border bg-card border-black/5 rounded-lg p-2">
                             <div className="font-[500]">Métricas Acompanhadas</div>
@@ -112,17 +122,6 @@ export const ProgramCard = (
                                     return null; // Skip false values
                                 })}
                             </div>
-                        </div>
-                    </div>
-
-
-
-                    <div className="mt-2 text-center flex flex-col  justify-center border bg-card border-black/5 rounded-lg p-2">
-                        <div className="font-[500]">Link de Acompanhamento</div>
-                        <div className="flex text-center text-center mx-auto text-cyan-600">
-                            <Link href={"/p/" + program.id}>
-                                {window.location.origin + "/p/" + program.id}
-                            </Link>
                         </div>
                     </div>
 
