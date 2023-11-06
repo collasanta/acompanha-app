@@ -93,7 +93,8 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
     const enabled_metrics = {
       peso: finalForm.metricspeso,
       dieta: finalForm.metricsdieta,
-      treino: finalForm.metricstreino
+      treino: finalForm.metricstreino,
+      cardio: finalForm.metricscardio
     }
 
     const newProgram = await prismadb.program.create({
@@ -160,7 +161,7 @@ export const deleteProgram = async (programId: string) => {
 }
 
 export const getProgramDays = async (programId: string) => {
-
+  
   const enabledMetrics = await prismadb.program.findUnique({
     where: {
       id: programId
@@ -179,6 +180,7 @@ export const getProgramDays = async (programId: string) => {
         date: true,
         diet: await getActiveMetricsDB(enabledMetrics?.enabled_metrics, "dieta"),
         exercise: await getActiveMetricsDB(enabledMetrics?.enabled_metrics, "treino"),
+        cardio: await getActiveMetricsDB(enabledMetrics?.enabled_metrics, "cardio"),
         weight: await getActiveMetricsDB(enabledMetrics?.enabled_metrics, "peso"),
         notes: true,
         checkpointId: true,
@@ -191,7 +193,8 @@ export const getProgramDays = async (programId: string) => {
 
     const daysWithWeightAsString = days.map(day => ({
       ...day,
-      weight: day?.weight ? day.weight.toString() : null
+      weight: day?.weight ? day.weight.toString() : null,
+      cardio: day?.cardio ? day.cardio.toString() : null
     }));
 
     return { days: daysWithWeightAsString }
@@ -385,6 +388,32 @@ export const setWeight = async (date: Date, programId: string, weight: string | 
   } catch (error: any) {
     revalidatePath(`/p/${programId}`)
     console.log("Erro ao setar peso: ", error.message)
+  }
+}
+
+export const setCardio = async (date: Date, programId: string, cardio: string | null, oldCardio: string | null) => {
+  if (cardio === "" && oldCardio !== null) {
+    cardio = null
+  } else if (cardio === "" && oldCardio === null) {
+    return
+  }
+
+  try {
+    const result = await prismadb.dailyData.update({
+      where: {
+        programId_date: {
+          programId: programId,
+          date: date,
+        },
+      },
+      data: {
+        cardio: cardio !== null ? parseInt(cardio) : null
+      }
+    })
+    console.log("Cardio set: ", result.date, "value:", result.cardio)
+  } catch (error: any) {
+    revalidatePath(`/p/${programId}`)
+    console.log("Erro ao setar cardio: ", error.message)
   }
 }
 

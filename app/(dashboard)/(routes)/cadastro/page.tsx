@@ -95,6 +95,7 @@ export default function Home() {
       metricspeso: true,
       metricsdieta: true,
       metricstreino: true,
+      metricscardio: true,
     },
   })
 
@@ -368,6 +369,23 @@ export default function Home() {
                       </div>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="metricscardio"
+                    render={({ field }) => (
+                      <div className="flex flex-row space-x-8 justify-center pt-[10px]">
+                        <FormItem className="flex flex-col">
+                          <FormLabel className=" text-sm  text-muted-foreground">Cardio 👟</FormLabel>
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="w-[30px] h-[30px] mx-auto" />
+                          </FormControl>
+                        </FormItem>
+                      </div>
+                    )}
+                  />
                 </div>
                 <div className="pt-4 text-sm  text-muted-foreground">
                   Selecione Clicando 👆
@@ -418,6 +436,7 @@ export default function Home() {
                                 {finalForm?.metricspeso ? "Peso " : ""}
                                 {finalForm?.metricsdieta ? "Dieta " : ""}
                                 {finalForm?.metricstreino ? "Treino " : ""}
+                                {finalForm?.metricscardio ? "Cardio " : ""}
                               </div>
                             </div>
                           </div>

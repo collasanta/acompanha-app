@@ -74,7 +74,7 @@ export default function Notifications({ programId }: { programId: string }) {
     {
     open &&
     <button onClick={subscribeButtonOnClick}>
-      <MdOutlineNotificationAdd className="w-5 h-5 align-bottom mt-1 animate-pulse" color="#999999" />
+      <MdOutlineNotificationAdd className="w-5 h-5 align-bottom mt-1 animate-wiggle" color="#10B77F" />
     </button>
     }
       {/* <AlertDialog open={open}>

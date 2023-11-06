@@ -20,6 +20,7 @@ export const programsFormSchema = z.object({
   metricspeso: z.boolean(),
   metricsdieta: z.boolean(),
   metricstreino: z.boolean(),
+  metricscardio: z.boolean(),
 });
 
 export type programsFormSchemaType = z.infer<typeof programsFormSchema>
@@ -43,6 +44,7 @@ export interface DailyDataType {
   date: Date;
   diet: boolean | null;
   exercise: boolean | null;
+  cardio: string | null;
   weight: string | null;
   notes: string | null;
   checkpointId: string | null;
@@ -85,6 +87,7 @@ export interface enabledMetricsType {
   peso: boolean | null;
   dieta: boolean | null;
   treino: boolean | null;
+  cardio: boolean | null;
 }
 
 

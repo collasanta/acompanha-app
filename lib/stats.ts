@@ -13,10 +13,12 @@ export function getLast30DaysStatsByIndex(indexInput: number, optimisticDays: Da
     const result: any = {};
     let totalDiet = 0;
     let totalExercise = 0;
+    let totalCardioDays = 0;
+    let totalCardioMinutes = 0;
     let totalDaysUntilNow = 0
-    let WeightVariation: number | string = parseFloat(lastWeight!) - parseFloat(firstWeight!)
+    let WeightVariation: any = parseFloat(lastWeight!) - parseFloat(firstWeight!)
     if (isNaN(WeightVariation)) {
-        WeightVariation = 0
+        WeightVariation = "0"
     } else if(WeightVariation < 0){
         WeightVariation = `${(WeightVariation).toFixed(1).toString()}`
     } else if (WeightVariation > 0) {
@@ -40,6 +42,13 @@ export function getLast30DaysStatsByIndex(indexInput: number, optimisticDays: Da
                 totalExercise++;
             }
         }
+
+        if (enabledMetrics.cardio) {
+            if (day.cardio) {
+                totalCardioDays++;
+                totalCardioMinutes += parseInt(day.cardio);
+            }
+        }
     }
 
     const percentageDiet = (totalDiet * 100 / totalDaysUntilNow).toFixed(0)
@@ -48,6 +57,7 @@ export function getLast30DaysStatsByIndex(indexInput: number, optimisticDays: Da
     return {
         ...(enabledMetrics.dieta ? { diet: { total: totalDiet, percentage: percentageDiet !== 'NaN' ? percentageDiet : 0 } } : {}),
         ...(enabledMetrics.treino ? { exercise: { total: totalExercise, percentage: percentageExercise !== 'NaN' ? percentageExercise : 0 } } : {}),
-        ...(enabledMetrics.peso ? { weight: { total: WeightVariation } } : {}),
+        ...(enabledMetrics.cardio ? { cardio: { totalDays: totalCardioDays, totalMinutes:totalCardioMinutes } } : {}),
+        ...(enabledMetrics.peso ? { weight: { total: parseFloat(WeightVariation) } } : {}),
     };
 }

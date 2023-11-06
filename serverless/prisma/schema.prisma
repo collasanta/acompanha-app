@@ -52,6 +52,7 @@ model DailyData {
   programId    String
   date         DateTime
   diet         Boolean?
+  cardio       Int?
   exercise     Boolean?
   weight       Decimal?
   notes        String?

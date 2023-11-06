@@ -14,14 +14,18 @@ export function TableHeader({EnabledMetrics}
                         Dieta 🥦
                     </div>}
                 {EnabledMetrics.treino &&
-                    <div className="w-[55px] text-[14px] bg-white">
+                    <div className="w-[50px] text-[14px] bg-white">
                         Treino 💪
                     </div>}
+                {EnabledMetrics.cardio &&
+                    <div className="w-[50px] text-[14px] bg-white">
+                        Cardio 👟
+                    </div>}
                 {EnabledMetrics.peso &&
-                    <div className="w-[55px] text-[14px] bg-white flex flex-col">
+                    <div className="w-[50px] text-[14px] bg-white flex flex-col">
                         Peso <div>📊</div>
                     </div>}
-                <div className="w-[70px] bg-white  border-l-2 text-[14px] flex flex-col ">
+                <div className="w-[50px] bg-white  text-[14px] flex flex-col ">
                     Notas
                     <div>✍</div>
                 </div>

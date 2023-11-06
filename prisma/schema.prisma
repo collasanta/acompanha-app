@@ -19,21 +19,21 @@ model Professional {
 }
 
 model Client {
-  id             String       @id @map("id")
-  name           String
-  whatsapp       String?      @unique
-  professional   Professional @relation(fields: [professionalId], references: [id])
-  professionalId String
-  programs       Program[]
-  notificationSubscription   WebPushSubscriptions[]
+  id                       String                 @id @map("id")
+  name                     String
+  whatsapp                 String?                @unique
+  professional             Professional           @relation(fields: [professionalId], references: [id])
+  professionalId           String
+  programs                 Program[]
+  notificationSubscription WebPushSubscriptions[]
 }
 
 model Program {
-  id              String       @id @map("id")
+  id              String                 @id @map("id")
   name            String
-  client          Client       @relation(fields: [clientId], references: [id]) // Alterado de "patient" para "client"
+  client          Client                 @relation(fields: [clientId], references: [id]) // Alterado de "patient" para "client"
   clientId        String // Alterado de "patientId" para "clientId"
-  professional    Professional @relation(fields: [professionalId], references: [id])
+  professional    Professional           @relation(fields: [professionalId], references: [id])
   professionalId  String
   start_date      DateTime
   duration        Int
@@ -47,12 +47,13 @@ model Program {
 }
 
 model DailyData {
-  program      Program     @relation(fields: [programId], references: [id])
-  programId    String
-  date         DateTime
-  diet         Boolean?
-  exercise     Boolean?
-  weight       Decimal?
+  program   Program  @relation(fields: [programId], references: [id])
+  programId String
+  date      DateTime
+  diet      Boolean?
+  exercise  Boolean?
+  weight    Decimal?
+  cardio    Int?
   notes        String?
   checkpointId String?
   Checkpoint   Checkpoint? @relation(fields: [checkpointId], references: [id])
@@ -73,14 +74,14 @@ model Checkpoint {
 }
 
 model WebPushSubscriptions {
-  id        String @id @default(uuid())
-  subscription  Json
-  clientId      String
-  programId     String
-  device        String @default("")
-  notificationsSent Int @default(0)
-  openedNotifications Int @default(0)
-  client        Client @relation(fields: [clientId], references: [id]) 
-  program       Program @relation(fields: [programId], references: [id])
-  createdAt     DateTime @default(now())
+  id                  String   @id @default(uuid())
+  subscription        Json
+  clientId            String
+  programId           String
+  device              String   @default("")
+  notificationsSent   Int      @default(0)
+  openedNotifications Int      @default(0)
+  client              Client   @relation(fields: [clientId], references: [id])
+  program             Program  @relation(fields: [programId], references: [id])
+  createdAt           DateTime @default(now())
 }

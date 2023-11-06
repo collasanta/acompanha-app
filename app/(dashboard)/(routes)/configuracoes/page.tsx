@@ -18,8 +18,8 @@ const SettingsPage = async () => {
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4 flex justify-center text-center">
         <div className="flex flex-col space-y-4">
-          <div className="flex flex-col text-gray-600">
-            <p className="pl-2 text-muted-foreground font-light text-small  text-center">
+          <div className="flex flex-col text-gray-600 text-sm">
+            <p className="pl-2 text-muted-foreground font-light  text-center">
               Nome:
             </p>
             {professionalInfos.name}
