@@ -13,6 +13,7 @@ export function TableMonth({ EnabledMetrics, day, programLength, index, optimist
     } else {
         stats = getTotalDaysStatsByIndex(index, optimisticDays, EnabledMetrics)
     }
+    console.log("stats total", stats.weight?.total)
     const today = new Date()
     const todayIndex = Math.ceil((today.getTime() - optimisticDays[0].date.getTime()) / (1000 * 3600 * 24))
     return (
