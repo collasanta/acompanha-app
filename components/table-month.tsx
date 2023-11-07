@@ -1,27 +1,38 @@
-import { getLast30DaysStatsByIndex } from "@/lib/stats"
+import { getLast30DaysStatsByIndex, getTotalDaysStatsByIndex } from "@/lib/stats"
 import { DailyDataType, enabledMetricsType } from "@/types/programs"
 import { ArrowDown, ArrowUp } from "lucide-react"
 
-export function TableMonth({ EnabledMetrics, day, programLength, index, optimisticDays }
+export function TableMonth({ EnabledMetrics, day, programLength, index, optimisticDays, total }
     : {
-        EnabledMetrics: enabledMetricsType, day: DailyDataType, programLength: number, index: number, optimisticDays: DailyDataType[]
+        EnabledMetrics: enabledMetricsType, day: DailyDataType, programLength: number, index: number, optimisticDays: DailyDataType[], total: boolean
     }) {
-    const stats = getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics)
-    console.log("render month")
+
+    let stats
+    if (!total) {
+        stats = getLast30DaysStatsByIndex(index, optimisticDays, EnabledMetrics)
+    } else {
+        stats = getTotalDaysStatsByIndex(index, optimisticDays, EnabledMetrics)
+    }
+    const today = new Date()
+    const todayIndex = Math.ceil((today.getTime() - optimisticDays[0].date.getTime()) / (1000 * 3600 * 24))
     return (
         <>
-            <div key={day.date.toDateString() + "stat"} className={`flex flex-row bg-white border-b border-t border-black/1 align-middle h-[50px] items-center  justify-between text-center font-bold"}`}>
+            <div key={day.date.toDateString() + "stat"} className={`flex flex-row bg-white border-b border-t border-black/1 align-middle h-[60px] items-center  justify-between text-center font-bold"}  ${total && "mt-10 bg-muted"}`}>
 
-                <div className={`font-semibold   bg-[white] border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle`}>
+                <div className={`font-semibold   bg-[white] border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle `}>
                     <div className="min-w-[30px] flex justify-center">
                         <div className="text-center">
-                            📈
-                            {" "}
                             {
-                                programLength <= 30 ? index + 1 + " Dias" :
-                                    <>
-                                        {(index + 1) % 30 === 0 && `${(index + 1) / 30}º Mês`}
-                                    </>
+                                total ? <div>
+                                    <div>Total:</div>
+                                    <div className="font-normal pb=[3px]">{todayIndex} Dias </div>
+                                </div> :
+
+                                    <div>
+                                        <div className="font-normal text-[13px]">Resumo:</div>
+                                        <div className="text-[15px] pb-[4px]">{(index + 1) / 30}º Mês </div>
+                                    </div>
+
                             }
                         </div>
                     </div>
@@ -61,10 +72,10 @@ export function TableMonth({ EnabledMetrics, day, programLength, index, optimist
                 {EnabledMetrics.peso ?
                     <div
                         className={`text-center font-semibold  text-[11px] justify-center bg-white text-sm  w-[50px] text-muted-foreground align-middle items-center flex flex-col`}>
-                        <div className="align-middle font-normal text-sm">
+                        <div className="align-middle font-normal text-[12px]">
                             {stats.weight?.total! > 0 && "Ganhou"} {stats.weight?.total! < 0 && "Perdeu"}
                         </div>
-                        <div>{stats.weight?.total + " kg"}</div>
+                        <div className="text-[13px]">{stats.weight?.total + " kg"}</div>
                     </div>
                     :
                     EnabledMetrics.peso && <div className="w-[50px] h-[40px]" />

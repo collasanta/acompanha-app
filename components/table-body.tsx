@@ -25,7 +25,7 @@ export function TableBody({ EnabledMetrics, Days }
                 optimisticDays.map((day: DailyDataType, index) => {
                     const programLength = Days.length
                     return (
-                        <div key={index}>
+                        <div key={index} className="bg-muted">
                             {/* AVALIAÇÃO INICIAL */}
                             {
                                 // day.checkpointId && index === 0 && (
@@ -36,8 +36,12 @@ export function TableBody({ EnabledMetrics, Days }
                             }
                             <TableDay EnabledMetrics={EnabledMetrics} day={day} index={index} setOptimisticDays={setOptimisticDays} />
                             {
-                                (((index + 1) !== 0 && (index + 1) % 30 === 0) || (programLength <= 30 && (index + 1) === programLength)) &&
-                                <TableMonth EnabledMetrics={EnabledMetrics} day={day} programLength={programLength} index={index} optimisticDays={optimisticDays} />
+                                (((index + 1) !== 0 && (index + 1) % 30 === 0) ) &&
+                                <TableMonth EnabledMetrics={EnabledMetrics} day={day} programLength={programLength} index={index} optimisticDays={optimisticDays} total={false} />
+                            }
+                            {
+                                (index === (optimisticDays.length - 1) ) &&
+                                <TableMonth EnabledMetrics={EnabledMetrics} day={day} programLength={programLength} index={index} optimisticDays={optimisticDays} total={true} />
                             }
                             {/* AVALIAÇÕES + FINAL */}
                             {
