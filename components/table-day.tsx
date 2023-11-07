@@ -213,6 +213,7 @@ export function TableDay({ EnabledMetrics, day, index, setOptimisticDays }
                                 <div className="flex flex-col items-center">
                                     <Textarea
                                         autoFocus={false}
+                                        spellCheck={false}
                                         onBlur={async (e) => {
                                             if (await isOffline() === true) {
                                                 return null
