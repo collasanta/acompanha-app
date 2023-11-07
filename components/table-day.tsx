@@ -217,7 +217,7 @@ export function TableDay({ EnabledMetrics, day, index, setOptimisticDays }
                                             if (await isOffline() === true) {
                                                 return null
                                             }
-                                            setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, weight: day.weight, notes: e.target.value === "" ? null : e.target.value, checkpointId: day.checkpointId });
+                                            setOptimisticDays({ date: day.date, programId: day.programId, diet: day.diet, exercise: day.exercise, cardio: day.cardio, weight: day.weight, notes: e.target.value === "" ? null : e.target.value, checkpointId: day.checkpointId });
                                             setCurrentIndex(index)
                                             setCurrentType("notes")
                                             setIsLoading(true)
