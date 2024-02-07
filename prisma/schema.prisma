@@ -14,7 +14,7 @@ model Professional {
   avgClientsSurvey Int?
   email            String?   @unique
   whatsapp         String?   @unique
-  clients          Client[] // Alterado de "patients" para "clients"
+  clients          Client[] 
   programs         Program[]
 }
 
@@ -31,8 +31,8 @@ model Client {
 model Program {
   id              String                 @id @map("id")
   name            String
-  client          Client                 @relation(fields: [clientId], references: [id]) // Alterado de "patient" para "client"
-  clientId        String // Alterado de "patientId" para "clientId"
+  client          Client                 @relation(fields: [clientId], references: [id]) 
+  clientId        String 
   professional    Professional           @relation(fields: [professionalId], references: [id])
   professionalId  String
   start_date      DateTime
