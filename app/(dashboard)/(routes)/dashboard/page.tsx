@@ -12,7 +12,6 @@ const DashboardPage = async () => {
   let programs
   if (typeof userPrograms === 'object' && userPrograms.userPrograms) {
     programs = userPrograms.userPrograms;
-    console.log("rend")
   }
   else if (typeof userPrograms === 'object' && userPrograms.error) {
     toast.error("Erro ao carregar programas: ", userPrograms.error)

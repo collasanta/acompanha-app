@@ -15,12 +15,6 @@ const testimonials = [
     title: "Software Engineer",
     description: "Relate diariamente sua evolução, e receba feedbacks do seu profissional de saúde de forma mais acertiva e personalizada",
   }
-  // {
-  //   name: "Entusiastas",
-  //   avatar: "M",
-  //   title: "CEO",
-  //   description: "Registre sua evolução nos treinos, dietas e peso, e tenha um histórico completo do seu progresso",
-  // },
 ];
 
 export const LandingContent = () => {

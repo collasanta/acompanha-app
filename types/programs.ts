@@ -80,7 +80,7 @@ export interface UserProgramResponse {
     enabled_metrics: JsonValue;
     status: string;
   } | null;
-  erro?: string; // Optional error message property
+  erro?: string; 
 }
 
 export interface enabledMetricsType {

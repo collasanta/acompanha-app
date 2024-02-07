@@ -1,6 +1,5 @@
 import { getLast30DaysStatsByIndex, getTotalDaysStatsByIndex } from "@/lib/stats"
 import { DailyDataType, enabledMetricsType } from "@/types/programs"
-import { ArrowDown, ArrowUp } from "lucide-react"
 
 export function TableMonth({ EnabledMetrics, day, programLength, index, optimisticDays, total }
     : {
@@ -13,13 +12,11 @@ export function TableMonth({ EnabledMetrics, day, programLength, index, optimist
     } else {
         stats = getTotalDaysStatsByIndex(index, optimisticDays, EnabledMetrics)
     }
-    console.log("stats total", stats.weight?.total)
     const today = new Date()
     const todayIndex = Math.ceil((today.getTime() - optimisticDays[0].date.getTime()) / (1000 * 3600 * 24))
     return (
         <>
             <div key={day.date.toDateString() + "stat"} className={`flex flex-row bg-white border-b border-t border-black/1 align-middle h-[60px] items-center  justify-between text-center font-bold"}  ${total && "mt-10 bg-muted"}`}>
-
                 <div className={`font-semibold   bg-[white] border-black/5 text-center flex items-center justify-center w-[80px] h-[40px] text-sm text-muted-foreground align-middle `}>
                     <div className="min-w-[30px] flex justify-center">
                         <div className="text-center">
@@ -38,7 +35,6 @@ export function TableMonth({ EnabledMetrics, day, programLength, index, optimist
                         </div>
                     </div>
                 </div>
-
 
                 {EnabledMetrics.dieta ?
                     <div
@@ -82,10 +78,8 @@ export function TableMonth({ EnabledMetrics, day, programLength, index, optimist
                     EnabledMetrics.peso && <div className="w-[50px] h-[40px]" />
                 }
 
-
                 <div className="min-w-[50px] max-h-[40px]">
                 </div>
-
             </div>
         </>
     )

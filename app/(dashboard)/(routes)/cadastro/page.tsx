@@ -38,7 +38,6 @@ import { ptBR } from "date-fns/locale"
 import { useRouter } from "next/navigation"
 import { registerNewProgram } from "@/lib/programs"
 
-
 export default function Home() {
   const [finalForm, setFinalForm] = useState<programsFormSchemaType>()
   const [validForm, setValidForm] = useState(false)
@@ -72,7 +71,7 @@ export default function Home() {
       setDateDiff(days)
     }
   }, [startDate, endDate])
-  
+
 
   function onSubmit(values: programsFormSchemaType) {
     const finalForm = {
@@ -99,7 +98,6 @@ export default function Home() {
     },
   })
 
-
   return (
     <div>
       <div className="mb-8 space-y-4">
@@ -122,9 +120,6 @@ export default function Home() {
                   <FormControl>
                     <Input placeholder="João Oliveira" {...field} />
                   </FormControl>
-                  {/* <FormDescription>
-                    This is your public display name.
-                  </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -213,25 +208,24 @@ export default function Home() {
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
-                        {/* <PopoverClose> */}
                         <Calendar
                           mode="single"
                           selected={field.value}
                           onSelect={(e) => { field.onChange(e); setIsCalendarOpen(false); setStartDate(e) }}
-                          // disabled={(date) =>
+                          // disable dates before today
+                          // disabled={(date) =>  
                           //   date < new Date() || date < new Date("1900-01-01")
                           // }
                           initialFocus
                           locale={ptBR}
                         />
-                        {/* </PopoverClose> */}
                       </PopoverContent>
                     </Popover>
                   </FormControl>
                 </FormItem>
               )}
             />
-                        <FormField
+            <FormField
               control={form.control}
               name="endDate"
               render={({ field }) => (
@@ -268,18 +262,17 @@ export default function Home() {
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
-                        {/* <PopoverClose> */}
                         <Calendar
                           mode="single"
                           selected={field.value}
                           onSelect={(e) => { field.onChange(e); setIsCalendarOpen2(false); setEndDate(e) }}
-                          // disabled={(date) =>
+                          // disable dates before today
+                          // disabled={(date) => 
                           //   date < new Date() || date < new Date("1900-01-01")
                           // }
                           initialFocus
                           locale={ptBR}
                         />
-                        {/* </PopoverClose> */}
                       </PopoverContent>
                     </Popover>
                   </FormControl>
@@ -303,7 +296,7 @@ export default function Home() {
                     </Popover>
                   </div>
                   <FormControl>
-                    <Input placeholder="21 dias" value={dateDiff + " Dias"} readOnly={true} className="text-muted-foreground"/>
+                    <Input placeholder="21 dias" value={dateDiff + " Dias"} readOnly={true} className="text-muted-foreground" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -346,7 +339,6 @@ export default function Home() {
                               checked={field.value}
                               onCheckedChange={field.onChange}
                               className="w-[30px] h-[30px] mx-auto" />
-                            {/* <Input type="checkbox" defaultValue={"true"} className="w-[30px] mx-auto" {...field} /> */}
                           </FormControl>
                         </FormItem>
                       </div>
@@ -440,7 +432,6 @@ export default function Home() {
                               </div>
                             </div>
                           </div>
-
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
@@ -468,10 +459,8 @@ export default function Home() {
                 </>
               }
             </div>
-
           </form>
         </Form>
-
       </div>
     </div>
   )

@@ -39,11 +39,6 @@ export const getUserPrograms = async () => {
 }
 
 export const getUserProgram = async (programId: string) => {
-  // const { userId } = auth()
-  // if (!userId) {
-  //   return { erro: "usuário não logado " }
-  // }
-
   try {
     const program = await prismadb.program.findUnique({
       where: { id: programId },
@@ -75,11 +70,9 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
     let { userId } = auth()
     if (!userId) { return { erro: "usuário não logado " } }
 
-
     const typeCheck = programsFormSchema.safeParse(finalForm)
     if (!typeCheck.success) { return { erro: typeCheck.error.format() } }
 
-    // PRIMEIRO CHECA SE O CLIENTE JÁ EXISTE
     let clientId = await checkClientByWhatsapp(finalForm.clientWhatsapp);
 
     if (clientId === false) {
@@ -115,10 +108,9 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
 
     const newDays = createProgramDays(newProgram.id, finalForm.startDate, finalForm.duration!)
     if (typeof newDays === 'object' && 'erro' in newDays) {
-      console.log("Erro ao criar dias: ", newDays.erro)
       return { erro: newDays.erro };
     }
-
+    
     revalidatePath(`/p/${newProgram.id}`)
     return { programId: newProgram.id }
 
@@ -161,7 +153,6 @@ export const deleteProgram = async (programId: string) => {
 }
 
 export const getProgramDays = async (programId: string) => {
-  
   const enabledMetrics = await prismadb.program.findUnique({
     where: {
       id: programId
@@ -190,13 +181,11 @@ export const getProgramDays = async (programId: string) => {
         date: "asc"
       }
     })
-
     const daysWithWeightAsString = days.map(day => ({
       ...day,
       weight: day?.weight ? day.weight.toString() : null,
       cardio: day?.cardio ? day.cardio.toString() : null
     }));
-
     return { days: daysWithWeightAsString }
   } catch (error: any) {
     return { erro: error.message }
@@ -210,61 +199,42 @@ const createProgramDays = async (programId: string, startDate: Date, duration: n
     let day = 1
 
     while (day <= duration) {
-
-
-      if (day === 1) { // avaliacao inicial
+      if (day === 1) {
         const checkpoint = await createCheckpoint(programId, currentDate, "initial")
-
         if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
-          console.log("0 Erro ao criar checkpoint: ", checkpoint.erro)
           return { erro: checkpoint.erro }
         }
-        console.log("currentDate: ", currentDate, "day:", day)
         days.push({
           programId: programId,
           date: currentDate,
           checkpointId: checkpoint.checkpoint
         })
-        console.log("days: ", days)
-
       } else if (day % 30 === 0 && day !== 1 && day !== duration) { // avaliacao mensal
-
         const checkpoint = await createCheckpoint(programId, currentDate, "review")
-
         if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
-          console.log("1 Erro ao criar checkpoint: ", checkpoint.erro)
           return { erro: checkpoint.erro }
         }
-        console.log("currentDate: ", currentDate, "day:", day)
         days.push({
           programId: programId,
           date: currentDate,
           checkpointId: checkpoint.checkpoint
         })
-        console.log("days: ", days)
-      } else if (day === duration) { // avaliacao final
+      } else if (day === duration) {
         const checkpoint = await createCheckpoint(programId, currentDate, "final")
-
         if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
-          console.log("2 Erro ao criar checkpoint: ", checkpoint.erro)
           return { erro: checkpoint.erro }
         }
-        console.log("currentDate: ", currentDate, "day:", day)
         days.push({
           programId: programId,
           date: currentDate,
           checkpointId: checkpoint.checkpoint
         })
-        console.log("days: ", days)
       } else {
-        console.log("currentDate: ", currentDate, "day:", day)
         days.push({
           programId: programId,
           date: currentDate,
         })
-        console.log("days: ", days)
       }
-
       day++
       currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1))
     }
@@ -272,10 +242,8 @@ const createProgramDays = async (programId: string, startDate: Date, duration: n
     const newDays = await prismadb.dailyData.createMany({
       data: days
     })
-
     return { days: newDays }
   } catch (error: any) {
-    console.log("Erro ao criar dias: ", error.message)
     return { erro: error.message }
   }
 }
@@ -325,12 +293,8 @@ export const setDiet = async (date: Date, programId: string, boolean: boolean) =
         diet: boolean
       }
     })
-    console.log("-----------------Diet-------------------------")
-    console.log("received boolean back diet: ", boolean)
-    console.log("Diet set: ", result.date, "value:", result.diet)
   } catch (error: any) {
     revalidatePath(`/p/${programId}`)
-    console.log("Erro ao setar dieta: ", error.message)
   }
 }
 
@@ -347,12 +311,8 @@ export const setExercise = async (date: Date, programId: string, boolean: boolea
         exercise: boolean
       }
     })
-    console.log("-----------------exercise-------------------------")
-    console.log("received boolean back exervcise: ", boolean)
-    console.log("Exercise set: ", result.date, "value:", result.exercise)
   } catch (error: any) {
     revalidatePath(`/p/${programId}`)
-    console.log("Erro ao setar dieta: ", error.message)
   }
 }
 
@@ -366,7 +326,6 @@ export const setWeight = async (date: Date, programId: string, weight: string | 
   if (weight !== null) {
     weight = weight?.replace(',', '.')
     if (/^-?\d+(\.\d+)?$/.test(weight!) === false) {
-      console.log("invalid weight")
       revalidatePath(`/p/${programId}`)
       return
     }
@@ -384,10 +343,8 @@ export const setWeight = async (date: Date, programId: string, weight: string | 
         weight: weight
       }
     })
-    console.log("Weight set: ", result.date, "value:", result.weight)
   } catch (error: any) {
     revalidatePath(`/p/${programId}`)
-    console.log("Erro ao setar peso: ", error.message)
   }
 }
 
@@ -410,10 +367,8 @@ export const setCardio = async (date: Date, programId: string, cardio: string | 
         cardio: cardio !== null ? parseInt(cardio) : null
       }
     })
-    console.log("Cardio set: ", result.date, "value:", result.cardio)
   } catch (error: any) {
     revalidatePath(`/p/${programId}`)
-    console.log("Erro ao setar cardio: ", error.message)
   }
 }
 
@@ -435,10 +390,8 @@ export const setNotes = async (date: Date, programId: string, notes: string, old
         notes: notes
       }
     })
-    console.log("notes set: ", result.date, "value:", result.notes)
   } catch (error: any) {
     revalidatePath(`/p/${programId}`)
-    console.log("Erro ao setar notas: ", error.message)
   }
 }
 
@@ -467,12 +420,10 @@ export const setFormsLink = async (checkpointId: string, link: string | null, ol
   if (link === null) {
     return
   } else if (link === oldLink) {
-    console.log("same")
     return
   } else if (link === "" && oldLink !== null) {
     link = null
   } else if (link === "" && oldLink === null) {
-    console.log("same")
     return
   }
 
@@ -485,21 +436,17 @@ export const setFormsLink = async (checkpointId: string, link: string | null, ol
     }
   })
 
-  console.log("setFormsLinkResult", result)
   revalidatePath(`/p/${result.programId}`)
-  console.log("formLink set: ", result.date, "value:", result.formUrl)
 }
 
 export const setDietLink = async (checkpointId: string, link: string | null, oldLink: string) => {
   if (link === null) {
     return
   } else if (link === oldLink) {
-    console.log("same")
     return
   } else if (link === "" && oldLink !== null) {
     link = null
   } else if (link === "" && oldLink === null) {
-    console.log("same")
     return
   }
 
@@ -512,7 +459,6 @@ export const setDietLink = async (checkpointId: string, link: string | null, old
     }
   })
 
-  console.log("setDietLinkResult", result)
   revalidatePath(`/p/${result.programId}`)
   console.log("dietPlanUrl set: ", "value:", result.dietPlanUrl)
 }
@@ -521,15 +467,12 @@ export const setTrainingLink = async (checkpointId: string, link: string | null,
   if (link === null) {
     return
   } else if (link === oldLink) {
-    console.log("same")
     return
   } else if (link === "" && oldLink !== null) {
     link = null
   } else if (link === "" && oldLink === null) {
-    console.log("same")
     return
   }
-
 
   const result = await prismadb.checkpoint.update({
     where: {
@@ -541,12 +484,10 @@ export const setTrainingLink = async (checkpointId: string, link: string | null,
   })
 
   revalidatePath(`/p/${result.programId}`)
-  console.log("trainingLink set: ", result.date, "value:", result.trainingPlanUrl)
 }
 
 export const setFormFilled = async (checkpointId: string, boolean: boolean, oldBoolean: boolean) => {
   if (boolean === oldBoolean) {
-    console.log("same")
     return
   }
 
@@ -558,10 +499,7 @@ export const setFormFilled = async (checkpointId: string, boolean: boolean, oldB
       formFilled: boolean
     }
   })
-
-  console.log("setTrainingLinkResult", result)
   revalidatePath(`/p/${result.programId}`)
-  console.log("formFilledSet: ", "value:", result.formFilled)
 }
 
 

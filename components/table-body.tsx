@@ -26,30 +26,14 @@ export function TableBody({ EnabledMetrics, Days }
                     const programLength = Days.length
                     return (
                         <div key={index} className="bg-muted">
-                            {/* AVALIAÇÃO INICIAL */}
-                            {
-                                // day.checkpointId && index === 0 && (
-                                //     <>
-                                //         <FormButton checkPoints={checkPoints} day={day} EnabledMetrics={EnabledMetrics} isAdmin={isAdmin!} />
-                                //     </>
-                                // )
-                            }
                             <TableDay EnabledMetrics={EnabledMetrics} day={day} index={index} setOptimisticDays={setOptimisticDays} />
                             {
-                                (((index + 1) !== 0 && (index + 1) % 30 === 0) ) &&
+                                (((index + 1) !== 0 && (index + 1) % 30 === 0)) &&
                                 <TableMonth EnabledMetrics={EnabledMetrics} day={day} programLength={programLength} index={index} optimisticDays={optimisticDays} total={false} />
                             }
                             {
-                                (index === (optimisticDays.length - 1) ) &&
+                                (index === (optimisticDays.length - 1)) &&
                                 <TableMonth EnabledMetrics={EnabledMetrics} day={day} programLength={programLength} index={index} optimisticDays={optimisticDays} total={true} />
-                            }
-                            {/* AVALIAÇÕES + FINAL */}
-                            {
-                                // day.checkpointId && index !== 0 && (
-                                //     <>
-                                //         <FormButton checkPoints={checkPoints} day={day} EnabledMetrics={EnabledMetrics} isAdmin={isAdmin!} />
-                                //     </>
-                                // )
                             }
                         </div>
                     )

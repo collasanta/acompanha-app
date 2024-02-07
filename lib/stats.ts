@@ -1,15 +1,9 @@
 import { DailyDataTypeArr, enabledMetricsType } from "@/types/programs";
 
 export function getLast30DaysStatsByIndex(indexInput: number, optimisticDays: DailyDataTypeArr, enabledMetrics: enabledMetricsType) {
-    console.log("getLast30DaysStatsByIndex")
     const last30DaysData = optimisticDays.filter((day, index) => index >= indexInput - 29 && index <= indexInput);
-
-    //first non null value for weight
     const firstWeight = last30DaysData.find((day) => day.weight)?.weight;
-
-    //last non null value for weight
     const lastWeight = last30DaysData.reverse().find((day) => day.weight)?.weight;
-
     const result: any = {};
     let totalDiet = 0;
     let totalExercise = 0;
@@ -50,6 +44,7 @@ export function getLast30DaysStatsByIndex(indexInput: number, optimisticDays: Da
             }
         }
     }
+
     const percentageDiet = (totalDiet * 100 / totalDaysUntilNow).toFixed(0)
     const percentageExercise = (totalExercise * 100 / totalDaysUntilNow).toFixed(0)
 
@@ -62,9 +57,7 @@ export function getLast30DaysStatsByIndex(indexInput: number, optimisticDays: Da
 }
 
 export function getTotalDaysStatsByIndex(indexInput: number, optimisticDays: DailyDataTypeArr, enabledMetrics: enabledMetricsType) {
-    //first non null value for weight
     const firstWeight = optimisticDays.find((day) => day.weight)?.weight;
-    //last non null value for weight
     const lastWeight = optimisticDays.reverse().find((day) => day.weight)?.weight;
     optimisticDays.reverse()
     const result: any = {};

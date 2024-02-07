@@ -119,7 +119,7 @@ export const ProgramCard = (
 
                                         );
                                     }
-                                    return null; // Skip false values
+                                    return null; 
                                 })}
                             </div>
                         </div>

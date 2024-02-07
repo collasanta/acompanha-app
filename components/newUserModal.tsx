@@ -27,7 +27,6 @@ export const NewUserModal = () => {
             professionalJob: "",
             professionalAvgClientsSurvey: undefined,
             whatsapp: "",
-            // email: ""
         },
     })
 
@@ -107,22 +106,6 @@ export const NewUserModal = () => {
                                     </FormItem>
                                 )}
                             />
-                            {/* <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <div className="flex flex-row space-x-4">
-                                            <FormLabel>Qual seu melhor e-mail?</FormLabel>
-                                        </div>
-                                        <FormControl>
-                                            <Input placeholder="joao@gmail.com" {...field} />
-                                        </FormControl>
-
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            /> */}
                             <FormField
                                 control={form.control}
                                 name="whatsapp"

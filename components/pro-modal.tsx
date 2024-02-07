@@ -34,13 +34,7 @@ const benefits = [
         icon: Coins,
         color: "text-yellow-500",
         bgColor: "bg-yellow-500/10",
-    },
-    // {
-    //     label: "100 Generations",
-    //     icon: MessageSquare,
-    //     color: "text-emerald-500",
-    //     bgColor: "bg-emerald-500/10",
-    // },
+    }
 ]
 
 export const ProModal = () => {
