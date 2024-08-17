@@ -20,8 +20,11 @@ model Professional {
 
 model Client {
   id                       String                 @id @map("id")
-  name                     String
-  whatsapp                 String?                @unique
+  name                     String?
+  whatsapp                 String?               @unique 
+  email                    String?               @unique
+  genre                    String?
+  age                      Int?
   professional             Professional           @relation(fields: [professionalId], references: [id])
   professionalId           String
   programs                 Program[]
