@@ -1,4 +1,5 @@
 "use client"
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import {
@@ -21,80 +22,52 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Calendar } from "@/components/ui/calendar"
 import {
   Popover,
-  PopoverClose,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useEffect, useState } from "react"
-import { programsFormSchema, programsFormSchemaType } from "@/types/programs"
-import { Checkbox } from "@/components/ui/checkbox"
-import { CalendarIcon, InfoIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
+import { useState } from "react"
+import { clientsFormSchema, clientsFormSchemaType } from "@/types/clients"
+import { InfoIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { registerNewProgram } from "@/lib/programs"
+import { createNewClient } from "@/lib/client"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-export default function Home() {
-  const [finalForm, setFinalForm] = useState<programsFormSchemaType>()
+export default function ClientRegistration() {
+  const [finalForm, setFinalForm] = useState<clientsFormSchemaType>()
   const [validForm, setValidForm] = useState(false)
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [isCalendarOpen2, setIsCalendarOpen2] = useState(false);
-  const [dateDiff, setDateDiff] = useState(0);
-  const [isLoading, setLoading] = useState(false);
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
+  const [isLoading, setLoading] = useState(false)
 
   const router = useRouter()
 
-  async function registerProgram() {
+  async function registerClient() {
     setLoading(true)
-    const result = await registerNewProgram(finalForm!)
-    if (result.erro) {
-      const errorMessage = result.erro;
-      console.log("Server Error Validation:", errorMessage)
-    } else if (result.programId) {
-      console.log("Programa Cadastrado com Sucesso!", result.programId)
-      router.push(`/p/${result.programId}`)
-    }
+    window.alert('wow')
+    // const result = await createNewClient(finalForm!)
+    // if (result.erro) {
+    //   const errorMessage = result.erro;
+    //   console.log("Server Error Validation:", errorMessage)
+    // } else if (result.clientId) {
+    //   console.log("Cliente Cadastrado com Sucesso!", result.clientId)
+    //   router.push(`/clients/${result.clientId}`)
+    // }
     setLoading(false)
   }
 
-  useEffect(() => {
-    if (startDate && endDate) {
-      const diff = Math.abs(startDate.getTime()! - endDate.getTime()!);
-      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-      console.log("dateDiff:", days)
-      setDateDiff(days)
-    }
-  }, [startDate, endDate])
-
-
-  function onSubmit(values: programsFormSchemaType) {
-    const finalForm = {
-      ...values,
-      duration: dateDiff,
-    }
-    setFinalForm(finalForm)
+  function onSubmit(values: clientsFormSchemaType) {
+    setFinalForm(values)
     setValidForm(true)
   }
 
-  const form = useForm<programsFormSchemaType>({
-    resolver: zodResolver(programsFormSchema),
+  const form = useForm<clientsFormSchemaType>({
+    resolver: zodResolver(clientsFormSchema),
     defaultValues: {
       clientName: "",
       clientWhatsapp: "",
-      programName: "",
-      duration: undefined,
-      startDate: undefined,
-      endDate: undefined,
-      metricspeso: true,
-      metricsdieta: true,
-      metricstreino: true,
-      metricscardio: true,
+      clientSex: undefined,
+      clientAge: undefined,
+      clientEmail: "",
     },
   })
 
@@ -102,13 +75,13 @@ export default function Home() {
     <div>
       <div className="mb-8 space-y-4">
         <h2 className="text-2xl md:text-4xl font-bold text-center">
-          Cadastro
+          Cadastro de Cliente
         </h2>
         <p className="text-muted-foreground font-light text-small md:text-lg text-center">
-          Cadastre novos diários para seus clientes
+          Cadastre novos clientes
         </p>
       </div>
-      <div className=" px-4 md:px-20 lg:px-32 md:max-w-[800px] mx-auto">
+      <div className="px-4 md:px-20 lg:px-32 md:max-w-[800px] mx-auto">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
@@ -116,7 +89,7 @@ export default function Home() {
               name="clientName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome do Cliente</FormLabel>
+                  <FormLabel>Nome Completo</FormLabel>
                   <FormControl>
                     <Input placeholder="João Oliveira" {...field} />
                   </FormControl>
@@ -143,29 +116,18 @@ export default function Home() {
                   <FormControl>
                     <Input placeholder="+551199123456" {...field} />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="programName"
+              name="clientEmail"
               render={({ field }) => (
                 <FormItem>
-                  <div className="flex flex-row space-x-4">
-                    <FormLabel>Descrição do Acompanhamento</FormLabel>
-                    <Popover>
-                      <PopoverTrigger type="button">
-                        <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <p className="text-[12px] pl-1">Descrição breve sobre a finalidade do programa</p>
-                      </PopoverContent>
-                    </Popover>
-                  </div>
+                  <FormLabel>E-mail do Cliente</FormLabel>
                   <FormControl>
-                    <Input placeholder="Projeto de Emagrecimento 21 dias" {...field} />
+                    <Input type="email" placeholder="cliente@exemplo.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -173,226 +135,57 @@ export default function Home() {
             />
             <FormField
               control={form.control}
-              name="startDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <div className="flex flex-row space-x-4">
-                    <FormLabel>Data de início do Diário</FormLabel>
-                    <Popover>
-                      <PopoverTrigger type="button">
-                        <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <p className="text-[12px] pl-1">Dia em que a 1º mensagem de acompanhamento será enviada pelo robô no whatsapp</p>
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                  <FormControl>
-                    <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen} >
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP", { locale: ptBR })
-                            ) : (
-                              <span>👉 Escolher Data</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={(e) => { field.onChange(e); setIsCalendarOpen(false); setStartDate(e) }}
-                          // disable dates before today
-                          // disabled={(date) =>  
-                          //   date < new Date() || date < new Date("1900-01-01")
-                          // }
-                          initialFocus
-                          locale={ptBR}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="endDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <div className="flex flex-row space-x-4">
-                    <FormLabel>Data Fim</FormLabel>
-                    <Popover>
-                      <PopoverTrigger type="button">
-                        <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <p className="text-[12px] pl-1">Data do último dia contabilizado no diário</p>
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                  <FormControl>
-                    <Popover open={isCalendarOpen2} onOpenChange={setIsCalendarOpen2} >
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP", { locale: ptBR })
-                            ) : (
-                              <span>👉 Escolher Data</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={(e) => { field.onChange(e); setIsCalendarOpen2(false); setEndDate(e) }}
-                          // disable dates before today
-                          // disabled={(date) => 
-                          //   date < new Date() || date < new Date("1900-01-01")
-                          // }
-                          initialFocus
-                          locale={ptBR}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="duration"
+              name="clientSex"
               render={({ field }) => (
                 <FormItem>
-                  <div className="flex flex-row space-x-4">
-                    <FormLabel>Duração do Programa</FormLabel>
-                    <Popover>
-                      <PopoverTrigger type="button">
-                        <InfoIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <p className="text-[12px] pl-1">Dias que o programa irá durar após a data início</p>
-                      </PopoverContent>
-                    </Popover>
-                  </div>
+                  <FormLabel>Sexo</FormLabel>
                   <FormControl>
-                    <Input placeholder="21 dias" value={dateDiff + " Dias"} readOnly={true} className="text-muted-foreground" />
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-row space-x-4"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="masculino" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Masculino
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="feminino" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Feminino
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="mx-auto pt-1">
-              <div className="flex flex-col">
-                <div className="text-md pb-4 mx-auto font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Métricas para Acompanhar
-                </div>
-              </div>
-              <div className="flex flex-col mx-auto text-center">
-                <div className="flex space-x-10 justify-center text-center">
-                  <FormField
-                    control={form.control}
-                    name="metricspeso"
-                    render={({ field }) => (
-                      <div className="flex flex-row space-x-8 justify-center pt-[10px]">
-                        <FormItem className="flex flex-col">
-                          <FormLabel className=" text-sm  text-muted-foreground">Peso 🧍</FormLabel>
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                              className="w-[30px] h-[30px] mx-auto" />
-                          </FormControl>
-                        </FormItem>
-                      </div>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metricsdieta"
-                    render={({ field }) => (
-                      <div className="flex flex-row space-x-8 justify-center pt-[10px]">
-                        <FormItem className="flex flex-col">
-                          <FormLabel className="text-sm text-muted-foreground">Dieta 🥦</FormLabel>
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                              className="w-[30px] h-[30px] mx-auto" />
-                          </FormControl>
-                        </FormItem>
-                      </div>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metricstreino"
-                    render={({ field }) => (
-                      <div className="flex flex-row space-x-8 justify-center pt-[10px]">
-                        <FormItem className="flex flex-col">
-                          <FormLabel className=" text-sm  text-muted-foreground">Treino 💪</FormLabel>
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                              className="w-[30px] h-[30px] mx-auto" />
-                          </FormControl>
-                        </FormItem>
-                      </div>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="metricscardio"
-                    render={({ field }) => (
-                      <div className="flex flex-row space-x-8 justify-center pt-[10px]">
-                        <FormItem className="flex flex-col">
-                          <FormLabel className=" text-sm  text-muted-foreground">Cardio 👟</FormLabel>
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                              className="w-[30px] h-[30px] mx-auto" />
-                          </FormControl>
-                        </FormItem>
-                      </div>
-                    )}
-                  />
-                </div>
-                <div className="pt-4 text-sm  text-muted-foreground">
-                  Selecione Clicando 👆
-                </div>
-
-              </div>
-            </div>
+            <FormField
+              control={form.control}
+              name="clientAge"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Idade</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="25" {...field} onChange={(e) => field.onChange(e.target.valueAsNumber)} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="flex justify-center pb-[120px]">
-              <Button type="submit">Cadastrar Programa</Button>
+              <Button type="submit">Cadastrar Cliente</Button>
               {finalForm && validForm &&
                 <>
-
                   <AlertDialog open={!!finalForm}>
-
                     <AlertDialogContent>
                       <AlertDialogHeader>
                         <AlertDialogTitle>Confirme os dados antes de prosseguir</AlertDialogTitle>
@@ -407,29 +200,16 @@ export default function Home() {
                               <div>{finalForm?.clientWhatsapp}</div>
                             </div>
                             <div className="flex flex-row space-x-2">
-                              <div className="font-semibold">Nome do Programa:</div>
-                              <div>{finalForm?.programName}</div>
+                              <div className="font-semibold">E-mail do Cliente:</div>
+                              <div>{finalForm?.clientEmail}</div>
                             </div>
                             <div className="flex flex-row space-x-2">
-                              <div className="font-semibold">Data de Início:</div>
-                              <div>{finalForm?.startDate?.toLocaleDateString()}</div>
+                              <div className="font-semibold">Sexo:</div>
+                              <div>{finalForm?.clientSex}</div>
                             </div>
                             <div className="flex flex-row space-x-2">
-                              <div className="font-semibold">Data de Término:</div>
-                              <div>{finalForm?.endDate?.toLocaleDateString()}</div>
-                            </div>
-                            <div className="flex flex-row space-x-2">
-                              <div className="font-semibold">Duração:</div>
-                              <div>{finalForm?.duration} dias</div>
-                            </div>
-                            <div className="flex flex-row space-x-2">
-                              <div className="font-semibold">Métricas Acompanhadas:</div>
-                              <div>
-                                {finalForm?.metricspeso ? "Peso " : ""}
-                                {finalForm?.metricsdieta ? "Dieta " : ""}
-                                {finalForm?.metricstreino ? "Treino " : ""}
-                                {finalForm?.metricscardio ? "Cardio " : ""}
-                              </div>
+                              <div className="font-semibold">Idade:</div>
+                              <div>{finalForm?.clientAge}</div>
                             </div>
                           </div>
                         </AlertDialogDescription>
@@ -450,7 +230,7 @@ export default function Home() {
                           )
                             :
                             <>
-                              <AlertDialogAction onClick={registerProgram}>Confirmar</AlertDialogAction>
+                              <AlertDialogAction onClick={registerClient}>Confirmar</AlertDialogAction>
                             </>
                         }
                       </AlertDialogFooter>
