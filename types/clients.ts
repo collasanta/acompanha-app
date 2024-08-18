@@ -19,3 +19,15 @@ export const clientsFormSchema = z.object({
 })
 
 export type clientsFormSchemaType = z.infer<typeof clientsFormSchema>
+
+export type clientsFrontEndListType = {
+  id: string;
+  name: string;
+  whatsapp: string | null;
+  email: string | null;
+  genre: string | null;
+  age: number | null;
+  professionalId: string;
+}
+
+export type clientsFrontEndListTypeArr = Array<clientsFrontEndListType> | { error: string |undefined; };

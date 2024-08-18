@@ -11,13 +11,13 @@ const routes = [
     {
         label: "Clientes",
         icon: Users,
-        href: "/clientes",
+        href: "/clients",
         color: "text-emerald-500",
         subitems: [
             {
                 label: "Cadastro",
                 icon: UserRoundPlus,
-                href: "/clientes-cadastro",
+                href: "/clients/cadastro",
                 color: "text-emerald-500"
             }
         ]
@@ -76,17 +76,17 @@ const Sidebar = ({
                                 <Link href={route.href} onClick={() => setIsOpen(false)}
                                     className={cn(
                                         "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:bg-muted rounded-lg transition  hover:text-white hover:bg-emerald-500",
-                                        pathname.includes(route.href.split("-")[0]) ? "text-white bg-emerald-500" : "text-gray-600"                                    )}>
+                                        pathname.includes(route.href.split("/")[1]) ? "text-white bg-emerald-500" : "text-gray-600"                                    )}>
                                     <div className="flex items-center flex-1">
                                     <route.icon className={cn(
         "w-5 h-5 mr-3",
-        pathname.includes(route.href.split("-")[0]) ? "#ffffff" : route.color,
+        pathname.includes(route.href.split("/")[1]) ? "#ffffff" : route.color,
         "group-hover:text-white"
     )} />
                                         {route.label}
                                     </div>
                                 </Link>
-                                {pathname.includes(route.href.split("-")[0]) && route.subitems && route.subitems.map((subitem) => (
+                                {pathname.includes(route.href.split("/")[1]) && route.subitems && route.subitems.map((subitem) => (
                                     <Link href={subitem.href} onClick={() => setIsOpen(false)}
                                         key={subitem.href} className={cn(
                                             "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition text-gray-600",
@@ -107,6 +107,5 @@ const Sidebar = ({
         </>
     );
 }
-
 
 export default Sidebar;

@@ -8,7 +8,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 const Dashboard = async () => {
-redirect("/clientes");
+redirect("/clients");
 }
 
 export default Dashboard;

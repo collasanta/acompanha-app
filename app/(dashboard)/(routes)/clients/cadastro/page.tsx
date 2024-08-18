@@ -182,7 +182,10 @@ export default function ClientRegistration() {
             />
 
             <div className="flex justify-center pb-[120px]">
-              <Button type="submit">Cadastrar Cliente</Button>
+              <div className="flex-col flex space-y-2">
+                <Button type="submit">Cadastrar Cliente</Button>
+                <Button variant={"cancel"} type="button" onClick={() => router.push(`/clients`)}>Voltar</Button>
+              </div>
               {finalForm && validForm &&
                 <>
                   <AlertDialog open={!!finalForm}>

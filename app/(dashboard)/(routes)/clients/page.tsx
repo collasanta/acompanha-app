@@ -1,20 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { programsFrontEndListType } from "@/types/programs";
+import { clientsFrontEndListType, clientsFrontEndListTypeArr } from "@/types/clients";
 import { PlusIcon } from "lucide-react";
 import { ProgramCard } from "@/components/programCard";
-import { getUserPrograms } from "@/lib/programs";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { getClientsByProfessional } from "@/lib/client";
+import ClientCard from "@/components/clientCard.";
 
-const AlunosPage = async () => {
+const ClientsPage = async () => {
 
-  const userPrograms: any = await getUserPrograms();
-  let programs
-  if (typeof userPrograms === 'object' && userPrograms.userPrograms) {
-    programs = userPrograms.userPrograms;
-  }
-  else if (typeof userPrograms === 'object' && userPrograms.error) {
-    toast.error("Erro ao carregar programas: ", userPrograms.error)
+  const userClients: clientsFrontEndListTypeArr = await getClientsByProfessional();
+
+  if ('error' in userClients) {
+    toast.error("Erro ao carregar programas: " + userClients.error);
+    return null;
   }
 
   return (
@@ -28,7 +27,7 @@ const AlunosPage = async () => {
         </p>
       </div>
       <div className="px-4 flex justify-center md:px-20 lg:px-32 space-y-4 items-center">
-        <Link href="/clientes-cadastro">
+        <Link href="/clients/cadastro">
           <Button
             className="p-4 flex shadow-md"
           >
@@ -38,15 +37,20 @@ const AlunosPage = async () => {
         </Link>
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4 pt-8 mx-auto flex flex-col justify-center md:min-w-[400px]">
-        {programs && programs?.map((program: programsFrontEndListType) => (
-          <ProgramCard
-            key={program.id}
-            program={program}
+        {userClients && userClients?.map((client: clientsFrontEndListType) => (
+
+          <ClientCard
+            key={client.id}
+            client={client}
           />
+          // <ProgramCard
+          //   key={program.id}
+          //   program={program}
+          // />
         ))}
       </div>
     </div>
   );
 }
 
-export default AlunosPage;
+export default ClientsPage;

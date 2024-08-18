@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs"
 import prismadb from "./prismadb"
 import { programsFormSchema, programsFormSchemaType } from "@/types/programs"
 import { generateId } from "./utils";
+import { error } from "console";
 
 export const checkClientByWhatsapp = async (clientWhatsapp: string) => {
     try {
@@ -44,6 +45,22 @@ export const createNewClient = async (clientWhatsapp: string, clientName: string
     } catch (error: any) {
         return {
             erro: error.message
+        }
+    }
+}
+
+export const getClientsByProfessional = async () => {
+    const { userId } = auth()
+    if (!userId) { return { error: "usuário não logado " } }
+  
+    try {
+        const clients = await prismadb.client.findMany({
+            where: { professionalId: userId }
+        })
+        return clients
+    } catch (error: any) {
+        return {
+            error: error.message
         }
     }
 }
