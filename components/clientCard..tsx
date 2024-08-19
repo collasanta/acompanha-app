@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 // import { deleteClient } from "@/lib/clients"; // Assuming you have this function
 import toast from "react-hot-toast";
-import { clientsFrontEndListType } from "@/types/clients";
+import { ClientType } from "@/types/clients";
+import { error } from 'console';
 
-const ClientCard = ({ client, collapsed = false }: { client: clientsFrontEndListType, collapsed?: boolean }) => {
+const ClientCard = ({ client, collapsed = false }: { client: ClientType, collapsed?: boolean }) => {
   const [isOpen, setIsOpen] = useState(collapsed);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,19 +20,19 @@ const ClientCard = ({ client, collapsed = false }: { client: clientsFrontEndList
   async function handleDeleteClient(clientId: string) {
     setIsLoading(true);
     try {
-      const res = {status: "deleted"}
+      const res = {status: "deleted", error:undefined}
     //   const res = await deleteClient(clientId);
       setIsLoading(false);
       setConfirmDelete(false);
       if (res.status === "deleted") {
         toast.success("Cliente deletado com sucesso");
       } else {
-        toast.error("Erro ao deletar cliente: " + res.erro);
+        toast.error("Erro ao deletar cliente: " + res.error);
       }
     } catch (res) {
       setIsLoading(false);
       setConfirmDelete(false);
-      toast.error("Erro ao deletar cliente: " + res.erro);
+      toast.error("Erro ao deletar cliente: " + res.error);
     }
   }
 
@@ -43,7 +44,7 @@ const ClientCard = ({ client, collapsed = false }: { client: clientsFrontEndList
         </div>
         <div className="flex flex-col sm:flex-row">
           <p className="pr-2 text-center whitespace-break-spaces font-semibold text-muted-foreground text-sm">
-            {client.name.length > 30 ? client.name.substring(0, 30) + "..." : client.name}
+            {client.name?.length > 30 ? client.name?.substring(0, 30) + "..." : client.name}
           </p>
         </div>
         <div>
@@ -62,9 +63,18 @@ const ClientCard = ({ client, collapsed = false }: { client: clientsFrontEndList
                 <div className="font-[500]">WhatsApp: </div>
                 <div className="text-muted-foreground">{client.whatsapp || "Não informado"}</div>
               </div>
+            </div>
+          </div>
+
+          <div className="mt-2 flex justify-center border bg-card border-black/5 rounded-lg p-2">
+            <div className="flex flex-row items-center text-center space-x-6">
               <div>
                 <div className="font-[500]">Idade: </div>
                 <div className="text-muted-foreground">{client.age || "Não informado"}</div>
+              </div>
+              <div>
+                <div className="font-[500]">Sexo: </div>
+                <div className="text-muted-foreground">{client.genre?.substring(0).toUpperCase() || "Não informado"}</div>
               </div>
             </div>
           </div>
@@ -72,13 +82,8 @@ const ClientCard = ({ client, collapsed = false }: { client: clientsFrontEndList
           <div className="mt-2 text-center flex flex-col justify-center border bg-card border-black/5 rounded-lg p-2">
             <div className="font-[500]">Informações Adicionais</div>
             <div className="flex flex-row items-center text-center space-x-6 mt-2">
-              <div>
-                <div className="font-[500]">Gênero: </div>
-                <div className="text-muted-foreground">{client.genre || "Não informado"}</div>
-              </div>
-              <div>
-                <div className="font-[500]">ID do Profissional: </div>
-                <div className="text-muted-foreground">{client.professionalId}</div>
+              <div className='p-2 bg-slate-50 w-full'>
+                <div className="text-muted-foreground">{client.info || "Não informado"}</div>
               </div>
             </div>
           </div>

@@ -1,5 +1,9 @@
 import * as z from "zod"
 
+export type ErrorResponseType = {
+  error: string | undefined
+}
+
 export const clientsFormSchema = z.object({
   clientName: z.string().min(2, {
     message: "O nome deve ter pelo menos 2 caracteres.",
@@ -18,16 +22,21 @@ export const clientsFormSchema = z.object({
   }),
 })
 
-export type clientsFormSchemaType = z.infer<typeof clientsFormSchema>
+export type ClientsFormSchemaType = z.infer<typeof clientsFormSchema>
 
-export type clientsFrontEndListType = {
+export type ClientType = {
   id: string;
   name: string;
   whatsapp: string | null;
   email: string | null;
+  info: string | null;
   genre: string | null;
   age: number | null;
   professionalId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export type clientsFrontEndListTypeArr = Array<clientsFrontEndListType> | { error: string |undefined; };
+export type ReqClientsType = Array<ClientType> | ErrorResponseType;
+
+export type ReqClientType = ClientType | ErrorResponseType;

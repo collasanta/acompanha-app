@@ -2,9 +2,7 @@
 
 import { auth } from "@clerk/nextjs"
 import prismadb from "./prismadb"
-import { programsFormSchema, programsFormSchemaType } from "@/types/programs"
 import { generateId } from "./utils";
-import { error } from "console";
 
 export const checkClientByWhatsapp = async (clientWhatsapp: string) => {
     try {
@@ -23,7 +21,7 @@ export const checkClientByWhatsapp = async (clientWhatsapp: string) => {
 
     } catch (error: any) {
         return {
-            erro: error.message
+            error: error.message
         }
     }
 
@@ -44,7 +42,7 @@ export const createNewClient = async (clientWhatsapp: string, clientName: string
 
     } catch (error: any) {
         return {
-            erro: error.message
+            error: error.message
         }
     }
 }
@@ -65,4 +63,33 @@ export const getClientsByProfessional = async () => {
     }
 }
 
+export const getClient = async (clientId: string) => {
+    const { userId } = auth()
+    if (!userId) { return { error: "usuário não logado " } }
+
+    try {
+        const client = await prismadb.client.findUnique({
+            where: { id: clientId }
+        })
+
+        if (!client) {
+            return {
+                error: "Cliente não encontrado"
+            }
+        }
+
+        if (client.professionalId !== userId) {
+            return {
+                error: "Cliente não pertence ao profissional"
+            }
+        }
+
+        return client
+
+    } catch (error: any) {
+        return {
+            error: error.message
+        }
+    }
+}
 

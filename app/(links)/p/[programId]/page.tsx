@@ -11,12 +11,12 @@ export default async function ProgramPage({ params }: { params: { programId: str
     getProgramDays(programId),
   ]);
   
-  if (typeof userProgram === 'object' && userProgram.erro) {
-    throw new Error(userProgram.erro)
+  if (typeof userProgram === 'object' && userProgram.error) {
+    throw new Error(userProgram.error)
   }
 
-  if (typeof programDays === 'object' && programDays.erro) {
-    throw new Error(programDays.erro)
+  if (typeof programDays === 'object' && programDays.error) {
+    throw new Error(programDays.error)
   }
 
   return (

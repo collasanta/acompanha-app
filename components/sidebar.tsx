@@ -19,20 +19,20 @@ const routes = [
                 icon: UserRoundPlus,
                 href: "/clients/cadastro",
                 color: "text-emerald-500"
-            }
+            },
+            {
+                label: "Treino",
+                icon: Dumbbell,
+                href: "/treinos",
+                color: "text-emerald-500"
+            },
+            {
+                label: "Dieta",
+                icon: UtensilsCrossed,
+                href: "/dietas",
+                color: "text-emerald-500"
+            },
         ]
-    },
-    {
-        label: "Treinos",
-        icon: Dumbbell,
-        href: "/treinos",
-        color: "text-emerald-500"
-    },
-    {
-        label: "Dietas",
-        icon: UtensilsCrossed,
-        href: "/dietas",
-        color: "text-emerald-500"
     },
     // {
     //     label: "Diários",

@@ -16,19 +16,24 @@ model Professional {
   whatsapp         String?   @unique
   clients          Client[] 
   programs         Program[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now()) @updatedAt
 }
 
 model Client {
   id                       String                 @id @map("id")
-  name                     String?
+  name                     String
   whatsapp                 String?               @unique 
   email                    String?               @unique
+  info                     String?               @default("")
   genre                    String?
   age                      Int?
   professional             Professional           @relation(fields: [professionalId], references: [id])
   professionalId           String
   programs                 Program[]
   notificationSubscription WebPushSubscriptions[]
+  createdAt                DateTime               @default(now())
+  updatedAt                DateTime               @default(now()) @updatedAt
 }
 
 model Program {
@@ -47,6 +52,8 @@ model Program {
   status          String
   daily_data      DailyData[]
   subscription    WebPushSubscriptions[]
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @default(now()) @updatedAt
 }
 
 model DailyData {
@@ -57,9 +64,11 @@ model DailyData {
   exercise  Boolean?
   weight    Decimal?
   cardio    Int?
-  notes        String?
+  notes     String?
   checkpointId String?
   Checkpoint   Checkpoint? @relation(fields: [checkpointId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
 
   @@id([programId, date])
 }
@@ -74,6 +83,8 @@ model Checkpoint {
   trainingPlanUrl String?
   formFilled      Boolean?
   daily_data      DailyData[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @default(now()) @updatedAt
 }
 
 model WebPushSubscriptions {
@@ -87,4 +98,5 @@ model WebPushSubscriptions {
   client              Client   @relation(fields: [clientId], references: [id])
   program             Program  @relation(fields: [programId], references: [id])
   createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now()) @updatedAt
 }

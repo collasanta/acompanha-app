@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { clientsFrontEndListType, clientsFrontEndListTypeArr } from "@/types/clients";
 import { PlusIcon } from "lucide-react";
 import { ProgramCard } from "@/components/programCard";
 import toast from "react-hot-toast";
@@ -9,7 +8,7 @@ import ClientCard from "@/components/clientCard.";
 
 const ClientsPage = async () => {
 
-  const userClients: clientsFrontEndListTypeArr = await getClientsByProfessional();
+  const userClients = await getClientsByProfessional();
 
   if ('error' in userClients) {
     toast.error("Erro ao carregar programas: " + userClients.error);
@@ -37,7 +36,7 @@ const ClientsPage = async () => {
         </Link>
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4 pt-8 mx-auto flex flex-col justify-center md:min-w-[400px]">
-        {userClients && userClients?.map((client: clientsFrontEndListType) => (
+        {userClients && userClients?.map((client) => (
 
           <ClientCard
             key={client.id}

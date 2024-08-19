@@ -32,13 +32,13 @@ export const ProgramCard = (
                 if (res.status === "deleted") {
                     toast.success("Diário deletado com sucesso")
                 } else {
-                    toast.error("Erro ao deletar diário: " + res.erro)
+                    toast.error("Erro ao deletar diário: " + res.error)
                 }
             })
             .catch((res) => {
                 setIsLoading(false)
                 setConfirmDelete(false)
-                toast.error("Erro ao deletar diário: " + res.erro)
+                toast.error("Erro ao deletar diário: " + res.error)
             })
     }
 

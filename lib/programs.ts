@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache"
 
 export const getUserPrograms = async () => {
   const { userId } = auth()
-  if (!userId) { return { erro: "usuário não logado " } }
+  if (!userId) { return { error: "usuário não logado " } }
 
   try {
     const programs = await prismadb.program.findMany({
@@ -34,7 +34,7 @@ export const getUserPrograms = async () => {
     });
     return { userPrograms: programs }
   } catch (error: any) {
-    return { erro: error.message }
+    return { error: error.message }
   }
 }
 
@@ -61,17 +61,17 @@ export const getUserProgram = async (programId: string) => {
 
     return { userProgram: program }
   } catch (error: any) {
-    return { erro: error.message }
+    return { error: error.message }
   }
 }
 
 export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
   try {
     let { userId } = auth()
-    if (!userId) { return { erro: "usuário não logado " } }
+    if (!userId) { return { error: "usuário não logado " } }
 
     const typeCheck = programsFormSchema.safeParse(finalForm)
-    if (!typeCheck.success) { return { erro: typeCheck.error.format() } }
+    if (!typeCheck.success) { return { error: typeCheck.error.format() } }
 
     let clientId = await checkClientByWhatsapp(finalForm.clientWhatsapp);
 
@@ -79,8 +79,8 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
       clientId = await createNewClient(finalForm.clientWhatsapp, finalForm.clientName, userId);
     }
 
-    if (typeof clientId === 'object' && 'erro' in clientId) {
-      return { erro: clientId.erro };
+    if (typeof clientId === 'object' && 'error' in clientId) {
+      return { error: clientId.error };
     }
 
     const enabled_metrics = {
@@ -107,15 +107,15 @@ export const registerNewProgram = async (finalForm: programsFormSchemaType) => {
     })
 
     const newDays = createProgramDays(newProgram.id, finalForm.startDate, finalForm.duration!)
-    if (typeof newDays === 'object' && 'erro' in newDays) {
-      return { erro: newDays.erro };
+    if (typeof newDays === 'object' && 'error' in newDays) {
+      return { error: newDays.error };
     }
     
     revalidatePath(`/p/${newProgram.id}`)
     return { programId: newProgram.id }
 
   } catch (error: any) {
-    return { erro: error.message }
+    return { error: error.message }
   }
 }
 
@@ -148,7 +148,7 @@ export const deleteProgram = async (programId: string) => {
     revalidatePath(`/dashboard`)
     return { status: "deleted" }
   } catch (error: any) {
-    return { erro: error.message }
+    return { error: error.message }
   }
 }
 
@@ -188,7 +188,7 @@ export const getProgramDays = async (programId: string) => {
     }));
     return { days: daysWithWeightAsString }
   } catch (error: any) {
-    return { erro: error.message }
+    return { error: error.message }
   }
 }
 
@@ -201,8 +201,8 @@ const createProgramDays = async (programId: string, startDate: Date, duration: n
     while (day <= duration) {
       if (day === 1) {
         const checkpoint = await createCheckpoint(programId, currentDate, "initial")
-        if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
-          return { erro: checkpoint.erro }
+        if (typeof checkpoint === 'object' && 'error' in checkpoint) {
+          return { error: checkpoint.error }
         }
         days.push({
           programId: programId,
@@ -211,8 +211,8 @@ const createProgramDays = async (programId: string, startDate: Date, duration: n
         })
       } else if (day % 30 === 0 && day !== 1 && day !== duration) { // avaliacao mensal
         const checkpoint = await createCheckpoint(programId, currentDate, "review")
-        if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
-          return { erro: checkpoint.erro }
+        if (typeof checkpoint === 'object' && 'error' in checkpoint) {
+          return { error: checkpoint.error }
         }
         days.push({
           programId: programId,
@@ -221,8 +221,8 @@ const createProgramDays = async (programId: string, startDate: Date, duration: n
         })
       } else if (day === duration) {
         const checkpoint = await createCheckpoint(programId, currentDate, "final")
-        if (typeof checkpoint === 'object' && 'erro' in checkpoint) {
-          return { erro: checkpoint.erro }
+        if (typeof checkpoint === 'object' && 'error' in checkpoint) {
+          return { error: checkpoint.error }
         }
         days.push({
           programId: programId,
@@ -244,7 +244,7 @@ const createProgramDays = async (programId: string, startDate: Date, duration: n
     })
     return { days: newDays }
   } catch (error: any) {
-    return { erro: error.message }
+    return { error: error.message }
   }
 }
 
@@ -259,7 +259,7 @@ const createCheckpoint = async (programId: string, date: Date, description: stri
     })
     return { checkpoint: checkpoint.id }
   } catch (error: any) {
-    return { erro: error.message }
+    return { error: error.message }
   }
 }
 

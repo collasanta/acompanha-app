@@ -68,8 +68,8 @@ export const cron = async () => {
             console.log("subscription: ", subscription.id, " sent updated")
           }
         } catch (error) {
-          console.log("erro ao enviar notificação sub", " ", error.message)
-          return `erro ao enviar notificação sub ${s.id} :  ${error.message}`
+          console.log("error ao enviar notificação sub", " ", error.message)
+          return `error ao enviar notificação sub ${s.id} :  ${error.message}`
         }
     })
 

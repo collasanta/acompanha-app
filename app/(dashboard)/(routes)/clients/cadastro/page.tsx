@@ -28,14 +28,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useState } from "react"
-import { clientsFormSchema, clientsFormSchemaType } from "@/types/clients"
+import { clientsFormSchema, ClientsFormSchemaType } from "@/types/clients"
 import { InfoIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createNewClient } from "@/lib/client"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 export default function ClientRegistration() {
-  const [finalForm, setFinalForm] = useState<clientsFormSchemaType>()
+  const [finalForm, setFinalForm] = useState<ClientsFormSchemaType>()
   const [validForm, setValidForm] = useState(false)
   const [isLoading, setLoading] = useState(false)
 
@@ -45,8 +45,8 @@ export default function ClientRegistration() {
     setLoading(true)
     window.alert('wow')
     // const result = await createNewClient(finalForm!)
-    // if (result.erro) {
-    //   const errorMessage = result.erro;
+    // if (result.error) {
+    //   const errorMessage = result.error;
     //   console.log("Server Error Validation:", errorMessage)
     // } else if (result.clientId) {
     //   console.log("Cliente Cadastrado com Sucesso!", result.clientId)
@@ -55,12 +55,12 @@ export default function ClientRegistration() {
     setLoading(false)
   }
 
-  function onSubmit(values: clientsFormSchemaType) {
+  function onSubmit(values: ClientsFormSchemaType) {
     setFinalForm(values)
     setValidForm(true)
   }
 
-  const form = useForm<clientsFormSchemaType>({
+  const form = useForm<ClientsFormSchemaType>({
     resolver: zodResolver(clientsFormSchema),
     defaultValues: {
       clientName: "",
