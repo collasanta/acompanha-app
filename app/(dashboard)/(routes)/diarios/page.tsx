@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const DiariosPage = async () => {
 
-  const userPrograms: any = await getUserPrograms();
+  const userPrograms = await getUserPrograms();
   let programs
   if (typeof userPrograms === 'object' && userPrograms.userPrograms) {
     programs = userPrograms.userPrograms;

@@ -34,8 +34,8 @@ export const NewUserModal = () => {
         const registerResult = await createNewProfessional(values)
         if (registerResult === true) {
             setOpen(false)
-        } else if (typeof registerResult === "object" && registerResult.erro) {
-            if (registerResult.erro.includes("whatsapp")) {
+        } else if (typeof registerResult === "object" && registerResult.error) {
+            if (registerResult.error.includes("whatsapp")) {
             toast.error("whatsapp já cadastrado em outra contra, use outro número")
             }
         }
