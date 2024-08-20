@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Users, LayoutDashboard, FolderSearch, Settings, Dumbbell, UtensilsCrossed, UserRoundPlus } from "lucide-react";
+import { Users, LayoutDashboard, FolderSearch, Settings, Dumbbell, UtensilsCrossed, UserRoundPlus, BotMessageSquare, SquarePlus, Plus } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Montserrat } from "next/font/google";
 const font = Montserrat({ weight: '600', subsets: ['latin'] });
@@ -15,21 +15,9 @@ const routes = [
         color: "text-emerald-500",
         subitems: [
             {
-                label: "Cadastro",
+                label: "Cadastrar",
                 icon: UserRoundPlus,
-                href: "/clients/cadastro",
-                color: "text-emerald-500"
-            },
-            {
-                label: "Treino",
-                icon: Dumbbell,
-                href: "/treinos",
-                color: "text-emerald-500"
-            },
-            {
-                label: "Dieta",
-                icon: UtensilsCrossed,
-                href: "/dietas",
+                href: "/clients/register",
                 color: "text-emerald-500"
             },
         ]
@@ -47,9 +35,51 @@ const routes = [
     //     color: "text-emerald-500"
     // },
     {
+        label: "Treinos",
+        icon: Dumbbell,
+        href: "/workouts",
+        color: "text-emerald-500",
+        subitems: [
+            {
+                label: "Cadastrar",
+                icon: Plus,
+                href: "/workouts/register",
+                color: "text-emerald-500"
+            },
+        ]
+    },
+    {
+        label: "Dietas",
+        icon: UtensilsCrossed,
+        href: "/diets",
+        color: "text-emerald-500",
+        subitems: [
+            {
+                label: "Cadastrar",
+                icon: Plus,
+                href: "/diets/register",
+                color: "text-emerald-500"
+            },
+        ]
+    },
+    {
+        label: "Automações",
+        icon: BotMessageSquare,
+        href: "/automations",
+        color: "text-emerald-500",
+        subitems: [
+            {
+                label: "Cadastro",
+                icon: Plus,
+                href: "/automations/cadastro",
+                color: "text-emerald-500"
+            },
+        ]
+    },
+    {
         label: "Configurações",
         icon: Settings,
-        href: "/configuracoes",
+        href: "/settings",
         color: "text-emerald-500"
     },
 ]

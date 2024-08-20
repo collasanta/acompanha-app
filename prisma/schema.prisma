@@ -8,29 +8,33 @@ datasource db {
 }
 
 model Professional {
-  id               String    @id @map("id")
+  id               String        @id @map("id")
   name             String?
   profession       String?
   avgClientsSurvey Int?
-  email            String?   @unique
-  whatsapp         String?   @unique
-  clients          Client[] 
+  email            String?       @unique
+  whatsapp         String?       @unique
+  clients          Client[]
   programs         Program[]
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @default(now()) @updatedAt
+  dietPlans        DietPlan[]
+  workoutPlans     WorkoutPlan[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @default(now()) @updatedAt
 }
 
 model Client {
   id                       String                 @id @map("id")
   name                     String
-  whatsapp                 String?               @unique 
-  email                    String?               @unique
-  info                     String?               @default("")
+  whatsapp                 String?                @unique
+  email                    String?                @unique
+  info                     String?                @default("")
   genre                    String?
   age                      Int?
   professional             Professional           @relation(fields: [professionalId], references: [id])
   professionalId           String
   programs                 Program[]
+  dietPlans                DietPlan[]
+  workoutPlans             WorkoutPlan[]
   notificationSubscription WebPushSubscriptions[]
   createdAt                DateTime               @default(now())
   updatedAt                DateTime               @default(now()) @updatedAt
@@ -39,8 +43,8 @@ model Client {
 model Program {
   id              String                 @id @map("id")
   name            String
-  client          Client                 @relation(fields: [clientId], references: [id]) 
-  clientId        String 
+  client          Client                 @relation(fields: [clientId], references: [id])
+  clientId        String
   professional    Professional           @relation(fields: [professionalId], references: [id])
   professionalId  String
   start_date      DateTime
@@ -56,19 +60,45 @@ model Program {
   updatedAt       DateTime               @default(now()) @updatedAt
 }
 
+model DietPlan {
+  id             String       @id @default(uuid())
+  name           String
+  content        String       @db.Text
+  isTemplate     Boolean      @default(false)
+  professional   Professional @relation(fields: [professionalId], references: [id])
+  professionalId String
+  client         Client?      @relation(fields: [clientId], references: [id])
+  clientId       String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+}
+
+model WorkoutPlan {
+  id             String       @id @default(uuid())
+  name           String
+  content        String       @db.Text
+  isTemplate     Boolean      @default(false)
+  professional   Professional @relation(fields: [professionalId], references: [id])
+  professionalId String
+  client         Client?      @relation(fields: [clientId], references: [id])
+  clientId       String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+}
+
 model DailyData {
-  program   Program  @relation(fields: [programId], references: [id])
-  programId String
-  date      DateTime
-  diet      Boolean?
-  exercise  Boolean?
-  weight    Decimal?
-  cardio    Int?
-  notes     String?
+  program      Program    @relation(fields: [programId], references: [id])
+  programId    String
+  date         DateTime
+  diet         Boolean?
+  exercise     Boolean?
+  weight       Decimal?
+  cardio       Int?
+  notes        String?
   checkpointId String?
   Checkpoint   Checkpoint? @relation(fields: [checkpointId], references: [id])
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now()) @updatedAt
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now()) @updatedAt
 
   @@id([programId, date])
 }

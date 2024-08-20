@@ -19,10 +19,10 @@ const ClientsPage = async () => {
     <div className="pb-[100px]">
       <div className="mb-8 space-y-4">
         <h2 className="text-2xl md:text-4xl font-bold text-center">
-          Clientes
+          Treinos
         </h2>
         <p className="text-muted-foreground font-light text-small md:text-lg text-center">
-          Acompanhe seus Clientes
+          Biblioteca de Treinos
         </p>
       </div>
       <div className="px-4 flex justify-center md:px-20 lg:px-32 space-y-4 items-center">
