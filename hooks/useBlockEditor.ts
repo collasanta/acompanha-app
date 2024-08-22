@@ -15,14 +15,15 @@ export const useBlockEditor = ({content} : {content?:JSON}) => {
     shouldRerenderOnTransaction: false,
     autofocus: true,
     onCreate: ctx => {
-      // if (content) {
-      //   ctx.editor.commands.setContent(content)
-      // }
-      if (ctx.editor.isEmpty) {
-        console.log("entrou", {initialContent})
-        ctx.editor.commands.setContent(initialContent)
-        ctx.editor.commands.focus('start', { scrollIntoView: true })
+      if (content) {
+        console.log({content})
+        ctx.editor.commands.setContent(content)
       }
+      // if (ctx.editor.isEmpty) {
+      //   console.log("entrou", {initialContent})
+      //   ctx.editor.commands.setContent(initialContent)
+      //   ctx.editor.commands.focus('start', { scrollIntoView: true })
+      // }
     },
     extensions: [...ExtensionKit()].filter((e): e is AnyExtension => e !== undefined),
     editorProps: {

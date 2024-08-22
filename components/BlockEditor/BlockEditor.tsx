@@ -10,7 +10,7 @@ import { TableColumnMenu, TableRowMenu } from '@/tiptap/extensions/Table/menus'
 import { TextMenu } from '../menus/TextMenu'
 import { ContentItemMenu } from '../menus/ContentItemMenu'
 
-export const BlockEditor = () => {
+export const BlockEditor = ({content} : {content?:JSON}) => {
   const menuContainerRef = useRef(null)
 
   const { editor } = useBlockEditor({content: undefined})
