@@ -12,16 +12,14 @@ import { ContentItemMenu } from '../menus/ContentItemMenu'
 export const BlockEditor = () => {
   const menuContainerRef = useRef(null)
 
-  const { editor } = useBlockEditor()
-  console.log({ editor })
+  const { editor } = useBlockEditor({content: undefined})
 
   if (!editor) {
     return null 
   }
-
   return (
     <div className="flex h-full" ref={menuContainerRef}>
-      <div className="relative flex flex-col flex-1 h-full overflow-hidden">
+      <div className="relative flex flex-col flex-1 h-full overflow-hidden rounded-md border min-h-[600px]">
         <EditorContent editor={editor} className="flex-1 overflow-y-auto" />
         <ContentItemMenu editor={editor} />
         <LinkMenu editor={editor} appendTo={menuContainerRef} />
