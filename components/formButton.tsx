@@ -1,5 +1,5 @@
 import { DailyDataType, enabledMetricsType } from "@/types/programs"
-import { Button } from "./ui/button"
+import { ButtonOriginal } from "./ui/button-original"
 import Link from "next/link"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { SettingsIcon } from "lucide-react"
@@ -19,7 +19,7 @@ export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin, hideButt
             {
                 hideButton && (
                     <>
-                        <Button className={`text-xs text-white ${checkPoints.find(item => item.id === day.checkpointId!)?.formFilled && "bg-gray-400 hover:bg-gray-400"}`}>
+                        <ButtonOriginal className={`text-xs text-white ${checkPoints.find(item => item.id === day.checkpointId!)?.formFilled && "bg-gray-400 hover:bg-gray-400"}`}>
                             {
                                 checkPoints.find(item => item.id === day.checkpointId!)?.formFilled ? buttonText + "✅"
                                     :
@@ -36,7 +36,7 @@ export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin, hideButt
                                         </>
 
                             }
-                        </Button>
+                        </ButtonOriginal>
                     </>
                 )
             }

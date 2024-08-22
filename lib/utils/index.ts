@@ -1,5 +1,6 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
 import { customAlphabet } from 'nanoid';
  
 export function cn(...inputs: ClassValue[]) {
@@ -46,3 +47,13 @@ export const isOffline = async () => {
   }
   return false
 }
+
+export function randomElement<T>(array: Array<T>): T {
+  return array[Math.floor(Math.random() * array.length)]
+}
+
+export * from './cssVar'
+export * from './getRenderContainer'
+export * from './isCustomNodeSelected'
+export * from './isTextSelected'
+

@@ -6,7 +6,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import * as z from "zod"
 
-import { Button } from "@/components/ui/button"
+import { ButtonOriginal } from "@/components/ui/button-original"
 import {
   Form,
   FormControl,
@@ -38,6 +38,7 @@ import {
 // TipTap imports
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import { BlockEditor } from "@/components/BlockEditor"
 
 // Define the form schema
 const workoutFormSchema = z.object({
@@ -141,9 +142,7 @@ export default function WorkoutRegistration() {
                 <FormItem>
                   <FormLabel>Descrição do Treino</FormLabel>
                   <FormControl>
-                    <div className="border rounded-md p-2 min-h-[200px]">
-                      <EditorContent editor={editor} />
-                    </div>
+                  <BlockEditor editor={editor} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -196,8 +195,8 @@ export default function WorkoutRegistration() {
 
             <div className="flex justify-center pb-[120px]">
               <div className="flex-col flex space-y-2">
-                <Button type="submit">Cadastrar Treino</Button>
-                <Button variant="outline" type="button" onClick={() => router.push(`/workouts`)}>Voltar</Button>
+                <ButtonOriginal type="submit">Cadastrar Treino</ButtonOriginal>
+                <ButtonOriginal variant="outline" type="button" onClick={() => router.push(`/workouts`)}>Voltar</ButtonOriginal>
               </div>
               {finalForm && validForm && (
                 <AlertDialog open={!!finalForm}>

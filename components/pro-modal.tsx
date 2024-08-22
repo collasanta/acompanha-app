@@ -6,7 +6,7 @@ import { Badge } from "./ui/badge"
 import { Check, Zap, Youtube, Coins, CircleDollarSign, HeartHandshake } from "lucide-react"
 import { Card } from "./ui/card"
 import { cn } from "@/lib/utils"
-import { Button } from "./ui/button"
+import { ButtonOriginal } from "./ui/button-original"
 import axios from "axios"
 import { useState } from "react"
 
@@ -85,10 +85,10 @@ export const ProModal = () => {
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter >
-                    <Button  onClick={onSubscribe} disabled={loading} variant="premium" size="lg" className="w-full"> 
+                    <ButtonOriginal  onClick={onSubscribe} disabled={loading} variant="premium" size="lg" className="w-full"> 
                     Buy Credits
                         <Zap className="w-4 h-4 ml-2 fill-white" />
-                    </Button>
+                    </ButtonOriginal>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
