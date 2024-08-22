@@ -446,13 +446,7 @@ export const initialContent = {
             },
           ],
           text: 'Bom treino!',
-        },
-        {
-          type: 'emoji',
-          attrs: {
-            name: 'flexed_biceps',
-          },
-        },
+        }
       ],
     },
   ],

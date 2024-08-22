@@ -1,10 +1,10 @@
-import { ButtonOriginal } from "@/components/ui/button-original"
 import { PlusIcon } from "lucide-react";
 import { ProgramCard } from "@/components/programCard";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { getClientsByProfessional } from "@/lib/client";
 import ClientCard from "@/components/clientCard.";
+import { Button } from "@/components/ui/Button";
 
 const ClientsPage = async () => {
 
@@ -27,12 +27,12 @@ const ClientsPage = async () => {
       </div>
       <div className="px-4 flex justify-center md:px-20 lg:px-32 space-y-4 items-center">
         <Link href="/workouts/register">
-          <ButtonOriginal
+          <Button
             className="p-4 flex shadow-md"
           >
             <PlusIcon className="w-6 h-6 pr-2" />
             Cadastrar Novo Treino
-          </ButtonOriginal>
+          </Button>
         </Link>
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4 pt-8 mx-auto flex flex-col justify-center md:min-w-[400px]">

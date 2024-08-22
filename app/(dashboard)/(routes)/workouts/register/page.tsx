@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import * as z from "zod";
-import { ButtonOriginal } from "@/components/ui/button-original";
 import {
   Form,
   FormControl,
@@ -35,6 +34,7 @@ import {
 } from "@/components/ui/select";
 
 import { BlockEditor } from "@/components/BlockEditor";
+import { Button } from "@/components/ui/Button";
 
 // Define the form schema
 const workoutFormSchema = z.object({
@@ -157,14 +157,14 @@ export default function WorkoutRegistration() {
 
             <div className="flex justify-center pb-[120px]">
               <div className="flex-col flex space-y-2">
-                <ButtonOriginal type="submit">Cadastrar Treino</ButtonOriginal>
-                <ButtonOriginal
+                <Button type="submit">Cadastrar Treino</Button>
+                <Button
                   variant="outline"
                   type="button"
                   onClick={() => router.push(`/workouts`)}
                 >
                   Voltar
-                </ButtonOriginal>
+                </Button>
               </div>
               {finalForm && validForm && (
                 <AlertDialog open={!!finalForm}>

@@ -1,11 +1,11 @@
 import { DailyDataType, enabledMetricsType } from "@/types/programs"
-import { ButtonOriginal } from "./ui/button-original"
 import Link from "next/link"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { SettingsIcon } from "lucide-react"
 import { Switch } from "./ui/switch"
 import { setDietLink, setFormFilled, setFormsLink, setTrainingLink } from "@/lib/programs"
 import { checkpointType } from "@/types/checkpoints"
+import { Button } from "./ui/Button"
 
 export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin, hideButton = true }: { checkPoints: Array<checkpointType>, day: DailyDataType, EnabledMetrics: enabledMetricsType, isAdmin: boolean, hideButton: boolean }) => {
     const getButtonText = () => {
@@ -19,7 +19,7 @@ export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin, hideButt
             {
                 hideButton && (
                     <>
-                        <ButtonOriginal className={`text-xs text-white ${checkPoints.find(item => item.id === day.checkpointId!)?.formFilled && "bg-gray-400 hover:bg-gray-400"}`}>
+                        <Button className={`text-xs text-white ${checkPoints.find(item => item.id === day.checkpointId!)?.formFilled && "bg-gray-400 hover:bg-gray-400"}`}>
                             {
                                 checkPoints.find(item => item.id === day.checkpointId!)?.formFilled ? buttonText + "✅"
                                     :
@@ -36,7 +36,7 @@ export const FormButton = ({ checkPoints, day, EnabledMetrics, isAdmin, hideButt
                                         </>
 
                             }
-                        </ButtonOriginal>
+                        </Button>
                     </>
                 )
             }

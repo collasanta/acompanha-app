@@ -1,10 +1,9 @@
 import { EmojiItem } from '@tiptap-pro/extension-emoji'
 import React, { ForwardedRef, forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react'
-
-import { Button } from '@/components/ui/Button'
 import { Panel } from '@/components/ui/Panel'
 import { EmojiListProps } from '../types'
 import { SuggestionKeyDownProps } from '@tiptap/suggestion'
+import { Button2 } from '@/components/ui/Button2'
 
 const EmojiList = forwardRef(
   (props: EmojiListProps, ref: ForwardedRef<{ onKeyDown: (evt: SuggestionKeyDownProps) => boolean }>) => {
@@ -83,7 +82,7 @@ const EmojiList = forwardRef(
     return (
       <Panel className="overflow-y-auto max-w-[18rem] max-h-[18rem]">
         {props.items.map((item: EmojiItem, index: number) => (
-          <Button
+          <Button2
             active={index === selectedIndex}
             variant="ghost"
             className="justify-start w-full"
@@ -94,7 +93,7 @@ const EmojiList = forwardRef(
           >
             {item.fallbackImage ? <img src={item.fallbackImage} className="w-5 h-5" alt="emoji" /> : item.emoji}{' '}
             <span className="truncate text-ellipsis">:{item.name}:</span>
-          </Button>
+          </Button2>
         ))}
       </Panel>
     )

@@ -1,6 +1,6 @@
 import { useEditor } from '@tiptap/react'
 import type { AnyExtension, Editor } from '@tiptap/core'
-import { ExtensionKit } from '@/extensions/extension-kit'
+import { ExtensionKit } from '@/tiptap/extensions/extension-kit'
 import { initialContent } from '@/lib/initialContent'
 
 declare global {

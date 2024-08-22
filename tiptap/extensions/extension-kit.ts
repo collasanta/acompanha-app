@@ -1,5 +1,5 @@
 'use client'
-import { API } from '../utils/api'
+import { API } from '@/tiptap/utils/api'
 
 import {
   CharacterCount,

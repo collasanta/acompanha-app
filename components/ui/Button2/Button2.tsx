@@ -11,7 +11,7 @@ export type ButtonProps = {
   buttonSize?: ButtonSize
 } & React.ButtonHTMLAttributes<HTMLButtonElement>
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button2 = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     { active, buttonSize = 'medium', children, disabled, variant = 'primary', className, activeClassname, ...rest },
     ref,
@@ -71,4 +71,4 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   },
 )
 
-Button.displayName = 'Button'
+Button2.displayName = 'Button'
