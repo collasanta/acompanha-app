@@ -1,5 +1,5 @@
 "use client"
-import { Button } from "./ui/button";
+import { Button } from "./ui/Button";
 import { Menu, XIcon } from "lucide-react";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
 import Sidebar from "./sidebar";

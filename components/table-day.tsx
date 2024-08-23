@@ -2,7 +2,7 @@
 
 import { formatDateToDdMmWeek, isOffline } from "@/lib/utils"
 import { DailyDataType, enabledMetricsType } from "@/types/programs"
-import { Button } from "./ui/button"
+import { Button } from "./ui/Button"
 import { useState } from "react"
 import { setCardio, setDiet, setExercise, setNotes, setWeight } from "@/lib/programs"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "./ui/popover";

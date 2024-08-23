@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { MinusCircleIcon, PlusCircleIcon, Trash2Icon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 // import { deleteClient } from "@/lib/clients"; // Assuming you have this function
 import toast from "react-hot-toast";

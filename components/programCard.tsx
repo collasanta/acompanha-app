@@ -3,7 +3,7 @@ import { MinusCircleIcon, PlusCircleIcon, Trash2Icon, TrashIcon } from "lucide-r
 import { useState } from "react"
 import { programsFrontEndListType } from "@/types/programs";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "./ui/Button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
 import { formatDateToDdMmWeek, formatDateToDdMmYy } from "@/lib/utils";
 import { deleteProgram } from "@/lib/programs";

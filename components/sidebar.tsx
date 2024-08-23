@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Users, LayoutDashboard, FolderSearch, Settings, Dumbbell, UtensilsCrossed, UserRoundPlus, BotMessageSquare, SquarePlus, Plus } from "lucide-react";
+import { Users, LayoutDashboard, FolderSearch, Settings, Dumbbell, UtensilsCrossed, UserRoundPlus, BotMessageSquare, SquarePlus, Plus, CalendarClock } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Montserrat } from "next/font/google";
 const font = Montserrat({ weight: '600', subsets: ['latin'] });
@@ -62,6 +62,20 @@ const routes = [
             },
         ]
     },
+    // {
+    //     label: "Programas",
+    //     icon: CalendarClock,
+    //     href: "/plans",
+    //     color: "text-emerald-500",
+    //     subitems: [
+    //         {
+    //             label: "Programas",
+    //             icon: Plus,
+    //             href: "/plans/register",
+    //             color: "text-emerald-500"
+    //         },
+    //     ]
+    // },
     {
         label: "Automações",
         icon: BotMessageSquare,

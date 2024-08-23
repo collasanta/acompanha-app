@@ -19,11 +19,11 @@ export const useBlockEditor = ({content} : {content?:JSON}) => {
         console.log({content})
         ctx.editor.commands.setContent(content)
       }
-      // if (ctx.editor.isEmpty) {
-      //   console.log("entrou", {initialContent})
-      //   ctx.editor.commands.setContent(initialContent)
-      //   ctx.editor.commands.focus('start', { scrollIntoView: true })
-      // }
+      if (ctx.editor.isEmpty) {
+        console.log("entrou", {initialContent})
+        ctx.editor.commands.setContent(initialContent)
+        ctx.editor.commands.focus('start', { scrollIntoView: true })
+      }
     },
     extensions: [...ExtensionKit()].filter((e): e is AnyExtension => e !== undefined),
     editorProps: {

@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { professionalFormSchema, professionalFormType } from "@/types/professionals";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import toast from "react-hot-toast";
 
 export const NewUserModal = () => {

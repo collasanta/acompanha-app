@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useAuth } from "@clerk/nextjs";
 import { redirect } from 'next/navigation'
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 const font = Montserrat({ weight: '600', subsets: ['latin'] });
 

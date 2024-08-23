@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import {
   Form,
   FormControl,

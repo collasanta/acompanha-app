@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { programsFrontEndListType } from "@/types/programs";
 import { PlusIcon } from "lucide-react";
 import { ProgramCard } from "@/components/programCard";

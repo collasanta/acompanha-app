@@ -1,22 +1,26 @@
-import { EditorContent } from '@tiptap/react'
-import React, { useRef } from 'react'
-import { LinkMenu } from '@/components/menus'
-import { useBlockEditor } from '@/hooks/useBlockEditor'
-import '@/styles/index.css'
-import ImageBlockMenu from '@/tiptap/extensions/ImageBlock/components/ImageBlockMenu'
+import { Editor, EditorContent } from "@tiptap/react";
+import React, { useRef } from "react";
+import { LinkMenu } from "@/components/menus";
+import { useBlockEditor } from "@/hooks/useBlockEditor";
+import "@/styles/index.css";
+import ImageBlockMenu from "@/tiptap/extensions/ImageBlock/components/ImageBlockMenu";
 // import ImageBlockMenu from '@/tiptap/extensions/ImageBlock/components/ImageBlockMenu'
-import { ColumnsMenu } from '@/tiptap/extensions/MultiColumn/menus'
-import { TableColumnMenu, TableRowMenu } from '@/tiptap/extensions/Table/menus'
-import { TextMenu } from '../menus/TextMenu'
-import { ContentItemMenu } from '../menus/ContentItemMenu'
+import { ColumnsMenu } from "@/tiptap/extensions/MultiColumn/menus";
+import { TableColumnMenu, TableRowMenu } from "@/tiptap/extensions/Table/menus";
+import { TextMenu } from "../menus/TextMenu";
+import { ContentItemMenu } from "../menus/ContentItemMenu";
 
-export const BlockEditor = ({content} : {content?:JSON}) => {
-  const menuContainerRef = useRef(null)
-
-  const { editor } = useBlockEditor({content: undefined})
+export const BlockEditor = ({
+  content,
+  editor,
+}: {
+  content?: JSON;
+  editor: Editor | null;
+}) => {
+  const menuContainerRef = useRef(null);
 
   if (!editor) {
-    return null 
+    return null;
   }
   return (
     <div className="flex h-full" ref={menuContainerRef}>
@@ -31,7 +35,7 @@ export const BlockEditor = ({content} : {content?:JSON}) => {
         <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BlockEditor
+export default BlockEditor;
