@@ -1,64 +1,114 @@
-import React from 'react';
-import { getClient } from "@/lib/client";
-import { toast } from "react-hot-toast";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, MailIcon, PhoneIcon, InfoIcon } from 'lucide-react';
+import React from "react";
+import { getWorkoutPlanById } from "@/lib/workouts";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { CalendarIcon, UserIcon, FileIcon, InfoIcon } from "lucide-react";
+import EditableWorkoutContent from "@/components/block-editor-editable";
 
-export default async function ProgramPage({ params }: { params: { clientId: string } }) {
-  const { clientId } = params;
+export default async function WorkoutPage({
+  params,
+}: {
+  params: { workoutId: string };
+}) {
+  const { workoutId } = params;
 
-  const client = await getClient(clientId);
+  const workoutPlan = await getWorkoutPlanById(workoutId);
 
-  if ('error' in client) {
-    toast.error("Erro ao carregar cliente: " + client.error);
-    return null;
+  if ("error" in workoutPlan) {
+    throw new Error(workoutPlan.error);
   }
+
+  const workout = workoutPlan.workoutPlan;
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold text-center mb-2">Perfil do Cliente</h1>
-      <p className="text-muted-foreground text-center mb-8">Informações detalhadas do cliente</p>
-      
-      <Card className="max-w-2xl mx-auto">
-        <CardHeader className="flex flex-row items-center gap-4">
-          <Avatar className="w-20 h-20">
-            <AvatarFallback className="text-2xl">{client.name.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div>
-            <CardTitle className="text-2xl mb-1">{client.name}</CardTitle>
-            <CardDescription>Cliente desde {client.createdAt.toLocaleDateString("pt-BR")}</CardDescription>
-          </div>
+      <h1 className="text-3xl font-bold text-center mb-2">
+        Detalhes do Treino
+      </h1>
+      <p className="text-muted-foreground text-center mb-8">
+        Informações detalhadas do plano de treino
+      </p>
+
+      <Card className="max-w-4xl mx-auto">
+        <CardHeader>
+          <CardTitle className="text-2xl mb-1">{workout.name}</CardTitle>
+          <CardDescription>
+            Criado em {new Date(workout.createdAt).toLocaleDateString("pt-BR")}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
             <div className="flex items-center gap-2">
-              <PhoneIcon className="text-muted-foreground" />
-              <span>{client.whatsapp || 'N/A'}</span>
+              <UserIcon className="text-muted-foreground" />
+              <span>
+                Cliente:{" "}
+                {workout.client ? workout.client.name : "Não atribuído"}
+              </span>
             </div>
             <div className="flex items-center gap-2">
-              <MailIcon className="text-muted-foreground" />
-              <span>{client.email || 'N/A'}</span>
+              <FileIcon className="text-muted-foreground" />
+              <span>
+                Tipo: {workout.isTemplate ? "Template" : "Treino Personalizado"}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <CalendarIcon className="text-muted-foreground" />
-              <span>Atualizado em: {client.updatedAt.toLocaleDateString("pt-BR")} às {client.updatedAt.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</span>
+              <span>
+                Atualizado em:{" "}
+                {new Date(workout.updatedAt).toLocaleDateString("pt-BR")} às{" "}
+                {new Date(workout.updatedAt).toLocaleTimeString("pt-BR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
             </div>
             <div className="flex items-center gap-2">
-              <Badge variant="outline">{client.genre || 'Gênero não especificado'}</Badge>
-              <Badge variant="outline">{client.age ? `${client.age} anos` : 'Idade não especificada'}</Badge>
+              <Badge variant="outline">
+                {workout.isTemplate ? "Template" : "Personalizado"}
+              </Badge>
             </div>
             <div className="mt-4">
               <h3 className="font-semibold mb-2 flex items-center gap-2">
                 <InfoIcon className="text-muted-foreground" />
-                Informações Adicionais
+                Conteúdo do Treino
               </h3>
-              <p className="text-muted-foreground">{client.info || 'Nenhuma informação adicional disponível.'}</p>
+              <EditableWorkoutContent
+                initialContent={workout.content}
+                workoutId={workout.id}
+              />
             </div>
           </div>
         </CardContent>
       </Card>
     </div>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { workoutId: string };
+}) {
+  const { workoutId } = params;
+  const workoutPlan = await getWorkoutPlanById(workoutId);
+
+  if ("error" in workoutPlan) {
+    return {
+      title: "Workout Not Found",
+      description: "The requested workout could not be found.",
+    };
+  }
+
+  const workout = workoutPlan.workoutPlan;
+
+  return {
+    title: `Workout: ${workout.name}`,
+    description: `Details for workout plan: ${workout.name}`,
+  };
 }

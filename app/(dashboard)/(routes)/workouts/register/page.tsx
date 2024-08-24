@@ -129,7 +129,6 @@ export default function WorkoutRegistration() {
       setLoading(false);
       if (result.error) {
         toast.error(`Error registering workout: ${result.error}`);
-        alert("Erro ao cadastrar treino. Por favor, tente novamente.");
       } else {
         toast.success(`Treino Cadastrado com sucesso. ID: ${result.workoutId}`);
         // Optionally, redirect to the new workout page
@@ -265,7 +264,7 @@ export default function WorkoutRegistration() {
               )}
             /> */}
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="clientId"
               render={({ field }) => (
@@ -289,7 +288,7 @@ export default function WorkoutRegistration() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             <div className="flex justify-center pb-[120px]">
               <div className="flex-col flex space-y-2">

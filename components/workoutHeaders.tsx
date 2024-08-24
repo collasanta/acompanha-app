@@ -6,16 +6,14 @@ import { checkpointType } from "@/types/checkpoints";
 import { formatDateToDdMmYy } from "@/lib/utils";
 import Image from "next/image";
 import Notifications from "./PWA/WebPush/WebPushNotifications";
+import { WorkoutPlanType } from "@/types/workouts";
 
-export const ProgramHeader = ({
-  program,
+export const WorkoutHeader = ({
+  workout,
   collapsed = false,
-  programPage = false,
 }: {
-  program: programsFrontEndListType;
+  workout: WorkoutPlanType;
   collapsed?: boolean;
-  programPage?: boolean;
-  checkpoints?: Array<checkpointType>;
 }) => {
   const [isOpen, setIsOpen] = useState(collapsed);
   function handleClick() {
@@ -31,7 +29,7 @@ export const ProgramHeader = ({
           <div className="flex flex-col w-full py-2 bg-[#fcfdff] rounded-tr-[50px]">
             <div className="flex flex-row justify-between  h-[25px]">
               <div className="pl-4 sm:pl-6 align-text-bottom font-semibold max-w-[220px] truncate  text-muted-foreground text-sm text-start whitespace-break-spaces">
-                {program.client.name}
+                {workout.clientId}
               </div>
               <div className="mr-8 cursor-pointer" onClick={handleClick}>
                 {isOpen ? (
@@ -46,10 +44,10 @@ export const ProgramHeader = ({
             </div>
             <div className=" flex flex-row h-[25px] border-t-2 border-dashed  justify-between">
               <div className="pt-1 pl-4 sm:pl-6  text-muted-foreground text-sm text-start max-w-[220px] sm:max-w-[500px] truncate">
-                {program.name}
+                {workout.name}
               </div>
               <div className="mr-8">
-                <Notifications programId={program.id} />
+                <Notifications programId={workout.id} />
               </div>
             </div>
           </div>
@@ -67,7 +65,7 @@ export const ProgramHeader = ({
                       </div>
                     </div>
                     <div className="text-muted-foreground mr-2">
-                      <div>{formatDateToDdMmYy(program.start_date)}</div>
+                      <div>{formatDateToDdMmYy(workout.start_date)}</div>
                     </div>
                   </div>
                   <div className="mr-2 flex  bg-white rounded-lg text-muted-foreground">

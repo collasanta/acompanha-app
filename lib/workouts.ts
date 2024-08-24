@@ -63,10 +63,7 @@ export const getWorkoutPlanById = async (id: string) => {
       where: {
         id: id,
         professionalId: userId,
-      },
-      select: {
-        content: true
-      },
+      }
     })
 
     if (!workoutPlan) {
@@ -77,5 +74,71 @@ export const getWorkoutPlanById = async (id: string) => {
 
   } catch (error: any) {
     return { error: error.message }
+  }
+}
+
+export const deleteWorkout = async (workoutId: string) => {
+  try {
+    let { userId } = auth()
+    if (!userId) { 
+      return { status: "error", error: "Usuário não logado" }
+    }
+
+    // Check if the workout belongs to the user
+    const workout = await prismadb.workoutPlan.findUnique({
+      where: {
+        id: workoutId,
+        professionalId: userId,
+      },
+    })
+
+    if (!workout) {
+      return { status: "error", error: "Treino não encontrado ou não pertence ao usuário" }
+    }
+
+    // Delete the workout
+    const isDeleted = await prismadb.workoutPlan.delete({
+      where: {
+        id: workoutId,
+      },
+    })
+
+    console.log("isDeleted", isDeleted)
+
+    if (!isDeleted) {
+      return { status: "error", error: "Erro ao deletar treino" }
+    }
+    // Revalidate the workouts page
+    revalidatePath('/workouts')
+
+    return { status: "deleted" }
+
+  } catch (error: any) {
+    return { status: "error", error: error.message }
+  }
+}
+
+export async function updateWorkoutContent(workoutId: string, content: string) {
+  try {
+    const { userId } = auth();
+    if (!userId) {
+      return { error: "Unauthorized" };
+    }
+
+    const updatedWorkout = await prismadb.workoutPlan.update({
+      where: {
+        id: workoutId,
+        professionalId: userId,
+      },
+      data: {
+        content,
+      },
+    });
+
+    revalidatePath(`/workouts/${workoutId}`);
+    return { success: true, workout: updatedWorkout };
+  } catch (error) {
+    console.error("Error updating workout content:", error);
+    return { error: "Failed to update workout content" };
   }
 }

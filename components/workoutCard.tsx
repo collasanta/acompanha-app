@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import {
   MinusCircleIcon,
@@ -21,6 +22,8 @@ import toast from "react-hot-toast";
 import { WorkoutPlanType } from "@/types/workouts";
 import Link from "next/link";
 import ViewOnlyEditor from "./block-editor-view-only";
+import { deleteWorkout } from "@/lib/workouts";
+import { useRouter } from "next/navigation";
 
 const WorkoutCard = ({
   workout,
@@ -32,6 +35,7 @@ const WorkoutCard = ({
   const [isOpen, setIsOpen] = useState(collapsed);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   function handleClick() {
     setIsOpen(!isOpen);
@@ -40,17 +44,20 @@ const WorkoutCard = ({
   async function handleDeleteWorkout(workoutId: string) {
     setIsLoading(true);
     try {
-      // Implement the deleteWorkout function in your lib/workouts file
-      // const res = await deleteWorkout(workoutId);
-      const res = { status: "deleted", error: undefined }; // Placeholder for the actual implementation
+      console.log("Deleting workout:", workoutId);
+      const res = await deleteWorkout(workoutId);
+      console.log("Delete response:", res);
       setIsLoading(false);
       setConfirmDelete(false);
       if (res.status === "deleted") {
         toast.success("Treino deletado com sucesso");
+        router.refresh(); // Refresh the page to reflect the changes
       } else {
+        console.error("Error deleting workout:", res.error);
         toast.error("Erro ao deletar treino: " + res.error);
       }
     } catch (error: any) {
+      console.error("Error in handleDeleteWorkout:", error);
       setIsLoading(false);
       setConfirmDelete(false);
       toast.error("Erro ao deletar treino: " + error.message);
@@ -86,23 +93,6 @@ const WorkoutCard = ({
       </div>
       {isOpen && (
         <>
-          <div className="mt-2 flex justify-center border bg-card border-black/5 rounded-lg p-2">
-            <div className="flex flex-row items-center text-center space-x-6">
-              <div>
-                <div className="font-[500]">Template: </div>
-                <div className="text-muted-foreground">
-                  {workout.isTemplate ? "Sim" : "Não"}
-                </div>
-              </div>
-              <div>
-                <div className="font-[500]">Cliente: </div>
-                <div className="text-muted-foreground">
-                  {workout.clientId || "Não atribuído"}
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div className="mt-2 text-center flex flex-col justify-center border bg-card border-black/5 rounded-lg p-2">
             <div className="font-[500]">Conteúdo do Treino</div>
             <div className="flex flex-row items-center text-center space-x-6 mt-2">
@@ -113,7 +103,7 @@ const WorkoutCard = ({
           </div>
 
           <div className="mt-2 text-center flex flex-row justify-center space-x-2 bg-muted rounded-lg p-2">
-            <Link href={`/workouts/edit/${workout.id}`}>
+            <Link href={`/workouts/${workout.id}`}>
               <Button
                 variant={"outline"}
                 className="font-[500] px-2 text-sm bg-muted shadow-sm hover:shadow-md text-muted-foreground"
@@ -145,14 +135,6 @@ const WorkoutCard = ({
                         <div className="pt-1">
                           <span className="font-semibold">Nome: </span>
                           {workout.name}
-                        </div>
-                        <div className="pt-1">
-                          <span className="font-semibold">Template: </span>
-                          {workout.isTemplate ? "Sim" : "Não"}
-                        </div>
-                        <div className="pt-1">
-                          <span className="font-semibold">Cliente: </span>
-                          {workout.clientId || "Não atribuído"}
                         </div>
                       </div>
                     </div>

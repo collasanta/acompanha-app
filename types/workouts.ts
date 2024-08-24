@@ -11,7 +11,7 @@ export const workoutFormSchema = z.object({
 
 export type WorkoutFormSchemaType = z.infer<typeof workoutFormSchema>;
 
-type WorkoutPlanType = {
+export type WorkoutPlanType = {
   id: string;
   name: string;
   content: string;

@@ -1,3 +1,5 @@
+"use client"
+
 import { useEditor } from '@tiptap/react'
 import type { AnyExtension, Editor } from '@tiptap/core'
 import { ExtensionKit } from '@/tiptap/extensions/extension-kit'
@@ -9,7 +11,7 @@ declare global {
   }
 }
 
-export const useBlockEditor = ({content} : {content?:JSON}) => {
+export const useBlockEditor = ({content} : {content?:JSON | undefined }) => {
   const editor = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
