@@ -1,5 +1,5 @@
 import React from "react";
-import { getWorkoutPlanById } from "@/lib/workouts";
+import { getDietPlanById } from "@/lib/diets";
 import {
   Card,
   CardContent,
@@ -9,37 +9,35 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, UserIcon, FileIcon, InfoIcon } from "lucide-react";
-import EditableWorkoutContent from "@/components/block-editor-editable-workout";
+import EditableDietContent from "@/components/block-editor-editable-diet";
 
-export default async function WorkoutPage({
+export default async function DietPage({
   params,
 }: {
-  params: { workoutId: string };
+  params: { dietId: string };
 }) {
-  const { workoutId } = params;
+  const { dietId } = params;
 
-  const workoutPlan = await getWorkoutPlanById(workoutId);
+  const dietPlan = await getDietPlanById(dietId);
 
-  if ("error" in workoutPlan) {
-    throw new Error(workoutPlan.error);
+  if ("error" in dietPlan) {
+    throw new Error(dietPlan.error);
   }
 
-  const workout = workoutPlan.workoutPlan;
+  const diet = dietPlan.dietPlan;
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold text-center mb-2">
-        Detalhes do Treino
-      </h1>
+      <h1 className="text-3xl font-bold text-center mb-2">Detalhes da Dieta</h1>
       <p className="text-muted-foreground text-center mb-8">
-        Informações detalhadas do plano de treino
+        Informações detalhadas do plano alimentar
       </p>
 
       <Card className="max-w-4xl mx-auto">
         <CardHeader>
-          <CardTitle className="text-2xl mb-1">{workout.name}</CardTitle>
+          <CardTitle className="text-2xl mb-1">{diet.name}</CardTitle>
           <CardDescription>
-            Criado em {new Date(workout.createdAt).toLocaleDateString("pt-BR")}
+            Criado em {new Date(diet.createdAt).toLocaleDateString("pt-BR")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -47,22 +45,21 @@ export default async function WorkoutPage({
             <div className="flex items-center gap-2">
               <UserIcon className="text-muted-foreground" />
               <span>
-                Cliente:{" "}
-                {workout.client ? workout.client.name : "Não atribuído"}
+                Cliente: {diet.client ? diet.client.name : "Não atribuído"}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <FileIcon className="text-muted-foreground" />
               <span>
-                Tipo: {workout.isTemplate ? "Template" : "Treino Personalizado"}
+                Tipo: {diet.isTemplate ? "Template" : "Dieta Personalizada"}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <CalendarIcon className="text-muted-foreground" />
               <span>
                 Atualizado em:{" "}
-                {new Date(workout.updatedAt).toLocaleDateString("pt-BR")} às{" "}
-                {new Date(workout.updatedAt).toLocaleTimeString("pt-BR", {
+                {new Date(diet.updatedAt).toLocaleDateString("pt-BR")} às{" "}
+                {new Date(diet.updatedAt).toLocaleTimeString("pt-BR", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
@@ -70,17 +67,17 @@ export default async function WorkoutPage({
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="outline">
-                {workout.isTemplate ? "Template" : "Personalizado"}
+                {diet.isTemplate ? "Template" : "Personalizado"}
               </Badge>
             </div>
             <div className="mt-4">
               <h3 className="font-semibold mb-2 flex items-center gap-2">
                 <InfoIcon className="text-muted-foreground" />
-                Conteúdo do Treino
+                Conteúdo da Dieta
               </h3>
-              <EditableWorkoutContent
-                initialContent={workout.content}
-                workoutId={workout.id}
+              <EditableDietContent
+                initialContent={diet.content}
+                dietId={diet.id}
               />
             </div>
           </div>
@@ -93,22 +90,22 @@ export default async function WorkoutPage({
 export async function generateMetadata({
   params,
 }: {
-  params: { workoutId: string };
+  params: { dietId: string };
 }) {
-  const { workoutId } = params;
-  const workoutPlan = await getWorkoutPlanById(workoutId);
+  const { dietId } = params;
+  const dietPlan = await getDietPlanById(dietId);
 
-  if ("error" in workoutPlan) {
+  if ("error" in dietPlan) {
     return {
-      title: "Workout Not Found",
-      description: "The requested workout could not be found.",
+      title: "Dieta Não Encontrada",
+      description: "A dieta solicitada não pôde ser encontrada.",
     };
   }
 
-  const workout = workoutPlan.workoutPlan;
+  const diet = dietPlan.dietPlan;
 
   return {
-    title: `Workout: ${workout.name}`,
-    description: `Details for workout plan: ${workout.name}`,
+    title: `Dieta: ${diet.name}`,
+    description: `Detalhes do plano alimentar: ${diet.name}`,
   };
 }

@@ -60,34 +60,34 @@ const routes = [
       },
     ],
   },
-  // {
-  //     label: "Dietas",
-  //     icon: UtensilsCrossed,
-  //     href: "/diets",
-  //     color: "text-emerald-500",
-  //     subitems: [
-  //         {
-  //             label: "Cadastrar",
-  //             icon: Plus,
-  //             href: "/diets/register",
-  //             color: "text-emerald-500"
-  //         },
-  //     ]
-  // },
-  // {
-  //     label: "Programas",
-  //     icon: CalendarClock,
-  //     href: "/plans",
-  //     color: "text-emerald-500",
-  //     subitems: [
-  //         {
-  //             label: "Programas",
-  //             icon: Plus,
-  //             href: "/plans/register",
-  //             color: "text-emerald-500"
-  //         },
-  //     ]
-  // },
+  {
+    label: "Dietas",
+    icon: UtensilsCrossed,
+    href: "/diets",
+    color: "text-emerald-500",
+    subitems: [
+      {
+        label: "Cadastrar",
+        icon: Plus,
+        href: "/diets/register",
+        color: "text-emerald-500",
+      },
+    ],
+  },
+  {
+    label: "Programas",
+    icon: CalendarClock,
+    href: "/plans",
+    color: "text-emerald-500",
+    subitems: [
+      {
+        label: "Programas",
+        icon: Plus,
+        href: "/plans/register",
+        color: "text-emerald-500",
+      },
+    ],
+  },
   {
     label: "Automações",
     icon: BotMessageSquare,

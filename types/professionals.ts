@@ -1,4 +1,7 @@
 import * as z from "zod"
+import { DietPlanType } from "./diets";
+import { WorkoutPlanType } from "./workouts";
+import { ProgramType } from "./programs";
 
 export const professionalFormSchema = z.object({
     professionalName: z.string().min(6, {
@@ -23,3 +26,17 @@ export const professionalFormSchema = z.object({
 
   export type professionalFormType =  z.infer<typeof professionalFormSchema>
 
+  export type ProfessionalType = {
+    id: string;
+    name: string | null;
+    profession: string | null;
+    avgClientsSurvey: number | null;
+    email: string | null;
+    whatsapp: string | null;
+    clients: Client[];
+    programs: ProgramType[];
+    dietPlans: DietPlanType[];
+    workoutPlans: WorkoutPlanType[];
+    createdAt: Date;
+    updatedAt: Date;
+  };
