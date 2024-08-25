@@ -22,7 +22,6 @@ export const useBlockEditor = ({content} : {content?:JSON | undefined }) => {
         ctx.editor.commands.setContent(content)
       }
       if (ctx.editor.isEmpty) {
-        console.log("entrou", {initialContent})
         ctx.editor.commands.setContent(initialContent)
         ctx.editor.commands.focus('start', { scrollIntoView: true })
       }

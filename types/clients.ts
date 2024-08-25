@@ -20,6 +20,7 @@ export const clientsFormSchema = z.object({
   clientAge: z.number().min(1, {
     message: "A idade deve ser um número positivo.",
   }),
+  currentDietPlanId: z.string().nullable(),
 })
 
 export type ClientsFormSchemaType = z.infer<typeof clientsFormSchema>
@@ -35,6 +36,7 @@ export type ClientType = {
   professionalId: string;
   createdAt: Date;
   updatedAt: Date;
+  currentDietPlanId?: string | null;
 }
 
 export type ReqClientsType = Array<ClientType> | ErrorResponseType;

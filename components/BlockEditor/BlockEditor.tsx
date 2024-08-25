@@ -10,6 +10,7 @@ import { ColumnsMenu } from "@/tiptap/extensions/MultiColumn/menus";
 import { TableColumnMenu, TableRowMenu } from "@/tiptap/extensions/Table/menus";
 import { TextMenu } from "../menus/TextMenu";
 import { ContentItemMenu } from "../menus/ContentItemMenu";
+import { Spinner } from "../ui/Spinner";
 
 export const BlockEditor = ({
   content,
@@ -42,7 +43,9 @@ export const BlockEditor = ({
             <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
           </>
         ) : (
-          <div>Loading editor...</div>
+          <div className="flex justify-center h-full align-middle">
+            <Spinner />
+          </div>
         )}
       </div>
     </div>

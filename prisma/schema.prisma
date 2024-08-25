@@ -30,6 +30,8 @@ model Client {
   info                     String?                @default("")
   genre                    String?
   age                      Int?
+  currentDietPlanId        String?
+  currentWorkoutPlanId     String?
   professional             Professional           @relation(fields: [professionalId], references: [id])
   professionalId           String
   programs                 Program[]

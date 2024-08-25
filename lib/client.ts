@@ -3,6 +3,7 @@
 import { auth } from "@clerk/nextjs"
 import prismadb from "./prismadb"
 import { generateId } from "./utils";
+import { revalidatePath } from "next/cache";
 
 export const checkClientByWhatsapp = async (clientWhatsapp: string) => {
     try {
@@ -93,3 +94,22 @@ export const getClient = async (clientId: string) => {
     }
 }
 
+export async function updateClientDiet(clientId: string, dietId: string) {
+    try {
+      const { userId } = auth()
+      if (!userId) {
+        return { error: "Usuário não autenticado" }
+      }
+  
+      const updatedClient = await prismadb.client.update({
+        where: { id: clientId, professionalId: userId },
+        data: { currentDietPlanId: dietId },
+      })
+  
+      revalidatePath(`/clients/${clientId}`)
+      return { success: true, client: updatedClient }
+    } catch (error: any) {
+      console.error("Error updating client diet:", error)
+      return { error: error.message || "Erro ao atualizar dieta do cliente" }
+    }
+  }

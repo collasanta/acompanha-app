@@ -1,3 +1,4 @@
+import { DietPlan } from "@prisma/client";
 import { ClientType } from "./clients";
 import { ProfessionalType } from "./professionals";
 
@@ -19,4 +20,14 @@ export type DietFormSchemaType = {
   dietContent: string;
   isTemplate: boolean;
   clientId?: string;
+  replaceCurrentDiet?: boolean;
 };
+
+export type GetDietPlansResult = 
+  | { dietPlans: DietPlan[]; error?: undefined }
+  | { error: string; dietPlans?: undefined }
+
+export type ClientProfileInteractiveProps = {
+    initialClient: ClientType; // Substitua 'any' pelo tipo correto do cliente
+    initialDietPlans: DietPlanType[]; // Substitua 'any' pelo tipo correto dos planos de dieta
+  };

@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs"
 import prismadb from "@/lib/prismadb"
 import { revalidatePath } from "next/cache"
-import { DietFormSchemaType } from "@/types/diets"
+import { DietFormSchemaType, GetDietPlansResult } from "@/types/diets"
 import { generateId } from "./utils"
 
 export async function getDietPlanById(id: string) {
@@ -75,7 +75,7 @@ export async function updateDietContent(dietId: string, content: string) {
       },
     })
 
-    revalidatePath(`/diets/${dietId}`)
+    // revalidatePath(`/diets/${dietId}`)
     return { success: true, diet: updatedDiet }
   } catch (error) {
     console.error("Error updating diet content:", error)
@@ -83,7 +83,7 @@ export async function updateDietContent(dietId: string, content: string) {
   }
 }
 
-export async function getDietPlansByProfessional() {
+export async function getDietPlansByProfessional(): Promise<GetDietPlansResult> {
   try {
     const { userId } = auth()
     if (!userId) {
@@ -121,11 +121,22 @@ export async function registerNewDiet(data: DietFormSchemaType) {
         content: data.dietContent,
         isTemplate: data.isTemplate,
         professionalId: userId,
-        clientId: data.clientId || null,
+        clientId: data.clientId || null
       }
     })
+    
+    if (data.replaceCurrentDiet) {
+      await prismadb.client.update({
+        where: { id: data.clientId },
+        data: {
+          currentDietPlanId: newDiet.id
+        }
+      })
+      revalidatePath(`/clients/${newDiet.clientId}`)
+    }
 
     revalidatePath('/diets')
+
     return { dietId: newDiet.id }
 
   } catch (error: any) {
