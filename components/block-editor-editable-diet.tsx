@@ -25,7 +25,7 @@ export default function EditableDietContent({
   initialContent: string;
   dietId: string;
 }) {
-  const [isEditing, setIsEditing] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [editableContent, setEditableContent] = useState(initialContent);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -34,13 +34,15 @@ export default function EditableDietContent({
 
   const { editor } = useBlockEditor({
     content: JSON.parse(editableContent),
+    editable: isEditing,
   });
 
   useEffect(() => {
     if (editor) {
       editor.commands.setContent(JSON.parse(editableContent));
+      editor.setEditable(isEditing);
     }
-  }, [editor, editableContent]);
+  }, [editor, editableContent, isEditing]);
 
   const handleSave = async () => {
     if (!editor) {
@@ -91,7 +93,6 @@ export default function EditableDietContent({
       editor.commands.setContent(JSON.parse(originalContent.current));
     }
     setIsEditing(false);
-    router.refresh();
   };
 
   return (
@@ -110,12 +111,15 @@ export default function EditableDietContent({
           <Button onClick={() => setIsEditing(true)}>Editar</Button>
         )}
       </div>
-      <div className="relative">
+      <div className={`relative ${!isEditing ? "non-editable" : ""}`}>
         {editor && (
           <BlockEditor content={JSON.parse(editableContent)} editor={editor} />
         )}
         {!isEditing && (
-          <div className="absolute inset-0 bg-gray-200 bg-opacity-50 pointer-events-none" />
+          <div
+            className="absolute inset-0 bg-gray-200 bg-opacity-50"
+            style={{ pointerEvents: "all" }}
+          />
         )}
       </div>
 
@@ -144,6 +148,17 @@ export default function EditableDietContent({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <style jsx global>{`
+        .non-editable .ProseMirror-menubar,
+        .non-editable .ProseMirror-gapcursor,
+        .non-editable .tiptap .tiptap-menu-bar {
+          display: none !important;
+        }
+        .non-editable .ProseMirror {
+          pointer-events: none;
+        }
+      `}</style>
     </div>
   );
 }

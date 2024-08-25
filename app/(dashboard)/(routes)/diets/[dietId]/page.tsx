@@ -45,7 +45,7 @@ export default async function DietPage({
             <div className="flex items-center gap-2">
               <UserIcon className="text-muted-foreground" />
               <span>
-                Cliente: {diet.client ? diet.client.name : "Não atribuído"}
+                Cliente: {diet.clientId ? diet.client?.name : "Não atribuído"}
               </span>
             </div>
             <div className="flex items-center gap-2">

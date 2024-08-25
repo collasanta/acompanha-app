@@ -8,26 +8,34 @@ import { generateId } from "./utils"
 
 export async function getDietPlanById(id: string) {
   try {
-    const { userId } = auth()
+    const { userId } = auth();
     if (!userId) {
-      return { error: "Usuário não autenticado" }
+      return { error: "Usuário não autenticado" };
     }
 
     const dietPlan = await prismadb.dietPlan.findUnique({
       where: {
         id: id,
         professionalId: userId,
-      }
-    })
+      },
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
 
     if (!dietPlan) {
-      return { error: "Plano de dieta não encontrado" }
+      return { error: "Plano de dieta não encontrado" };
     }
 
-    return { dietPlan }
+    return { dietPlan };
 
   } catch (error: any) {
-    return { error: error.message }
+    return { error: error.message };
   }
 }
 

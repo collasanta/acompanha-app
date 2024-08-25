@@ -18,6 +18,7 @@ import {
   InfoIcon,
   UtensilsIcon,
   PencilIcon,
+  PlusIcon,
 } from "lucide-react";
 import {
   Select,
@@ -26,6 +27,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { updateClientDiet } from "@/lib/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -41,12 +43,6 @@ export default function ClientProfileInteractive({
 
   const handleDietChange = async (dietId: string) => {
     if (dietId === "select") return;
-    if (dietId === "new") {
-      router.push(
-        `/diets/register?clientId=${client.id}&replaceCurrentDiet=true`
-      );
-      return;
-    }
     try {
       const result = await updateClientDiet(client.id, dietId);
       if ("error" in result) {
@@ -57,6 +53,12 @@ export default function ClientProfileInteractive({
     } catch (error) {
       toast.error("Erro ao atualizar dieta: " + (error as Error).message);
     }
+  };
+
+  const handleCreateNewDiet = () => {
+    router.push(
+      `/diets/register?clientId=${client.id}&replaceCurrentDiet=true`
+    );
   };
 
   const currentDiet = dietPlans.find(
@@ -162,20 +164,19 @@ export default function ClientProfileInteractive({
               )}
             </div>
             <div>
+              <Button
+                onClick={handleCreateNewDiet}
+                className="w-full mb-4"
+                variant="outline"
+              >
+                <PlusIcon className="mr-2 h-4 w-4" /> Criar Nova Dieta
+              </Button>
               <h3 className="font-semibold mb-2">Trocar Dieta Atual</h3>
               <Select onValueChange={handleDietChange} value="select">
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Clique aqui para selecionar outra dieta" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="select">
-                    Clique aqui para selecionar outra dieta
-                  </SelectItem>
-                  <SelectItem value="new">
-                    <span className="font-medium text-blue-600">
-                      + Criar Nova Dieta
-                    </span>
-                  </SelectItem>
                   {dietPlans.map((diet) => (
                     <SelectItem key={diet.id} value={diet.id}>
                       {diet.name}

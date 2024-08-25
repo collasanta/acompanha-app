@@ -11,9 +11,10 @@ declare global {
   }
 }
 
-export const useBlockEditor = ({content} : {content?:JSON | undefined }) => {
+export const useBlockEditor = ({content, editable = true} : {content?:JSON | undefined , editable?: boolean}) => {
   const editor = useEditor({
     immediatelyRender: false,
+    editable: editable,
     shouldRerenderOnTransaction: false,
     autofocus: true,
     onCreate: ctx => {
