@@ -70,7 +70,11 @@ export const getClient = async (clientId: string) => {
 
     try {
         const client = await prismadb.client.findUnique({
-            where: { id: clientId }
+            where: { id: clientId },
+            include: {
+                dietPlans: true,
+                currentDietPlan: true
+            }
         })
 
         if (!client) {
@@ -99,14 +103,36 @@ export async function updateClientDiet(clientId: string, dietId: string) {
       const { userId } = auth()
       if (!userId) {
         return { error: "Usuário não autenticado" }
-      }
-  
-      const updatedClient = await prismadb.client.update({
+        } 
+        
+        const diet = await prismadb.dietPlan.findUnique({
+        where: { id: dietId, professionalId: userId },
+        })
+
+        if (!diet) { 
+            throw new Error("Dieta não encontrada ou não pertence ao usuário")
+        }
+
+        if (diet.clientId || diet.clientId !== clientId) {
+            const newDiet = await prismadb.dietPlan.create({
+                data: {
+                    id: generateId(),
+                    professionalId: userId,
+                    clientId: clientId,
+                    content: diet.content,
+                    name: diet.name, 
+                },
+            });
+            console.log(`Nova dieta criada (${newDiet.id}) - Clonada de ${dietId} `)
+        }
+        
+        const updatedClient = await prismadb.client.update({
         where: { id: clientId, professionalId: userId },
         data: { currentDietPlanId: dietId },
-      })
+        })
   
-      revalidatePath(`/clients/${clientId}`)
+        revalidatePath(`/clients/${clientId}`)
+        revalidatePath(`/clients`)
       return { success: true, client: updatedClient }
     } catch (error: any) {
       console.error("Error updating client diet:", error)

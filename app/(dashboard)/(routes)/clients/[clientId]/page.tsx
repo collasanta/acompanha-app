@@ -1,6 +1,10 @@
+// app/clients/[clientId]/page.tsx
+
 import { getClient } from "@/lib/client";
 import { getDietPlansByProfessional } from "@/lib/diets";
 import ClientProfileInteractive from "./client-profile-interactive";
+import { GetClientResult } from "@/types/clients";
+import { GetDietPlansResult } from "@/types/diets";
 
 export default async function ClientProfilePage({
   params,
@@ -9,8 +13,9 @@ export default async function ClientProfilePage({
 }) {
   const { clientId } = params;
 
-  const clientPromise = getClient(clientId);
-  const dietPlansPromise = getDietPlansByProfessional();
+  const clientPromise: Promise<GetClientResult> = getClient(clientId);
+  const dietPlansPromise: Promise<GetDietPlansResult> =
+    getDietPlansByProfessional();
 
   const [clientResult, dietPlansResult] = await Promise.all([
     clientPromise,

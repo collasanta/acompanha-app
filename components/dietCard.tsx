@@ -78,7 +78,7 @@ const DietCard = ({
         <div className="flex flex-col sm:flex-row">
           <p className="pr-2 text-center whitespace-break-spaces font-semibold text-muted-foreground text-sm text-blue-700">
             {diet.name?.length > 30
-              ? diet.name?.substring(0, 30) + "..."
+              ? diet.name?.substring(0, 55) + "..."
               : diet.name}{" "}
           </p>
         </div>
@@ -102,7 +102,7 @@ const DietCard = ({
                 onClick={() => router.push(`/clients/${diet.client?.id}`)}
               >
                 <UserIcon className="w-4 h-4 mr-2" />
-                <span>{diet.client.name}</span>
+                <span className="">{diet.client.name}</span>
               </div>
             </div>
           )}

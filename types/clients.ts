@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client"
 import * as z from "zod"
 
 export type ErrorResponseType = {
@@ -25,20 +26,21 @@ export const clientsFormSchema = z.object({
 
 export type ClientsFormSchemaType = z.infer<typeof clientsFormSchema>
 
-export type ClientType = {
-  id: string;
-  name: string;
-  whatsapp: string | null;
-  email: string | null;
-  info: string | null;
-  genre: string | null;
-  age: number | null;
-  professionalId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  currentDietPlanId?: string | null;
-}
+// Use Prisma's generated type for Client
+export type ClientType = Prisma.ClientGetPayload<{}>
+
+// ClientWithCurrentDiet now includes all Client fields plus the specified relations
+export type ClientWithCurrentDiet = Prisma.ClientGetPayload<{
+  include: {
+    currentDietPlan: true;
+    dietPlans: true;
+  }
+}>
 
 export type ReqClientsType = Array<ClientType> | ErrorResponseType;
 
 export type ReqClientType = ClientType | ErrorResponseType;
+
+export type GetClientResult = 
+  | ClientWithCurrentDiet
+  | { error: string };

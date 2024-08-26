@@ -1,18 +1,17 @@
-import { DietPlan } from "@prisma/client";
-import { ClientType } from "./clients";
-import { ProfessionalType } from "./professionals";
+import { Prisma } from "@prisma/client";
+import { ClientWithCurrentDiet } from "./clients";
 
-export type DietPlanType = {
-  id: string;
-  name: string;
-  content: string;
-  isTemplate: boolean;
-  professionalId: string;
-  professional?: ProfessionalType | null;
-  clientId?: string | null;
-  client?: ClientType | null;
-  createdAt: Date;
-  updatedAt: Date;
+export type DietPlanWithClient = Prisma.DietPlanGetPayload<{
+  include: { client: true };
+}>;
+
+export type GetDietPlansResult = 
+  | { dietPlans: DietPlanWithClient[]; error?: undefined }
+  | { error: string; dietPlans?: undefined };
+
+export type ClientProfileInteractiveProps = {
+    initialClient: ClientWithCurrentDiet; 
+    initialDietPlans: DietPlanWithClient[]; 
 };
 
 export type DietFormSchemaType = {
@@ -23,18 +22,4 @@ export type DietFormSchemaType = {
   replaceCurrentDiet?: boolean;
 };
 
-export type GetDietPlansResult = 
-  | { dietPlans: DietPlan[]; error?: undefined }
-  | { error: string; dietPlans?: undefined }
-
-export type ClientProfileInteractiveProps = {
-    initialClient: ClientType; 
-    initialDietPlans: DietPlanType[]; 
-};
-  
-export type GetClientWithCurrentDietResult = {
-  client: ClientType;
-  currentDiet: DietPlanType | null;
-} | {
-  error: string;
-}
+export type DietPlanType = Prisma.DietPlanGetPayload<{}>;

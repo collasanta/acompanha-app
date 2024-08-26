@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs"
 import prismadb from "@/lib/prismadb"
 import { revalidatePath } from "next/cache"
-import { DietFormSchemaType, GetDietPlansResult } from "@/types/diets"
+import { DietFormSchemaType, DietPlanWithClient, GetDietPlansResult } from "@/types/diets"
 import { generateId } from "./utils"
 
 export async function getDietPlanById(id: string) {
@@ -94,9 +94,9 @@ export async function updateDietContent(dietId: string, content: string) {
 
 export async function getDietPlansByProfessional(): Promise<GetDietPlansResult> {
   try {
-    const { userId } = auth()
+    const { userId } = auth();
     if (!userId) {
-      return { error: "Usuário não autenticado" }
+      return { error: "Usuário não autenticado" };
     }
 
     const dietPlans = await prismadb.dietPlan.findMany({
@@ -104,35 +104,24 @@ export async function getDietPlansByProfessional(): Promise<GetDietPlansResult> 
         professionalId: userId,
       },
       include: {
-        client: {
-          select: {
-            id: true,
-            name: true,
-            whatsapp: true,
-            email: true,
-            info: true,
-            genre: true,
-            age: true,
-          },
-        },
+        client: true
       },
       orderBy: {
         createdAt: 'desc',
       },
-    })
+    });
 
-    dietPlans.map((diet) => {
+    dietPlans.forEach((diet) => {
       if (diet.client) {
         diet.name = `${diet.name} - ${diet.client.name}`;
       }
-      return diet;
     });
 
-    return { dietPlans }
+    return { dietPlans };
 
   } catch (error: any) {
-    console.error("Error fetching diet plans:", error)
-    return { error: error.message }
+    console.error("Error fetching diet plans:", error);
+    return { error: error.message };
   }
 }
 

@@ -39,12 +39,18 @@ export default function ClientProfileInteractive({
 }: ClientProfileInteractiveProps) {
   const [client, setClient] = useState(initialClient);
   const [dietPlans] = useState(initialDietPlans);
+  const [currentDiet, setCurrentDiet] = useState(
+    initialClient.currentDietPlanId
+  );
   const router = useRouter();
 
   const handleDietChange = async (dietId: string) => {
     if (dietId === "select") return;
     try {
       const result = await updateClientDiet(client.id, dietId);
+      setCurrentDiet(
+        `${result.client?.currentDietPlanId} - ${result.client?.name}`
+      );
       if ("error" in result) {
         throw new Error(result.error);
       }
@@ -60,10 +66,6 @@ export default function ClientProfileInteractive({
       `/diets/register?clientId=${client.id}&replaceCurrentDiet=true`
     );
   };
-
-  const currentDiet = dietPlans.find(
-    (diet) => diet.id === client.currentDietPlanId
-  );
 
   return (
     <div className="container mx-auto py-10">
