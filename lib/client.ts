@@ -89,6 +89,10 @@ export const getClient = async (clientId: string) => {
             }
         }
 
+        if (client.currentDietPlan) { 
+            client.currentDietPlan.name = `${client.currentDietPlan.name} - ${client.name}`
+        }
+
         return client
 
     } catch (error: any) {
@@ -128,8 +132,15 @@ export async function updateClientDiet(clientId: string, dietId: string) {
         
         const updatedClient = await prismadb.client.update({
         where: { id: clientId, professionalId: userId },
-        data: { currentDietPlanId: dietId },
+            data: { currentDietPlanId: dietId },
+            include: {
+                currentDietPlan: true,
+            },
         })
+
+        if (updatedClient.currentDietPlan) {
+            updatedClient.currentDietPlan.name = `${updatedClient.currentDietPlan?.name} - ${updatedClient.name}`
+        }
   
         revalidatePath(`/clients/${clientId}`)
         revalidatePath(`/clients`)
