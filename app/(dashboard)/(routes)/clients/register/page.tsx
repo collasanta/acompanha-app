@@ -192,9 +192,9 @@ export default function ClientRegistration() {
               <div className="flex-col flex space-y-2">
                 <Button type="submit">Cadastrar Cliente</Button>
                 <Button
-                  variant={"outline"}
+                  variant="outline"
                   type="button"
-                  onClick={() => router.push(`/clients`)}
+                  onClick={() => router.back()}
                 >
                   Voltar
                 </Button>

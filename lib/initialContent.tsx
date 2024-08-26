@@ -1,27 +1,27 @@
 export const initialContent = {
-  type: 'doc',
+  type: "doc",
   content: [
     {
-      type: 'heading',
+      type: "heading",
       attrs: {
-        textAlign: 'center',
+        textAlign: "center",
         level: 1,
       },
       content: [
         {
-          type: 'emoji',
+          type: "emoji",
           attrs: {
-            name: 'muscle',
+            name: "muscle",
           },
         },
         {
-          type: 'text',
-          text: ' Escreva aqui seu novo treino',
+          type: "text",
+          text: ' Começe clicando aqui, e digit "/" (barra) para ver os comandos diponíveis',
         },
       ],
     },
-  ]
-}
+  ],
+};
 
 // export const initialContent = {
 //   type: 'doc',

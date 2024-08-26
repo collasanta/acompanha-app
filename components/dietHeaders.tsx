@@ -40,7 +40,7 @@ export const DietHeader = ({
               <div className="pl-4 sm:pl-6 align-text-bottom font-semibold max-w-[220px] truncate text-muted-foreground text-sm text-start whitespace-break-spaces">
                 {client.name}
               </div>
-              <div className="mr-8 cursor-pointer" onClick={handleClick}>
+              {/* <div className="mr-8 cursor-pointer" onClick={handleClick}>
                 {isOpen ? (
                   <MinusCircleIcon
                     className="w-5 h-5 transform rotate-180 align-bottom"
@@ -49,7 +49,7 @@ export const DietHeader = ({
                 ) : (
                   <PlusCircleIcon className="w-5 h-5" color="#999999" />
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="flex flex-row h-[25px] border-t-2 border-dashed justify-between">
               <div className="pt-1 pl-4 sm:pl-6 text-muted-foreground text-sm text-start max-w-[220px] sm:max-w-[500px] truncate">
@@ -59,7 +59,7 @@ export const DietHeader = ({
           </div>
         </div>
 
-        {isOpen && (
+        {/* {isOpen && (
           <div className="flex flex-col">
             <div className="flex justify-center border-t-4 py-2">
               <div className="grid grid-cols-2 gap-2 text-sm">
@@ -88,7 +88,7 @@ export const DietHeader = ({
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

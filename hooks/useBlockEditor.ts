@@ -16,7 +16,7 @@ export const useBlockEditor = ({content, editable = true} : {content?:JSON | und
     immediatelyRender: false,
     editable: editable,
     shouldRerenderOnTransaction: false,
-    autofocus: true,
+    autofocus: false,
     onCreate: ctx => {
       if (content) {
         ctx.editor.commands.setContent(content)

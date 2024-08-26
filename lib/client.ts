@@ -117,8 +117,9 @@ export async function updateClientDiet(clientId: string, dietId: string) {
             throw new Error("Dieta não encontrada ou não pertence ao usuário")
         }
 
-        if (diet.clientId || diet.clientId !== clientId) {
-            const newDiet = await prismadb.dietPlan.create({
+        let newDiet
+        if (diet.clientId !== clientId) {
+            newDiet = await prismadb.dietPlan.create({
                 data: {
                     id: generateId(),
                     professionalId: userId,
@@ -129,10 +130,12 @@ export async function updateClientDiet(clientId: string, dietId: string) {
             });
             console.log(`Nova dieta criada (${newDiet.id}) - Clonada de ${dietId} `)
         }
+
+
         
         const updatedClient = await prismadb.client.update({
         where: { id: clientId, professionalId: userId },
-            data: { currentDietPlanId: dietId },
+            data: { currentDietPlanId: newDiet ? newDiet.id : dietId },
             include: {
                 currentDietPlan: true,
             },

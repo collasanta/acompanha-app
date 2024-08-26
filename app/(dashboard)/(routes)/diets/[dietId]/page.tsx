@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, UserIcon, FileIcon, InfoIcon } from "lucide-react";
 import EditableDietContent from "@/components/block-editor-editable-diet";
+import DeleteDietButton from "./delete-diet-button";
 
 export default async function DietPage({
   params,
@@ -33,7 +34,8 @@ export default async function DietPage({
         Informações detalhadas do plano alimentar
       </p>
 
-      <Card className="max-w-4xl mx-auto">
+      <Card className="max-w-4xl mx-auto relative">
+        <DeleteDietButton dietId={diet.id} />
         <CardHeader>
           <CardTitle className="text-2xl mb-1">{diet.name}</CardTitle>
           <CardDescription>

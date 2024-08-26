@@ -6,7 +6,7 @@ import { useBlockEditor } from "@/hooks/useBlockEditor";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-hot-toast";
 import { updateDietContent } from "@/lib/diets";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,12 +25,15 @@ export default function EditableDietContent({
   initialContent: string;
   dietId: string;
 }) {
-  const [isEditing, setIsEditing] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const editingQuery = searchParams.get("editing") === "true";
+  const [isEditing, setIsEditing] = useState(editingQuery);
   const [isSaving, setIsSaving] = useState(false);
   const [editableContent, setEditableContent] = useState(initialContent);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const originalContent = useRef(initialContent);
-  const router = useRouter();
 
   const { editor } = useBlockEditor({
     content: JSON.parse(editableContent),
@@ -48,6 +51,12 @@ export default function EditableDietContent({
     if (!editor) {
       toast.error("Editor não inicializado");
       return;
+    }
+
+    if (editingQuery) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete("editing");
+      router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
     }
 
     setIsSaving(true);
@@ -108,7 +117,9 @@ export default function EditableDietContent({
             </Button>
           </>
         ) : (
-          <Button onClick={() => setIsEditing(true)}>Editar</Button>
+          <Button variant={"outline"} onClick={() => setIsEditing(true)}>
+            Editar
+          </Button>
         )}
       </div>
       <div className={`relative ${!isEditing ? "non-editable" : ""}`}>
@@ -122,7 +133,11 @@ export default function EditableDietContent({
           />
         )}
       </div>
-
+      <div className="my-4 text-center">
+        <Button variant="outline" type="button" onClick={() => router.back()}>
+          Voltar
+        </Button>
+      </div>
       <AlertDialog
         open={isConfirmDialogOpen}
         onOpenChange={setIsConfirmDialogOpen}

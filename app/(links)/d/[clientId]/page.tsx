@@ -1,8 +1,9 @@
 // app/d/[clientId]/page.tsx
-import { getClientWithCurrentDiet } from "@/lib/client";
 import { DietHeader } from "@/components/dietHeaders";
-import DietContent from "@/components/diet-content";
 import { notFound } from "next/navigation";
+import { getClientWithCurrentDiet } from "@/lib/diets";
+import DietContent from "@/components/dietContent";
+import ViewDietContent from "@/components/block-view-diet";
 
 export default async function ClientDietPage({
   params,
@@ -10,6 +11,8 @@ export default async function ClientDietPage({
   params: { clientId: string };
 }) {
   const { clientId } = params;
+
+  console.log("clientId", clientId);
 
   const result = await getClientWithCurrentDiet(clientId);
 
@@ -34,7 +37,7 @@ export default async function ClientDietPage({
         <DietHeader client={client} diet={currentDiet} />
       </div>
       <div className="w-full mx-auto mt-6">
-        <DietContent content={currentDiet.content} />
+        <ViewDietContent initialContent={currentDiet.content} />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
 import {
   Card,
@@ -15,23 +15,19 @@ import {
   CalendarIcon,
   MailIcon,
   PhoneIcon,
-  InfoIcon,
   UtensilsIcon,
   PencilIcon,
   PlusIcon,
+  LockIcon,
+  RefreshCwIcon,
+  SearchIcon,
 } from "lucide-react";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { updateClientDiet } from "@/lib/client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ClientProfileInteractiveProps } from "@/types/diets";
+import AppDietLink from "@/components/appDietLink";
 
 export default function ClientProfileInteractive({
   initialClient,
@@ -40,31 +36,52 @@ export default function ClientProfileInteractive({
   const [client, setClient] = useState(initialClient);
   const [dietPlans] = useState(initialDietPlans);
   const [currentDiet, setCurrentDiet] = useState(initialClient.currentDietPlan);
-  const router = useRouter();
+  const [isChangingDiet, setIsChangingDiet] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const filteredDietPlans = useMemo(() => {
+    if (!searchTerm) return dietPlans;
+    return dietPlans.filter((diet) =>
+      diet.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [dietPlans, searchTerm]);
 
   const handleDietChange = async (dietId: string) => {
-    if (dietId === "select") return;
     try {
       const result = await updateClientDiet(client.id, dietId);
       if (result.client?.currentDietPlan) {
         setCurrentDiet(result.client?.currentDietPlan);
       }
-
       if ("error" in result) {
         throw new Error(result.error);
       }
       setClient({ ...client, currentDietPlanId: dietId });
       toast.success("Dieta atualizada com sucesso!");
+      setIsChangingDiet(false);
+      setSearchTerm("");
+      setIsDropdownOpen(false);
     } catch (error) {
       toast.error("Erro ao atualizar dieta: " + (error as Error).message);
     }
   };
 
-  const handleCreateNewDiet = () => {
-    router.push(
-      `/diets/register?clientId=${client.id}&replaceCurrentDiet=true`
-    );
-  };
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="container mx-auto py-10">
@@ -118,13 +135,7 @@ export default function ClientProfileInteractive({
               </Badge>
             </div>
             <div className="mt-4">
-              <h3 className="font-semibold mb-2 flex items-center gap-2">
-                <InfoIcon className="text-muted-foreground" />
-                Informações Adicionais
-              </h3>
-              <p className="text-muted-foreground">
-                {client.info || "Nenhuma informação adicional disponível."}
-              </p>
+              <AppDietLink clientId={client.id} />
             </div>
           </div>
         </CardContent>
@@ -144,48 +155,71 @@ export default function ClientProfileInteractive({
           <div className="grid gap-6">
             <div>
               <h3 className="font-semibold mb-2">Dieta Atual</h3>
-              {currentDiet ? (
-                <Link href={`/diets/${currentDiet.id}`} className="block group">
-                  <Card className="bg-green-50 hover:bg-green-100 transition-colors">
-                    <CardContent className="flex items-center justify-between p-4">
-                      <span className="font-medium">{currentDiet.name}</span>
-                      <div className="flex items-center text-green-600">
-                        <span className="mr-2 text-sm">Editar</span>
-                        <PencilIcon className="w-4 h-4" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ) : (
-                <Card>
-                  <CardContent className="p-4 text-muted-foreground">
-                    Nenhuma dieta associada
-                  </CardContent>
-                </Card>
-              )}
+              <div className="flex items-center gap-2 p-2 border rounded-md bg-gray-50">
+                <LockIcon className="text-muted-foreground" />
+                <span className="flex-grow">
+                  {currentDiet ? currentDiet.name : "Nenhuma dieta associada"}
+                </span>
+                {currentDiet && (
+                  <Link href={`/diets/${currentDiet.id}?editing=true`}>
+                    <Button variant="outline" size="sm">
+                      <PencilIcon className="w-4 h-4 mr-2" />
+                      Editar
+                    </Button>
+                  </Link>
+                )}
+              </div>
             </div>
-            <div>
+            <div className="flex gap-2">
+              <Link
+                href={`/diets/register?clientId=${client.id}&replaceCurrentDiet=true`}
+              >
+                <Button className="flex-1" variant="outline">
+                  <PlusIcon className="mr-2 h-4 w-4" /> Criar Nova Dieta
+                </Button>
+              </Link>
               <Button
-                onClick={handleCreateNewDiet}
-                className="w-full mb-4"
+                onClick={() => setIsChangingDiet(!isChangingDiet)}
+                className="flex-1"
                 variant="outline"
               >
-                <PlusIcon className="mr-2 h-4 w-4" /> Criar Nova Dieta
+                <RefreshCwIcon className="w-4 h-4 mr-2" />
+                Trocar Dieta Atual
               </Button>
-              <h3 className="font-semibold mb-2">Trocar Dieta Atual</h3>
-              <Select onValueChange={handleDietChange} value="select">
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Clique aqui para selecionar outra dieta" />
-                </SelectTrigger>
-                <SelectContent>
-                  {dietPlans.map((diet) => (
-                    <SelectItem key={diet.id} value={diet.id}>
-                      {diet.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </div>
+            {isChangingDiet && (
+              <div className="w-full" ref={dropdownRef}>
+                <h3 className="font-semibold mb-2">Selecione a Nova Dieta</h3>
+                <div className="relative">
+                  <Input
+                    type="text"
+                    placeholder="Buscar dietas..."
+                    value={searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      setIsDropdownOpen(true);
+                    }}
+                    onFocus={() => setIsDropdownOpen(true)}
+                    className="w-full pr-10"
+                  />
+                  <SearchIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  {isDropdownOpen && filteredDietPlans.length > 0 && (
+                    <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-md mt-1 max-h-60 overflow-auto">
+                      {filteredDietPlans.map((diet) => (
+                        <li
+                          key={diet.id}
+                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm flex justify-between"
+                          onClick={() => handleDietChange(diet.id)}
+                        >
+                          <span>{diet.name}</span>
+                          <span className="text-gray-400">{diet.id}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

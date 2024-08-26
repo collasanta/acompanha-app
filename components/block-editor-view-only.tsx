@@ -9,7 +9,7 @@ const ViewOnlyEditor = ({ content }: { content: string }) => {
     extensions: [StarterKit],
     content: JSON.parse(content),
     editable: false,
-    immediatelyRender: false,
+    immediatelyRender: true,
   });
 
   return <EditorContent editor={editor} />;

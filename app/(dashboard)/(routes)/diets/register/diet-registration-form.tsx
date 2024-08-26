@@ -278,27 +278,29 @@ export default function DietRegistrationForm({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="replaceCurrentDiet"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel>Substituir dieta atual do cliente</FormLabel>
-                  <FormDescription>
-                    Marque esta opção se deseja substituir a dieta atual do
-                    cliente por essa nova dieta
-                  </FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
+          {form.watch("clientId") && (
+            <FormField
+              control={form.control}
+              name="replaceCurrentDiet"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Substituir dieta atual do cliente</FormLabel>
+                    <FormDescription>
+                      Marque esta opção se deseja substituir a dieta atual do
+                      cliente por essa nova dieta
+                    </FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+          )}
 
           <div className="flex justify-center pb-[120px] pt-[30px]">
             <div className="flex-col flex space-y-2">
