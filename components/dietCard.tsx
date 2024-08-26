@@ -6,6 +6,10 @@ import {
   PlusCircleIcon,
   Trash2Icon,
   PencilIcon,
+  UserIcon,
+  PhoneIcon,
+  MailIcon,
+  InfoIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
@@ -44,14 +48,12 @@ const DietCard = ({
   async function handleDeleteDiet(dietId: string) {
     setIsLoading(true);
     try {
-      console.log("Deleting diet:", dietId);
       const res = await deleteDiet(dietId);
-      console.log("Delete response:", res);
       setIsLoading(false);
       setConfirmDelete(false);
       if (res.status === "deleted") {
         toast.success("Dieta deletada com sucesso");
-        router.refresh(); // Refresh the page to reflect the changes
+        router.refresh();
       } else {
         console.error("Error deleting diet:", res.error);
         toast.error("Erro ao deletar dieta: " + res.error);
@@ -74,10 +76,10 @@ const DietCard = ({
           🍽️
         </div>
         <div className="flex flex-col sm:flex-row">
-          <p className="pr-2 text-center whitespace-break-spaces font-semibold text-muted-foreground text-sm">
+          <p className="pr-2 text-center whitespace-break-spaces font-semibold text-muted-foreground text-sm text-blue-700">
             {diet.name?.length > 30
               ? diet.name?.substring(0, 30) + "..."
-              : diet.name}
+              : diet.name}{" "}
           </p>
         </div>
         <div>
@@ -93,6 +95,17 @@ const DietCard = ({
       </div>
       {isOpen && (
         <>
+          {diet.client && (
+            <div className="mt-2 text-center flex flex-col justify-center border bg-card border-black/5 rounded-lg p-2">
+              <div
+                className="flex items-center justify-center cursor-pointer"
+                onClick={() => router.push(`/clients/${diet.client?.id}`)}
+              >
+                <UserIcon className="w-4 h-4 mr-2" />
+                <span>{diet.client.name}</span>
+              </div>
+            </div>
+          )}
           <div className="mt-2 text-center flex flex-col justify-center border bg-card border-black/5 rounded-lg p-2">
             <div className="font-[500]">Conteúdo da Dieta</div>
             <div className="flex flex-row items-center text-center space-x-6 mt-2">

@@ -19,7 +19,6 @@ export const useBlockEditor = ({content, editable = true} : {content?:JSON | und
     autofocus: true,
     onCreate: ctx => {
       if (content) {
-        console.log({content})
         ctx.editor.commands.setContent(content)
       }
       if (ctx.editor.isEmpty) {

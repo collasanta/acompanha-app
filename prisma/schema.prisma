@@ -30,16 +30,20 @@ model Client {
   info                     String?                @default("")
   genre                    String?
   age                      Int?
-  currentDietPlanId        String?
-  currentWorkoutPlanId     String?
+  currentDietPlanId        String?                @unique
+  currentDietPlan          DietPlan?              @relation("CurrentClientDiet", fields: [currentDietPlanId], references: [id])
+  currentWorkoutPlanId     String?                @unique
+  currentWorkoutPlan       WorkoutPlan?           @relation("CurrentClientWorkout", fields: [currentWorkoutPlanId], references: [id])
   professional             Professional           @relation(fields: [professionalId], references: [id])
   professionalId           String
   programs                 Program[]
-  dietPlans                DietPlan[]
-  workoutPlans             WorkoutPlan[]
+  dietPlans                DietPlan[]             @relation("ClientDietPlans")
+  workoutPlans             WorkoutPlan[]          @relation("ClientWorkoutPlans")
   notificationSubscription WebPushSubscriptions[]
   createdAt                DateTime               @default(now())
   updatedAt                DateTime               @default(now()) @updatedAt
+
+  @@index([professionalId])
 }
 
 model Program {
@@ -60,6 +64,9 @@ model Program {
   subscription    WebPushSubscriptions[]
   createdAt       DateTime               @default(now())
   updatedAt       DateTime               @default(now()) @updatedAt
+
+  @@index([clientId])
+  @@index([professionalId])
 }
 
 model DietPlan {
@@ -69,10 +76,14 @@ model DietPlan {
   isTemplate     Boolean      @default(false)
   professional   Professional @relation(fields: [professionalId], references: [id])
   professionalId String
-  client         Client?      @relation(fields: [clientId], references: [id])
+  client         Client?      @relation("ClientDietPlans", fields: [clientId], references: [id])
   clientId       String?
+  currentClient  Client?      @relation("CurrentClientDiet")
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
+
+  @@index([professionalId])
+  @@index([clientId])
 }
 
 model WorkoutPlan {
@@ -82,16 +93,19 @@ model WorkoutPlan {
   isTemplate     Boolean      @default(false)
   professional   Professional @relation(fields: [professionalId], references: [id])
   professionalId String
-  client         Client?      @relation(fields: [clientId], references: [id])
+  client         Client?      @relation("ClientWorkoutPlans", fields: [clientId], references: [id])
   clientId       String?
+  currentClient  Client?      @relation("CurrentClientWorkout")
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
 
   @@unique([name, professionalId])
+  @@index([professionalId])
+  @@index([clientId])
 }
 
 model DailyData {
-  program      Program    @relation(fields: [programId], references: [id])
+  program      Program     @relation(fields: [programId], references: [id])
   programId    String
   date         DateTime
   diet         Boolean?
@@ -101,10 +115,12 @@ model DailyData {
   notes        String?
   checkpointId String?
   Checkpoint   Checkpoint? @relation(fields: [checkpointId], references: [id])
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @default(now()) @updatedAt
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now()) @updatedAt
 
   @@id([programId, date])
+  @@index([programId])
+  @@index([checkpointId])
 }
 
 model Checkpoint {
@@ -119,6 +135,8 @@ model Checkpoint {
   daily_data      DailyData[]
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @default(now()) @updatedAt
+
+  @@index([programId])
 }
 
 model WebPushSubscriptions {
@@ -133,4 +151,7 @@ model WebPushSubscriptions {
   program             Program  @relation(fields: [programId], references: [id])
   createdAt           DateTime @default(now())
   updatedAt           DateTime @default(now()) @updatedAt
+
+  @@index([clientId])
+  @@index([programId])
 }

@@ -28,6 +28,13 @@ export type GetDietPlansResult =
   | { error: string; dietPlans?: undefined }
 
 export type ClientProfileInteractiveProps = {
-    initialClient: ClientType; // Substitua 'any' pelo tipo correto do cliente
-    initialDietPlans: DietPlanType[]; // Substitua 'any' pelo tipo correto dos planos de dieta
-  };
+    initialClient: ClientType; 
+    initialDietPlans: DietPlanType[]; 
+};
+  
+export type GetClientWithCurrentDietResult = {
+  client: ClientType;
+  currentDiet: DietPlanType | null;
+} | {
+  error: string;
+}

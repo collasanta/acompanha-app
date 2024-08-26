@@ -44,9 +44,7 @@ const WorkoutCard = ({
   async function handleDeleteWorkout(workoutId: string) {
     setIsLoading(true);
     try {
-      console.log("Deleting workout:", workoutId);
       const res = await deleteWorkout(workoutId);
-      console.log("Delete response:", res);
       setIsLoading(false);
       setConfirmDelete(false);
       if (res.status === "deleted") {

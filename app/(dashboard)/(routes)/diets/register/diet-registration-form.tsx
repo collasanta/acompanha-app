@@ -77,7 +77,6 @@ export default function DietRegistrationForm({
     content: undefined,
   });
 
-  console.log("akii", searchParams.keys());
   const form = useForm<DietFormSchemaType>({
     resolver: zodResolver(dietFormSchema),
     defaultValues: {
@@ -138,12 +137,8 @@ export default function DietRegistrationForm({
     if (isValid) {
       const data = form.getValues();
       setLoading(true);
-      const result = await registerNewDiet({
-        ...data,
-        replaceCurrentDiet: selectedClientHasDiet
-          ? data.replaceCurrentDiet
-          : undefined,
-      });
+
+      const result = await registerNewDiet(data);
       setLoading(false);
       if ("error" in result) {
         toast.error(`Erro ao cadastrar dieta: ${result.error}`);

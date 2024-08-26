@@ -83,7 +83,8 @@ export async function updateDietContent(dietId: string, content: string) {
       },
     })
 
-    // revalidatePath(`/diets/${dietId}`)
+    revalidatePath(`/diets/${dietId}`)
+    revalidatePath('/diets')
     return { success: true, diet: updatedDiet }
   } catch (error) {
     console.error("Error updating diet content:", error)
@@ -102,10 +103,30 @@ export async function getDietPlansByProfessional(): Promise<GetDietPlansResult> 
       where: {
         professionalId: userId,
       },
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+            whatsapp: true,
+            email: true,
+            info: true,
+            genre: true,
+            age: true,
+          },
+        },
+      },
       orderBy: {
         createdAt: 'desc',
       },
     })
+
+    dietPlans.map((diet) => {
+      if (diet.client) {
+        diet.name = `${diet.name} - ${diet.client.name}`;
+      }
+      return diet;
+    });
 
     return { dietPlans }
 
@@ -150,5 +171,44 @@ export async function registerNewDiet(data: DietFormSchemaType) {
   } catch (error: any) {
     console.error("Error in registerNewDiet:", error)
     return { error: error.message || "Erro ao cadastrar a dieta" }
+  }
+}
+
+export async function getClientWithCurrentDiet(clientId: string) {
+  try {
+    const { userId } = auth();
+    if (!userId) {
+      return { error: "Usuário não autenticado" };
+    }
+
+    const client = await prismadb.client.findUnique({
+      where: {
+        id: clientId,
+        professionalId: userId,
+      },
+      include: {
+        currentDietPlan: true,
+      },
+    });
+
+    if (!client) {
+      return { error: "Cliente não encontrado" };
+    }
+
+    return { 
+      client: {
+        id: client.id,
+        name: client.name,
+        whatsapp: client.whatsapp,
+        email: client.email,
+        info: client.info,
+        genre: client.genre,
+        age: client.age,
+      },
+      currentDiet: client.currentDietPlan 
+    };
+
+  } catch (error: any) {
+    return { error: error.message };
   }
 }
