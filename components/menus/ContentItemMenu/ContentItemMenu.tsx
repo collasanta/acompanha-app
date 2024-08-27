@@ -42,9 +42,9 @@ export const ContentItemMenu = ({ editor }: ContentItemMenuProps) => {
       }}
     >
       <div className="flex items-center gap-0.5">
-        {/* <Toolbar.Button onClick={actions.handleAdd}>
+        <Toolbar.Button onClick={actions.handleAdd}>
           <Icon name="Plus" />
-        </Toolbar.Button> */}
+        </Toolbar.Button>
         <Popover.Root open={menuOpen} onOpenChange={setMenuOpen}>
           <Popover.Trigger asChild>
             <Toolbar.Button>
