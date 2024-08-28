@@ -1,48 +1,35 @@
-import { getClientsByProfessional } from "@/lib/client";
 import { getDietPlansByProfessional } from "@/lib/diets";
-import DietRegistrationForm from "./diet-registration-form";
+import DietAutomationRegistration from "./automation-registration-form";
 
-export default async function DietRegistrationPage() {
-  const dietTemplatesResult = await getDietPlansByProfessional();
-  const clientsResult = await getClientsByProfessional();
+interface DietPlan {
+  id: string;
+  name: string;
+}
 
-  let dietTemplates = [{ id: "", name: "Nenhum - Clique para selecionar" }];
-  if ("dietPlans" in dietTemplatesResult && dietTemplatesResult.dietPlans) {
-    dietTemplates = [
-      ...dietTemplates,
-      ...dietTemplatesResult.dietPlans.map((plan) => ({
-        id: plan.id,
-        name: plan.name,
-      })),
-    ];
+export default async function DietAutomationRegistrationPage() {
+  const dietPlansResult = await getDietPlansByProfessional();
+
+  let dietPlans: DietPlan[] = [];
+  if ("dietPlans" in dietPlansResult && dietPlansResult.dietPlans) {
+    dietPlans = dietPlansResult.dietPlans.map((plan) => ({
+      id: plan.id,
+      name: plan.name,
+    }));
   } else {
-    console.error(
-      "Erro ao buscar modelos de dieta:",
-      dietTemplatesResult.error
-    );
-  }
-
-  let clients: { id: string; name: string }[] = [];
-  if (Array.isArray(clientsResult)) {
-    clients = clientsResult;
-  } else if ("error" in clientsResult) {
-    console.error("Erro ao buscar clientes:", clientsResult.error);
+    console.error("Erro ao buscar planos de dieta:", dietPlansResult.error);
   }
 
   return (
     <div>
       <div className="mb-8 space-y-4">
         <h2 className="text-2xl md:text-4xl font-bold text-center">
-          Cadastro de Dietas
+          Cadastro de Automação de Dietas
         </h2>
         <p className="text-muted-foreground font-light text-small md:text-lg text-center">
-          Cadastre novas Dietas
+          Configure automações para atribuição de dietas
         </p>
       </div>
-      <DietRegistrationForm
-        initialDietTemplates={dietTemplates}
-        initialClients={clients}
-      />
+      <DietAutomationRegistration dietPlans={dietPlans} />
     </div>
   );
 }

@@ -8,18 +8,20 @@ datasource db {
 }
 
 model Professional {
-  id               String        @id @map("id")
-  name             String?
-  profession       String?
-  avgClientsSurvey Int?
-  email            String?       @unique
-  whatsapp         String?       @unique
-  clients          Client[]
-  programs         Program[]
-  dietPlans        DietPlan[]
-  workoutPlans     WorkoutPlan[]
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @default(now()) @updatedAt
+  id                 String               @id @map("id")
+  name               String?
+  profession         String?
+  avgClientsSurvey   Int?
+  email              String?              @unique
+  whatsapp           String?              @unique
+  clients            Client[]
+  programs           Program[]
+  dietPlans          DietPlan[]
+  workoutPlans       WorkoutPlan[]
+  dietAutomations    DietAutomation[]
+  dietAutomationRuns DietAutomationRun[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now()) @updatedAt
 }
 
 model Client {
@@ -40,6 +42,7 @@ model Client {
   dietPlans                DietPlan[]             @relation("ClientDietPlans")
   workoutPlans             WorkoutPlan[]          @relation("ClientWorkoutPlans")
   notificationSubscription WebPushSubscriptions[]
+  dietAutomationRuns       DietAutomationRun[]
   createdAt                DateTime               @default(now())
   updatedAt                DateTime               @default(now()) @updatedAt
 
@@ -70,17 +73,19 @@ model Program {
 }
 
 model DietPlan {
-  id             String       @id @default(uuid())
-  name           String
-  content        String       @db.Text
-  isTemplate     Boolean      @default(false)
-  professional   Professional @relation(fields: [professionalId], references: [id])
-  professionalId String
-  client         Client?      @relation("ClientDietPlans", fields: [clientId], references: [id])
-  clientId       String?
-  currentClient  Client?      @relation("CurrentClientDiet")
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now()) @updatedAt
+  id                    String               @id @default(uuid())
+  name                  String
+  content               String               @db.Text
+  isTemplate            Boolean              @default(false)
+  professional          Professional         @relation(fields: [professionalId], references: [id])
+  professionalId        String
+  client                Client?              @relation("ClientDietPlans", fields: [clientId], references: [id])
+  clientId              String?
+  currentClient         Client?              @relation("CurrentClientDiet")
+  automationRuns        DietAutomationRun[]  @relation("TemplateDiet")
+  clonedAutomationRuns  DietAutomationRun[]  @relation("ClonedDiet")
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @default(now()) @updatedAt
 
   @@index([professionalId])
   @@index([clientId])
@@ -154,4 +159,39 @@ model WebPushSubscriptions {
 
   @@index([clientId])
   @@index([programId])
+}
+
+model DietAutomation {
+  id             String               @id @default(uuid())
+  professional   Professional         @relation(fields: [professionalId], references: [id])
+  professionalId String
+  name           String
+  rule           String               @db.Text
+  runs           DietAutomationRun[]
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @default(now()) @updatedAt
+
+  @@index([professionalId])
+}
+model DietAutomationRun {
+  id                 String         @id @default(uuid())
+  automation         DietAutomation @relation(fields: [automationId], references: [id])
+  automationId       String
+  professional       Professional   @relation(fields: [professionalId], references: [id])
+  professionalId     String
+  receivedResponses  Json
+  client             Client         @relation(fields: [clientId], references: [id])
+  clientId           String
+  templateDiet       DietPlan       @relation("TemplateDiet", fields: [dietId], references: [id])
+  dietId             String
+  clientClonedDiet   DietPlan       @relation("ClonedDiet", fields: [clientClonedDietId], references: [id])
+  clientClonedDietId String         
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @default(now()) @updatedAt
+
+  @@index([automationId])
+  @@index([professionalId])
+  @@index([clientId])
+  @@index([dietId])
+  @@index([clientClonedDietId])
 }

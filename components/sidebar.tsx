@@ -74,20 +74,20 @@ const routes = [
       },
     ],
   },
-  {
-    label: "Programas",
-    icon: CalendarClock,
-    href: "/plans",
-    color: "text-emerald-500",
-    subitems: [
-      {
-        label: "Programas",
-        icon: Plus,
-        href: "/plans/register",
-        color: "text-emerald-500",
-      },
-    ],
-  },
+  // {
+  //   label: "Programas",
+  //   icon: CalendarClock,
+  //   href: "/plans",
+  //   color: "text-emerald-500",
+  //   subitems: [
+  //     {
+  //       label: "Programas",
+  //       icon: Plus,
+  //       href: "/plans/register",
+  //       color: "text-emerald-500",
+  //     },
+  //   ],
+  // },
   {
     label: "Automações",
     icon: BotMessageSquare,
@@ -97,7 +97,7 @@ const routes = [
       {
         label: "Cadastro",
         icon: Plus,
-        href: "/automations/cadastro",
+        href: "/automations/register",
         color: "text-emerald-500",
       },
     ],

@@ -1,16 +1,17 @@
 import { PlusIcon } from "lucide-react";
-import toast from "react-hot-toast";
 import Link from "next/link";
-import { getDietPlansByProfessional } from "@/lib/diets";
-import DietCard from "@/components/DietCard";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
+import AutomationCard from "@/components/dietAutomationRuns";
+import { getDietAutomationsByProfessional } from "@/lib/automations";
 
-const DietsPage = async () => {
-  const { error, dietPlans } = await getDietPlansByProfessional();
-
-  if (error) {
-    toast.error("Erro ao carregar dietas: " + error);
-    return null;
+export default async function AutomationsPage() {
+  const automationsResult = await getDietAutomationsByProfessional();
+  console.log({ automationsResult });
+  let automations = [];
+  if ("dietAutomations" in automationsResult) {
+    automations = automationsResult.dietAutomations;
+  } else {
+    console.error("Erro ao buscar automações:", automationsResult.error);
   }
 
   return (
@@ -24,19 +25,20 @@ const DietsPage = async () => {
         </p>
       </div>
       <div className="px-4 flex justify-center md:px-20 lg:px-32 space-y-4 items-center">
-        {/* <Link href=""> */}
-        <Button className="p-4 flex shadow-md" variant={"ghost"}>
-          <PlusIcon className="w-6 h-6 pr-2" />
-          Cadastrar Nova Automacao
-        </Button>
-        {/* </Link> */}
+        <Link href="/automations/register">
+          <Button className="p-4 flex shadow-md">
+            <PlusIcon className="w-6 h-6 pr-2" />
+            Cadastrar Nova Automação
+          </Button>
+        </Link>
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4 pt-8 mx-auto flex flex-col justify-center md:min-w-[400px]">
-        {/* {dietPlans &&
-          dietPlans.map((diet) => <DietCard key={diet.id} diet={diet} />)} */}
+        <div className="space-y-4">
+          {automations.map((automation) => (
+            <AutomationCard key={automation.id} automation={automation} />
+          ))}
+        </div>
       </div>
     </div>
   );
-};
-
-export default DietsPage;
+}
