@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { getWorkoutPlansByProfessional } from "@/lib/workouts";
 import WorkoutCard from "@/components/WorkoutCard";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { WorkoutPlanType } from "@/types/workouts";
 
 const WorkoutsPage = async () => {

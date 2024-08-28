@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs"
 import prismadb from "./prismadb"
 import { generateId } from "./utils";
 import { revalidatePath } from "next/cache";
+import { ClientsFormSchemaType } from "@/types/clients";
 
 export const checkClientByWhatsapp = async (clientWhatsapp: string) => {
     try {
@@ -28,25 +29,32 @@ export const checkClientByWhatsapp = async (clientWhatsapp: string) => {
 
 }
 
-export const createNewClient = async (clientWhatsapp: string, clientName: string, userId: string) => {
+export async function createNewClient(clientData: ClientsFormSchemaType) {
     try {
-        const newClient = await prismadb.client.create({
-            data: {
-                id: generateId(),
-                name: clientName,
-                whatsapp: clientWhatsapp,
-                professionalId: userId
-            },
-        });
-        console.log("Novo cliente criado: ", newClient)
-        return newClient.id
-
+      const { userId } = auth()
+      if (!userId) {
+        return { error: "Usuário não autenticado" }
+      }
+  
+      const newClient = await prismadb.client.create({
+        data: {
+          id: generateId(),
+          name: clientData.clientName,
+          whatsapp: clientData.clientWhatsapp,
+          email: clientData.clientEmail,
+          genre: clientData.clientSex,
+          age: clientData.clientAge,
+          professionalId: userId
+        },
+      })
+  
+      revalidatePath('/clients')
+      return { clientId: newClient.id }
     } catch (error: any) {
-        return {
-            error: error.message
-        }
+      console.error("Error in createNewClient:", error)
+      return { error: error.message }
     }
-}
+  }
 
 export const getClientsByProfessional = async () => {
     const { userId } = auth()
@@ -152,4 +160,31 @@ export async function updateClientDiet(clientId: string, dietId: string) {
       console.error("Error updating client diet:", error)
       return { error: error.message || "Erro ao atualizar dieta do cliente" }
     }
+}
+  
+export async function deleteClient(clientId: string) {
+  try {
+    const { userId } = auth();
+    if (!userId) {
+      return { status: "error", error: "Usuário não autenticado" };
+    }
+
+    const client = await prismadb.client.findUnique({
+      where: { id: clientId, professionalId: userId },
+    });
+
+    if (!client) {
+      return { status: "error", error: "Cliente não encontrado ou não pertence ao usuário" };
+    }
+
+    await prismadb.client.delete({
+      where: { id: clientId },
+    });
+
+    revalidatePath('/clients');
+    return { status: "deleted" };
+  } catch (error: any) {
+    console.error("Error in deleteClient:", error);
+    return { status: "error", error: error.message };
   }
+}

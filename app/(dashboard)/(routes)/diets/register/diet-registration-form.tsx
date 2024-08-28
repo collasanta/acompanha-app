@@ -36,7 +36,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BlockEditor } from "@/components/BlockEditor";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBlockEditor } from "@/hooks/useBlockEditor";

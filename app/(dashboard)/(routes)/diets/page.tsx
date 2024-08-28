@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { getDietPlansByProfessional } from "@/lib/diets";
 import DietCard from "@/components/DietCard";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 const DietsPage = async () => {
   const { error, dietPlans } = await getDietPlansByProfessional();

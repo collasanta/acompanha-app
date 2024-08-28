@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { programsFrontEndListType } from "@/types/programs";
 import { PlusIcon } from "lucide-react";
 import { ProgramCard } from "@/components/programCard";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 const Dashboard = async () => {
-redirect("/clients");
-}
+  redirect("/clients");
+};
 
 export default Dashboard;

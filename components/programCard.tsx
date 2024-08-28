@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import { programsFrontEndListType } from "@/types/programs";
 import Link from "next/link";
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 import {
   AlertDialog,
   AlertDialogAction,

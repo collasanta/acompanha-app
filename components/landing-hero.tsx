@@ -4,7 +4,7 @@ import TypewriterComponent from "typewriter-effect";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export const LandingHero = () => {
@@ -18,11 +18,7 @@ export const LandingHero = () => {
           <div className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 to-emerald-600">
             <TypewriterComponent
               options={{
-                strings: [
-                  "Um hábito",
-                  "Um estilo de vida",
-                  "Uma rotina", 
-                ],
+                strings: ["Um hábito", "Um estilo de vida", "Uma rotina"],
                 autoStart: true,
                 loop: true,
               }}
@@ -30,25 +26,26 @@ export const LandingHero = () => {
           </div>
         </div>
         <div className="text-sm md:text-xl font-medium text-zinc-400">
-          Acompanhe o resultados dos seus clientes diariamente de forma automática
+          Acompanhe o resultados dos seus clientes diariamente de forma
+          automática
         </div>
         <div>
           <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
-            <Button variant="premium" className="md:text-lg p-4 md:p-6 rounded-full font-semibold">
+            <Button
+              variant="premium"
+              className="md:text-lg p-4 md:p-6 rounded-full font-semibold"
+            >
               Entrar
             </Button>
           </Link>
         </div>
         <div className="text-zinc-400 text-xs md:text-sm font-normal">
-          Se diferencie e Garanta melhores resultados para seus pacientes 
+          Se diferencie e Garanta melhores resultados para seus pacientes
         </div>
         <div className="mx-auto">
-        {/* <Image width={250} height={500} alt="gif" src="/gif.gif" className="mx-auto rounded-md" /> */}
-
+          {/* <Image width={250} height={500} alt="gif" src="/gif.gif" className="mx-auto rounded-md" /> */}
         </div>
-
       </div>
-
     </div>
   );
 };

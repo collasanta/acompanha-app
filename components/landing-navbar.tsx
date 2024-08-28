@@ -1,14 +1,14 @@
 "use client";
 
 import { Montserrat } from "next/font/google";
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
-const font = Montserrat({ weight: '600', subsets: ['latin'] });
+const font = Montserrat({ weight: "600", subsets: ["latin"] });
 
 export const LandingNavbar = () => {
   const { isSignedIn } = useAuth();
@@ -22,7 +22,12 @@ export const LandingNavbar = () => {
         <div className="relative w-16 h-16">
           <Image fill alt="Logo" src="/logo.png" className="rounded-lg" />
         </div>
-        <h1 className={cn("pl-4 font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-400", font.className)}>
+        <h1
+          className={cn(
+            "pl-4 font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-400",
+            font.className
+          )}
+        >
           Diário.Fit
         </h1>
       </Link>
@@ -34,5 +39,5 @@ export const LandingNavbar = () => {
         </Link>
       </div>
     </nav>
-  )
-}
+  );
+};
