@@ -54,12 +54,27 @@ export default function DietAutomationRuns({ runs }: DietAutomationRunsProps) {
     }
   };
 
+  if (!runs) {
+    return (
+      <Card className="w-full max-w-4xl mx-auto mt-6 mb-8">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>Histórico de Execuções</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center text-gray-600">
+            Nenhuma execução de automação de dieta encontrada.
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="w-full max-w-4xl mx-auto mt-6 mb-8">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Histórico de Execuções</CardTitle>
         <div className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
-          Total: {runs.length}
+          Total: {runs?.length ?? 0}
         </div>
       </CardHeader>
       <CardContent>

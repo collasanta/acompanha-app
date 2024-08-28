@@ -26,7 +26,7 @@ interface AutomationCardProps {
   };
 }
 
-const AutomationCard: React.FC<AutomationCardProps> = ({ automation }) => {
+const DietAutomationCard: React.FC<AutomationCardProps> = ({ automation }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -155,4 +155,4 @@ const AutomationCard: React.FC<AutomationCardProps> = ({ automation }) => {
   );
 };
 
-export default AutomationCard;
+export default DietAutomationCard;

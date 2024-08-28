@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prismadb from '@/lib/prismadb';
 
-// http:localhost:3000/api/webhook/automations/diet/register?automationId=1
-
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { automationId: string } }
+) {
   try {
-    const searchParams = req.nextUrl.searchParams;
-    const automationId = searchParams.get('automationId');
+    const { automationId } = params;
 
     if (!automationId) {
-      return NextResponse.json({ error: 'AutomationId is required as a query parameter' }, { status: 400 });
+      return NextResponse.json({ error: 'AutomationId is required' }, { status: 400 });
     }
 
     const body = await req.json();
@@ -28,7 +28,6 @@ export async function POST(req: NextRequest) {
     const rules = JSON.parse(automation.rule);
 
     // Process the responses and apply the rules
-    // This is a mock implementation. You'll need to replace this with your actual logic.
     const processedResponse = processResponses(responses, rules);
 
     // Save the run in the database
@@ -44,13 +43,13 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({
-      message: 'Webhook received and processed successfully',
+      message: 'Diet automation webhook received and processed successfully',
       processedResponse,
       runId: run.id,
     });
 
   } catch (error) {
-    console.error('Error processing webhook:', error);
+    console.error('Error processing diet automation webhook:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -33,13 +33,17 @@ export default async function AutomationDetailsPage({
     <div>
       <div className="mb-8 space-y-4">
         <h2 className="text-2xl md:text-4xl font-bold text-center">
-          Cadastro de Automação de Dietas
+          Automação de Dieta
         </h2>
         <p className="text-muted-foreground font-light text-small md:text-lg text-center">
           Configure automações para atribuição de dietas
         </p>
       </div>
       <div className="max-w-[90%] mx-auto">
+        <div className="text-center">
+          Link de webhook:{" "}
+          {`http:localhost:3000/api/wh/dietautomation/${automation.id}`}
+        </div>
         <DietAutomationEditForm
           initialAutomation={automation}
           dietPlans={dietPlans}

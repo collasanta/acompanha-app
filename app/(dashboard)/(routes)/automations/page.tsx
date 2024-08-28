@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import AutomationCard from "@/components/dietAutomationRuns";
 import { getDietAutomationsByProfessional } from "@/lib/automations";
+import DietAutomationCard from "@/components/dietAutomationCard";
 
 export default async function AutomationsPage() {
   const automationsResult = await getDietAutomationsByProfessional();
@@ -35,7 +36,7 @@ export default async function AutomationsPage() {
       <div className="px-4 md:px-20 lg:px-32 space-y-4 pt-8 mx-auto flex flex-col justify-center md:min-w-[400px]">
         <div className="space-y-4">
           {automations.map((automation) => (
-            <AutomationCard key={automation.id} automation={automation} />
+            <DietAutomationCard key={automation.id} automation={automation} />
           ))}
         </div>
       </div>
