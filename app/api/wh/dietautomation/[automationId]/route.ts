@@ -6,14 +6,15 @@ export async function POST(
   { params }: { params: { automationId: string } }
 ) {
   try {
+    const body = await req.json();
+    console.log(body)
     const { automationId } = params;
-
     if (!automationId) {
       return NextResponse.json({ error: 'AutomationId is required' }, { status: 400 });
     }
 
-    const body = await req.json();
-    const { submittedAt, ...responses } = body;
+
+    const { ...responses } = body;
 
     // Fetch the automation rules
     const automation = await prismadb.dietAutomation.findUnique({
