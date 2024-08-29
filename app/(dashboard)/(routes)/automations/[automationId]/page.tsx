@@ -2,7 +2,7 @@ import React from "react";
 import { getAutomationById, getAutomationRuns } from "@/lib/automations";
 import { getDietPlansByProfessional } from "@/lib/diets";
 import DietAutomationRuns from "@/components/dietAutomationRuns";
-import DietAutomationEditForm from "./diet-automation-edit-form";
+import ExpandableAutomationForm from "./collapsible-form";
 
 export default async function AutomationDetailsPage({
   params,
@@ -40,11 +40,13 @@ export default async function AutomationDetailsPage({
         </p>
       </div>
       <div className="max-w-[90%] mx-auto">
-        <div className="text-center">
+        <div className="text-center mb-4">
           Link de webhook:{" "}
-          {`http:localhost:3000/api/wh/dietautomation/${automation.id}`}
+          <code className="bg-gray-100 p-1 rounded">
+            {`http://localhost:3000/api/wh/dietautomation/${automation.id}`}
+          </code>
         </div>
-        <DietAutomationEditForm
+        <ExpandableAutomationForm
           initialAutomation={automation}
           dietPlans={dietPlans}
         />
