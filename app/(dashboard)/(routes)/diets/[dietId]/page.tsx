@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { getDietPlanById } from "@/lib/diets";
 import {
   Card,
@@ -8,7 +9,13 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarIcon, UserIcon, FileIcon, InfoIcon } from "lucide-react";
+import {
+  CalendarIcon,
+  UserIcon,
+  FileIcon,
+  InfoIcon,
+  ExternalLink,
+} from "lucide-react";
 import EditableDietContent from "@/components/block-editor-editable-diet";
 import DeleteDietButton from "./delete-diet-button";
 
@@ -35,6 +42,7 @@ export default async function DietPage({
       </p>
 
       <Card className="max-w-4xl mx-auto relative">
+        <div className="my-4 text-center"></div>
         <DeleteDietButton dietId={diet.id} />
         <CardHeader>
           <CardTitle className="text-2xl mb-1">{diet.name}</CardTitle>
@@ -47,7 +55,18 @@ export default async function DietPage({
             <div className="flex items-center gap-2">
               <UserIcon className="text-muted-foreground" />
               <span>
-                Cliente: {diet.clientId ? diet.client?.name : "Não atribuído"}
+                Cliente:{" "}
+                {diet.clientId ? (
+                  <Link
+                    href={`/clients/${diet.clientId}`}
+                    className="text-blue-600 hover:text-blue-800 hover:underline flex items-center"
+                  >
+                    {diet.client?.name}
+                    <ExternalLink className="ml-1 h-4 w-4" />
+                  </Link>
+                ) : (
+                  "Não atribuído"
+                )}
               </span>
             </div>
             <div className="flex items-center gap-2">

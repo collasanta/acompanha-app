@@ -46,20 +46,20 @@ const routes = [
   //     href: "/cadastro-diarios",
   //     color: "text-emerald-500"
   // },
-  {
-    label: "Treinos",
-    icon: Dumbbell,
-    href: "/workouts",
-    color: "text-emerald-500",
-    subitems: [
-      {
-        label: "Cadastrar",
-        icon: Plus,
-        href: "/workouts/register",
-        color: "text-emerald-500",
-      },
-    ],
-  },
+  // {
+  //   label: "Treinos",
+  //   icon: Dumbbell,
+  //   href: "/workouts",
+  //   color: "text-emerald-500",
+  //   subitems: [
+  //     {
+  //       label: "Cadastrar",
+  //       icon: Plus,
+  //       href: "/workouts/register",
+  //       color: "text-emerald-500",
+  //     },
+  //   ],
+  // },
   {
     label: "Dietas",
     icon: UtensilsCrossed,

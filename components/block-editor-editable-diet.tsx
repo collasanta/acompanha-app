@@ -133,11 +133,6 @@ export default function EditableDietContent({
           />
         )}
       </div>
-      <div className="my-4 text-center">
-        <Button variant="outline" type="button" onClick={() => router.back()}>
-          Voltar
-        </Button>
-      </div>
       <AlertDialog
         open={isConfirmDialogOpen}
         onOpenChange={setIsConfirmDialogOpen}

@@ -137,24 +137,30 @@ export async function getAutomationRuns(automationId: string) {
   try {
     const { userId } = auth();
     if (!userId) {
-      return { error: "Usuário não autenticado" };
+      return { error: "Unauthorized" };
     }
 
     const runs = await prismadb.dietAutomationRun.findMany({
       where: {
-        automation: {
-          id: automationId,
-          professionalId: userId,
-        },
+        automationId: automationId,
+        professional: { id: userId },
       },
       include: {
         client: {
           select: {
+            id: true,
             name: true,
           },
         },
-        diet: {
+        templateDiet: {
           select: {
+            id: true,
+            name: true,
+          },
+        },
+        clientClonedDiet: {
+          select: {
+            id: true,
             name: true,
           },
         },
@@ -169,9 +175,11 @@ export async function getAutomationRuns(automationId: string) {
       createdAt: run.createdAt.toISOString(),
       clientId: run.clientId,
       clientName: run.client.name,
-      dietId: run.dietId,
-      dietName: run.diet.name,
-      receivedResponses: JSON.stringify(run.receivedResponses),
+      templateDietId: run.templateDiet.id,
+      templateDietName: run.templateDiet.name,
+      clientClonedDietId: run.clientClonedDiet.id,
+      clientClonedDietName: run.clientClonedDiet.name,
+      receivedResponses: JSON.parse(run.receivedResponses as string),
     }));
 
     return { runs: formattedRuns };

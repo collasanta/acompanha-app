@@ -54,7 +54,7 @@ const ClientCard: React.FC<ClientCardProps> = ({ client }) => {
 
   return (
     <Card className="w-full max-w-[550px] mx-auto hover:shadow-lg transition">
-      <CardContent className="p-4">
+      <CardContent className="p-3">
         <div
           className="flex items-center justify-between cursor-pointer"
           onClick={handleClick}
