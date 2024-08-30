@@ -53,7 +53,7 @@ export const DietHeader = ({
             </div>
             <div className="flex flex-row h-[25px] border-t-2 border-dashed justify-between">
               <div className="pt-1 pl-4 sm:pl-6 text-muted-foreground text-sm text-start max-w-[220px] sm:max-w-[500px] truncate">
-                {diet.name}
+                <a className="font-[500]">Dieta:</a> {diet.name}
               </div>
             </div>
           </div>
