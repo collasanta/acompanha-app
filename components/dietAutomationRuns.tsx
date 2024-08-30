@@ -17,7 +17,7 @@ import Link from "next/link";
 type FormattedRun = {
   id: string;
   createdAt: string;
-  clientId: string;
+  clientId: string | null;
   clientName: string;
   templateDietId: string | null;
   templateDietName: string;

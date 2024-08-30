@@ -137,7 +137,10 @@ export const ProgramCard = ({
                   ([metricName, metricValue], index) => {
                     if (metricValue === true) {
                       return (
-                        <div className="text-center text-muted-foreground mx-auto mt-1">
+                        <div
+                          key={index}
+                          className="text-center text-muted-foreground mx-auto mt-1"
+                        >
                           <div className="font-[500] capitalize">
                             {metricName}{" "}
                           </div>

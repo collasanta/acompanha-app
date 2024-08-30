@@ -14,19 +14,15 @@ import { Spinner } from "../ui/Spinner";
 
 export const BlockEditor = ({
   content,
-  editor,
+  editor: initialEditor,
 }: {
   content?: JSON;
   editor?: Editor | null;
 }) => {
   const menuContainerRef = useRef(null);
+  const blockEditor = useBlockEditor({ content });
 
-  if (!editor && content) {
-    let blockEditor = useBlockEditor({
-      content,
-    });
-    editor = blockEditor.editor;
-  }
+  const editor = initialEditor || blockEditor.editor;
 
   return (
     <div className="flex h-full" ref={menuContainerRef}>

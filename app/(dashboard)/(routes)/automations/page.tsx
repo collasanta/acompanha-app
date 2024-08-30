@@ -1,16 +1,17 @@
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import AutomationCard from "@/components/dietAutomationRuns";
 import { getDietAutomationsByProfessional } from "@/lib/automations";
 import DietAutomationCard from "@/components/dietAutomationCard";
+import { AutomationType } from "@/types/automations";
 
 export default async function AutomationsPage() {
   const automationsResult = await getDietAutomationsByProfessional();
-  console.log({ automationsResult });
-  let automations = [];
+
+  let automations: AutomationType[] = [];
+
   if ("dietAutomations" in automationsResult) {
-    automations = automationsResult.dietAutomations;
+    automations = automationsResult?.dietAutomations!;
   } else {
     console.error("Erro ao buscar automações:", automationsResult.error);
   }

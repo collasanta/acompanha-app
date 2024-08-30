@@ -108,7 +108,7 @@ export default function DietRegistrationForm({
       (client) => client.id === clientId
     );
     setSelectedClientHasDiet(!!selectedClient?.currentDietPlanId);
-  }, [form.watch("clientId"), initialClients]);
+  }, [form, initialClients]);
 
   const handleTemplateSelect = async (templateId: string) => {
     if (templateId) {

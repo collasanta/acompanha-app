@@ -129,7 +129,7 @@ export async function updateAutomation(
     return updatedAutomation;
   } catch (error: any) {
     console.error("Error updating automation:", error);
-    throw error;
+    return { error: error.message };
   }
 }
 
