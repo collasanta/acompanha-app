@@ -173,13 +173,16 @@ export async function getAutomationRuns(automationId: string) {
     const formattedRuns = runs.map((run) => ({
       id: run.id,
       createdAt: run.createdAt.toISOString(),
-      clientId: run.clientId,
-      clientName: run.client.name,
-      templateDietId: run.templateDiet.id,
-      templateDietName: run.templateDiet.name,
-      clientClonedDietId: run.clientClonedDiet.id,
-      clientClonedDietName: run.clientClonedDiet.name,
-      receivedResponses: JSON.parse(run.receivedResponses as string),
+      clientId: run.client?.id ?? null,
+      clientName: run.client?.name ?? "Deleted Client",
+      templateDietId: run.templateDiet?.id ?? null,
+      templateDietName: run.templateDiet?.name ?? "Deleted Diet",
+      clientClonedDietId: run.clientClonedDiet?.id ?? null,
+      clientClonedDietName: run.clientClonedDiet?.name ?? "Deleted Diet",
+      receivedResponses:
+        typeof run.receivedResponses === "string"
+          ? JSON.parse(run.receivedResponses)
+          : run.receivedResponses,
     }));
 
     return { runs: formattedRuns };

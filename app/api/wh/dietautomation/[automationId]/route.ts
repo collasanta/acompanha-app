@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prismadb from '@/lib/prismadb';
+import { generateId } from '@/lib/utils';
 
 export async function POST(
   req: NextRequest,
@@ -7,46 +8,33 @@ export async function POST(
 ) {
   try {
     const body = await req.json();
-    console.log(body)
+    console.log(body);
     const { automationId } = params;
     if (!automationId) {
       return NextResponse.json({ error: 'AutomationId is required' }, { status: 400 });
     }
 
-
-    const { ...responses } = body;
-
-    // Fetch the automation rules
-    const automation = await prismadb.dietAutomation.findUnique({
-      where: { id: automationId },
-    });
-
+    const automation = await getAutomation(automationId);
     if (!automation) {
       return NextResponse.json({ error: 'Automation not found' }, { status: 404 });
     }
 
-    // Parse the rules
+    const client = await getOrCreateClient(body, automation.professionalId);
+    const calculatedCalories = calculateCalories(body);
     const rules = JSON.parse(automation.rule);
-
-    // Process the responses and apply the rules
-    const processedResponse = processResponses(responses, rules);
-
-    // Save the run in the database
-    const run = await prismadb.dietAutomationRun.create({
-      data: {
-        automationId: automationId,
-        professionalId: automation.professionalId,
-        clientId: responses.clientId || 'mock_client_id', // Assuming clientId might be in the responses
-        dietId: processedResponse.dietId,
-        clientClonedDietId: processedResponse.dietId, // Assuming it's the same for now
-        receivedResponses: JSON.stringify(responses),
-      },
-    });
+    const selectedDietId = selectDiet(calculatedCalories, rules);
+    
+    const { templateDiet, clonedDiet } = await cloneDietForClient(selectedDietId, client, automation.professionalId);
+    
+    const run = await createDietAutomationRun(automation, client, templateDiet, clonedDiet, body);
 
     return NextResponse.json({
-      message: 'Diet automation webhook received and processed successfully',
-      processedResponse,
+      message: 'Diet automation webhook processed successfully',
       runId: run.id,
+      clientId: client.id,
+      calculatedCalories,
+      selectedDietId: templateDiet.id,
+      clonedDietId: clonedDiet.id,
     });
 
   } catch (error) {
@@ -55,35 +43,115 @@ export async function POST(
   }
 }
 
-function processResponses(responses: Record<string, any>, rules: Record<string, any>) {
-  // This is a mock implementation. Replace with your actual logic.
-  let totalCalories = 0;
+async function getAutomation(automationId: string) {
+  return prismadb.dietAutomation.findUnique({
+    where: { id: automationId },
+  });
+}
 
-  // Calculate total calories based on responses
-  if (responses.weight && responses.height) {
-    const weight = parseFloat(responses.weight);
-    const height = parseFloat(responses.height);
-    const bmi = weight / ((height / 100) ** 2);
-    totalCalories = bmi * 100; // This is just a mock calculation
+async function getOrCreateClient(data: any, professionalId: string) {
+  const clientData = {
+    name: data.name,
+    whatsapp: data.whatsapp,
+    email: data.email,
+    genre: data.gender,
+    age: parseInt(data.age),
+    professionalId: professionalId,
+  };
+
+  let client = await prismadb.client.findFirst({
+    where: {
+      OR: [
+        { email: clientData.email },
+        { whatsapp: clientData.whatsapp },
+      ],
+      professionalId: professionalId,
+    },
+  });
+
+  if (!client) {
+    client = await prismadb.client.create({
+      data: {
+        id: generateId(),
+        ...clientData,
+      },
+    });
   }
 
-  // Find the appropriate diet based on calculated calories
-  let selectedDietId = '';
-  for (const [calories, dietId] of Object.entries(rules)) {
-    if (totalCalories <= parseInt(calories)) {
-      selectedDietId = dietId as string;
-      break;
+  return client;
+}
+
+function calculateCalories(data: any): number {
+  let TMB: number;
+  if (data.gender === 'masculino') {
+    TMB = 66 + (13.8 * parseFloat(data.weight)) + (5 * parseFloat(data.height)) - (6.8 * parseInt(data.age));
+  } else {
+    TMB = 655 + (9.6 * parseFloat(data.weight)) + (1.8 * parseFloat(data.height)) - (4.7 * parseInt(data.age));
+  }
+
+  const activityFactors: { [key: string]: number } = {
+    'uma vez': 1.2,
+    'duas ou três vezes': 1.5,
+    'mais que quatro vezes': 1.8,
+  };
+  const factor = activityFactors[data.activitiesfrequency] || 1.2;
+  let TMBFATOR = TMB * factor;
+
+  if (data.goal === 'Ganho de Massa') {
+    TMBFATOR += 1000;
+  } else if (data.goal === 'Emagrecimento / Definição') {
+    TMBFATOR -= 1000;
+  }
+
+  return Math.round(TMBFATOR);
+}
+
+function selectDiet(calories: number, rules: { [key: string]: string }): string {
+  const sortedCalories = Object.keys(rules).map(Number).sort((a, b) => a - b);
+  for (const cal of sortedCalories) {
+    if (calories <= cal) {
+      return rules[cal.toString()];
     }
   }
+  return rules[sortedCalories[sortedCalories.length - 1].toString()];
+}
 
-  // If no diet matches, use the last one (highest calorie diet)
-  if (!selectedDietId) {
-    selectedDietId = rules[Object.keys(rules)[Object.keys(rules).length - 1]];
+async function cloneDietForClient(dietId: string, client: any, professionalId: string) {
+  const templateDiet = await prismadb.dietPlan.findUnique({ where: { id: dietId } });
+  if (!templateDiet) {
+    throw new Error('Selected diet template not found');
   }
 
-  return {
-    calculatedCalories: totalCalories,
-    dietId: selectedDietId,
-    // Add any other relevant information here
-  };
+  const clonedDiet = await prismadb.dietPlan.create({
+    data: {
+      id: generateId(),
+      name: templateDiet.name,
+      content: templateDiet.content,
+      professionalId: professionalId,
+      clientId: client.id,
+    },
+  });
+
+  const updateCurrentDiet = await prismadb.client.update({
+    where: { id: client.id },
+    data: {
+      currentDietPlanId: clonedDiet.id,
+    },
+  });
+
+  return { templateDiet, clonedDiet };
+}
+
+async function createDietAutomationRun(automation: any, client: any, templateDiet: any, clonedDiet: any, responseData: any) {
+  return prismadb.dietAutomationRun.create({
+    data: {
+      id: generateId(),
+      automationId: automation.id,
+      professionalId: automation.professionalId,
+      clientId: client.id,
+      dietId: templateDiet.id,
+      clientClonedDietId: clonedDiet.id,
+      receivedResponses: JSON.stringify(responseData),
+    },
+  });
 }

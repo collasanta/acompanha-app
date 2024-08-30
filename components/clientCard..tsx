@@ -39,7 +39,10 @@ const ClientCard: React.FC<ClientCardProps> = ({ client }) => {
   const handleDeleteClient = async (clientId: string) => {
     setIsLoading(true);
     try {
-      await deleteClient(clientId);
+      const deleteCli = await deleteClient(clientId);
+      if (deleteCli.error) {
+        throw new Error(deleteCli.error);
+      }
       setIsLoading(false);
       setConfirmDelete(false);
       toast.success("Cliente deletado com sucesso");

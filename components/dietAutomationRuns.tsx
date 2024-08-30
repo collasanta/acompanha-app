@@ -14,19 +14,20 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 import Link from "next/link";
 
-interface DietAutomationRun {
+type FormattedRun = {
   id: string;
   createdAt: string;
   clientId: string;
   clientName: string;
-  dietId: string;
-  dietName: string;
-  clientClonedDietId: string;
-  receivedResponses: string;
-}
+  templateDietId: string | null;
+  templateDietName: string;
+  clientClonedDietId: string | null;
+  clientClonedDietName: string;
+  receivedResponses: any;
+};
 
 interface DietAutomationRunsProps {
-  runs: DietAutomationRun[];
+  runs: FormattedRun[];
 }
 
 export default function DietAutomationRuns({ runs }: DietAutomationRunsProps) {
@@ -38,7 +39,9 @@ export default function DietAutomationRuns({ runs }: DietAutomationRunsProps) {
 
   const formatReceivedResponses = (responses: string) => {
     try {
-      const parsed = JSON.parse(responses);
+      console.log({ responses });
+      const parsed =
+        typeof responses === "string" ? JSON.parse(responses) : responses;
       return (
         <div className="grid grid-cols-2 gap-4">
           {Object.entries(parsed).map(([key, value]) => (
@@ -109,11 +112,15 @@ export default function DietAutomationRuns({ runs }: DietAutomationRunsProps) {
                     </TableCell>
                     <TableCell className="py-2">
                       <Link
-                        href={`/diets/${run.clientClonedDietId}`}
+                        href={
+                          run.clientClonedDietId
+                            ? `/diets/${run.clientClonedDietId}`
+                            : "#"
+                        }
                         className="flex items-center text-blue-600 hover:text-blue-800"
                         prefetch={index < 3}
                       >
-                        {run.dietName}
+                        {run.clientClonedDietName}
                         <ExternalLink className="ml-1 h-4 w-4" />
                       </Link>
                     </TableCell>
