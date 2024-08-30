@@ -21,6 +21,7 @@ import {
   LockIcon,
   RefreshCwIcon,
   SearchIcon,
+  InfoIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,7 @@ import { updateClientDiet } from "@/lib/client";
 import Link from "next/link";
 import { ClientProfileInteractiveProps } from "@/types/diets";
 import AppDietLink from "@/components/appDietLink";
+import EditableClientInfo from "@/components/block-editor-editable-client-info";
 
 export default function ClientProfileInteractive({
   initialClient,
@@ -136,6 +138,22 @@ export default function ClientProfileInteractive({
             </div>
             <div className="mt-4">
               <AppDietLink clientId={client.id} />
+            </div>
+
+            {/* Informações Adicionais section */}
+            <div className="mt-6">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <InfoIcon className="w-5 h-5" />
+                  Informações Adicionais
+                </h3>
+              </div>
+              <div className="max-h-[100px] overflow-y-auto border rounded-md p-2">
+                <EditableClientInfo
+                  initialInfo={client.info || "{}"}
+                  clientId={client.id}
+                />
+              </div>
             </div>
           </div>
         </CardContent>

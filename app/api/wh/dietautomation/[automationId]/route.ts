@@ -27,7 +27,7 @@ export async function POST(
     const { templateDiet, clonedDiet } = await cloneDietForClient(selectedDietId, client, automation.professionalId);
     
     const run = await createDietAutomationRun(automation, client, templateDiet, clonedDiet, body);
-
+    await appendRestrictionsToClientInfo(client.id, body.restrictions, body.restriction2details);
     return NextResponse.json({
       message: 'Diet automation webhook processed successfully',
       runId: run.id,
@@ -132,7 +132,7 @@ async function cloneDietForClient(dietId: string, client: any, professionalId: s
     },
   });
 
-  const updateCurrentDiet = await prismadb.client.update({
+  await prismadb.client.update({
     where: { id: client.id },
     data: {
       currentDietPlanId: clonedDiet.id,
@@ -155,3 +155,54 @@ async function createDietAutomationRun(automation: any, client: any, templateDie
     },
   });
 }
+
+async function appendRestrictionsToClientInfo(clientId: string, restrictions: string, restriction2details: string) {
+  if (restrictions === 'Não' && !restriction2details) { 
+    return
+  }
+  try {
+    // Fetch the current client info
+    const client = await prismadb.client.findUnique({
+      where: { id: clientId },
+      select: { info: true }
+    });
+
+    if (!client) {
+      throw new Error('Client not found');
+    }
+
+    // Parse the existing info
+    let infoDoc = JSON.parse(client.info || '{"type":"doc","content":[]}');
+
+    // Create a new paragraph for restrictions
+    const restrictionsParagraph = {
+      type: "paragraph",
+      attrs: { class: null, textAlign: "left" },
+      content: [
+        { type: "text", text: "Restrições: ", marks: [{ type: "bold" }] },
+      ]
+    };
+
+    //@ts-ignoreL
+    restrictions !== "Não" && restrictionsParagraph.content.push({ type: "text", text: `Condição: ${restrictions}` });
+    //@ts-ignoreL
+    restriction2details && restrictionsParagraph.content.push({ type: "text", text: `Detalhes: ${restriction2details}`});
+
+
+    // Append the new paragraph to the content
+    infoDoc.content.push(restrictionsParagraph);
+
+    // Update the client info in the database
+    await prismadb.client.update({
+      where: { id: clientId },
+      data: { info: JSON.stringify(infoDoc) }
+    });
+
+    console.log('Client info updated successfully');
+  } catch (error) {
+    console.error('Error updating client info:', error);
+  } finally {
+    await prismadb.$disconnect();
+  }
+}
+

@@ -188,3 +188,23 @@ export async function deleteClient(clientId: string) {
     return { status: "error", error: error.message };
   }
 }
+
+export async function updateClientInfo(clientId: string, info: string) {
+  try {
+    const { userId } = auth();
+    if (!userId) {
+      return { error: "Unauthorized" };
+    }
+
+    const updatedClient = await prismadb.client.update({
+      where: { id: clientId, professionalId: userId },
+      data: { info },
+    });
+      
+    revalidatePath(`/clients/${clientId}`);
+    return { client: updatedClient };
+  } catch (error) {
+    console.error("Error updating client info:", error);
+    return { error: "Failed to update client info" };
+  }
+}

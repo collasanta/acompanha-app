@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import DietAutomationEditForm from "./diet-automation-edit-form";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Pencil, PencilIcon } from "lucide-react";
 
 interface ExpandableAutomationFormProps {
   initialAutomation: {
@@ -33,8 +33,11 @@ export default function ExpandableAutomationForm({
           </>
         ) : (
           <>
-            <ChevronDown className="mr-2 h-4 w-4" /> Clique aqui para editar a
-            automação
+            <div className="flex flex-row space-x-4">
+              <ChevronDown className="mr-2 h-4 w-4" /> Clique aqui para editar a
+              automação
+              <PencilIcon className="w-5 h-5 text-muted-foreground" />
+            </div>
           </>
         )}
       </Button>
