@@ -2,7 +2,7 @@ import { PlusIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { getDietPlansByProfessional } from "@/lib/diets";
-import DietCard from "@/components/DietCard";
+import DietCard from "@/components/dietCard";
 import { Button } from "@/components/ui/button";
 
 const DietsPage = async () => {

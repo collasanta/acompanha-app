@@ -18,7 +18,7 @@ const AppDietLink: React.FC<AppDietLinkProps> = ({
   clientId,
   className = "",
 }) => {
-  const dietLink = `${window.location.origin}/d/${clientId}`;
+  const dietLink = window && `${window.location.origin}/d/${clientId}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(dietLink).then(

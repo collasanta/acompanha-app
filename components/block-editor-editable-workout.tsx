@@ -74,7 +74,7 @@ export default function EditableWorkoutContent({
   };
 
   const hasUnsavedChanges = () => {
-    return JSON.stringify(editor.getJSON()) !== originalContent.current;
+    return JSON.stringify(editor?.getJSON()) !== originalContent.current;
   };
 
   const handleCancelClick = () => {

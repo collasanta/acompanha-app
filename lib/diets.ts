@@ -184,18 +184,7 @@ export async function getClientWithCurrentDiet(clientId: string) {
       return { error: "Cliente não encontrado" };
     }
 
-    return { 
-      client: {
-        id: client.id,
-        name: client.name,
-        whatsapp: client.whatsapp,
-        email: client.email,
-        info: client.info,
-        genre: client.genre,
-        age: client.age,
-      },
-      currentDiet: client.currentDietPlan 
-    };
+    return client
 
   } catch (error: any) {
     return { error: error.message };

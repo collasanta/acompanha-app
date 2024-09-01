@@ -20,9 +20,9 @@ export default async function ClientDietPage({
     notFound();
   }
 
-  const { client, currentDiet } = result;
+  const client = result;
 
-  if (!currentDiet) {
+  if (!client.currentDietPlan) {
     return (
       <div className="container mx-auto py-10 text-center">
         <h1 className="text-3xl font-bold mb-4">Nenhuma dieta atribuída</h1>
@@ -34,10 +34,10 @@ export default async function ClientDietPage({
   return (
     <div>
       <div className="w-full flex justify-center">
-        <DietHeader client={client} diet={currentDiet} />
+        <DietHeader client={client} diet={client.currentDietPlan} />
       </div>
       <div className="w-full mx-auto mt-6">
-        <ViewDietContent initialContent={currentDiet.content} />
+        <ViewDietContent initialContent={client.currentDietPlan.content} />
       </div>
     </div>
   );

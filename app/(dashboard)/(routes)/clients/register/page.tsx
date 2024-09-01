@@ -28,9 +28,10 @@ import toast from "react-hot-toast";
 const clientFormSchema = z.object({
   clientName: z.string().min(1, "Nome do cliente é obrigatório"),
   clientWhatsapp: z.string().min(1, "WhatsApp do cliente é obrigatório"),
-  clientEmail: z.string().email("Email inválido").optional().or(z.literal("")),
+  clientEmail: z.string().email("Email inválido"),
   clientSex: z.enum(["masculino", "feminino"]),
-  clientAge: z.number().min(1, "Idade deve ser maior que 0").optional(),
+  clientAge: z.number().min(1, "Idade deve ser maior que 0"),
+  currentDietPlanId: z.string().nullable().optional(),
 });
 
 type ClientFormSchemaType = z.infer<typeof clientFormSchema>;
@@ -47,6 +48,7 @@ export default function ClientRegistration() {
       clientEmail: "",
       clientSex: undefined,
       clientAge: undefined,
+      currentDietPlanId: undefined,
     },
   });
 

@@ -42,7 +42,6 @@ export default function DietAutomationEditForm({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Parse the initial rule string and set the calorieRules state
     try {
       const parsedRules = JSON.parse(initialAutomation.rule);
       const initialRules = Object.entries(parsedRules).map(
@@ -141,19 +140,23 @@ export default function DietAutomationEditForm({
         <div className="space-y-2">
           {calorieRules.map((rule, index) => (
             <div key={index} className="flex items-center space-x-2">
-              <Input
-                type="number"
-                value={rule.calories}
-                onChange={(e) => {
-                  const newRules = [...calorieRules];
-                  newRules[index].calories = Number(e.target.value);
-                  setCalorieRules(newRules);
-                }}
-                className="w-24"
-                min="1000"
-                max="5000"
-              />
-              <span>kcal</span>
+              <div className="relative w-26">
+                <Input
+                  type="number"
+                  value={rule.calories}
+                  onChange={(e) => {
+                    const newRules = [...calorieRules];
+                    newRules[index].calories = Number(e.target.value);
+                    setCalorieRules(newRules);
+                  }}
+                  className="w-full pr-10"
+                  min="1000"
+                  max="5000"
+                />
+                <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
+                  kcal
+                </span>
+              </div>
               <div className="relative flex-grow" ref={dropdownRef}>
                 <Input
                   type="text"
@@ -172,7 +175,7 @@ export default function DietAutomationEditForm({
                     setIsDropdownOpen(true);
                     setActiveRuleIndex(index);
                   }}
-                  className="w-full pr-10"
+                  className={`w-full pr-10 ${rule.dietId ? "bg-gray-50" : ""}`}
                 />
                 <SearchIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 {isDropdownOpen &&

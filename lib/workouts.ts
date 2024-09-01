@@ -63,6 +63,9 @@ export const getWorkoutPlanById = async (id: string) => {
       where: {
         id: id,
         professionalId: userId,
+      },
+      include: {
+        client: true,
       }
     })
 

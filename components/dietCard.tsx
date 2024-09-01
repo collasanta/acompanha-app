@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import toast from "react-hot-toast";
-import { DietPlanType } from "@/types/diets";
+import { DietPlanType, DietPlanWithClient } from "@/types/diets";
 import ViewOnlyEditor from "./block-editor-view-only";
 import { useRouter } from "next/navigation";
 import { deleteDiet } from "@/lib/diets";
@@ -32,7 +32,7 @@ const DietCard = ({
   diet,
   collapsed = true,
 }: {
-  diet: DietPlanType;
+  diet: DietPlanWithClient;
   collapsed?: boolean;
 }) => {
   const [isOpen, setIsOpen] = useState(!collapsed);
