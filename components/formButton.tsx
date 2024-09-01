@@ -1,5 +1,5 @@
 import { DailyDataType, enabledMetricsType } from "@/types/programs";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { SettingsIcon } from "lucide-react";
 import { Switch } from "./ui/switch";

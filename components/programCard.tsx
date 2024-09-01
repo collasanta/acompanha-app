@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { programsFrontEndListType } from "@/types/programs";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Button } from "./ui/button";
 import {
   AlertDialog,

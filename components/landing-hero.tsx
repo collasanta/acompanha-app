@@ -1,7 +1,7 @@
 "use client";
 
 import TypewriterComponent from "typewriter-effect";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useAuth } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";

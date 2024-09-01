@@ -26,7 +26,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateClientDiet } from "@/lib/client";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { ClientProfileInteractiveProps } from "@/types/diets";
 import AppDietLink from "@/components/appDietLink";
 import EditableClientInfo from "@/components/block-editor-editable-client-info";

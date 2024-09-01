@@ -4,7 +4,7 @@ import { PlusIcon } from "lucide-react";
 import { ProgramCard } from "@/components/programCard";
 import { getUserPrograms } from "@/lib/programs";
 import toast from "react-hot-toast";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 const DiariosPage = async () => {
   const userPrograms = await getUserPrograms();

@@ -4,8 +4,7 @@ import { PlusIcon } from "lucide-react";
 import { ProgramCard } from "@/components/programCard";
 import { getUserPrograms } from "@/lib/programs";
 import toast from "react-hot-toast";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import { Link, redirect } from "@/i18n/routing";
 
 const Dashboard = async () => {
   redirect("/clients");

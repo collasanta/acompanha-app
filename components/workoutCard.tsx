@@ -23,7 +23,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import toast from "react-hot-toast";
 import { WorkoutPlanType } from "@/types/workouts";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import ViewOnlyEditor from "./block-editor-view-only";
 import { deleteWorkout } from "@/lib/workouts";
 import { useRouter } from "next/navigation";

@@ -2,9 +2,8 @@
 
 import { Montserrat } from "next/font/google";
 import Image from "next/image";
-import Link from "next/link";
+import { Link, redirect } from "@/i18n/routing";
 import { useAuth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
