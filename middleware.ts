@@ -1,4 +1,6 @@
 import { authMiddleware } from "@clerk/nextjs";
+// import createMiddleware from 'next-intl/middleware';
+// import { routing } from './i18n/routing';
 
 export default authMiddleware({
     publicRoutes: ["/", "/p/(.*)", "/d/(.*)", "/api/wh/dietautomation/(.*)"],

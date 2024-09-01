@@ -1,8 +1,12 @@
+// const createNextIntlPlugin = require("next-intl/plugin");
+
+// const withNextIntl = createNextIntlPlugin();
+
 const withPWA = require("@ducanh2912/next-pwa").default({
   dest: "public",
   workboxOptions: {
     skipWaiting: true,
-  }
+  },
   // buildExcludes: [/\/_next\/static\/.*\.js/],
   // reloadOnOnline: true,
 });
@@ -13,10 +17,10 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**',
-        port: '',
-        pathname: '**',
+        protocol: "https",
+        hostname: "**",
+        port: "",
+        pathname: "**",
       },
     ],
   },
