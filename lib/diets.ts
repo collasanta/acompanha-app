@@ -1,6 +1,6 @@
 "use server"
 
-import { auth } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
 import prismadb from "@/lib/prismadb"
 import { revalidatePath } from "next/cache"
 import { DietFormSchemaType, DietPlanWithClient, GetDietPlansResult } from "@/types/diets"

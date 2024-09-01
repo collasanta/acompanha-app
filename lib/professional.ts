@@ -1,6 +1,6 @@
 'use server'
 
-import { auth, clerkClient } from "@clerk/nextjs"
+import { auth, clerkClient } from "@clerk/nextjs/server"
 import prismadb from "./prismadb"
 import { professionalFormType } from "@/types/professionals"
 

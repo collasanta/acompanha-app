@@ -1,6 +1,6 @@
 'use server'
 
-import { auth } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
 import prismadb from "./prismadb"
 import { generateId } from "./utils";
 import { revalidatePath } from "next/cache";
